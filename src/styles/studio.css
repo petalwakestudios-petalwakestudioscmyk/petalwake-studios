@@ -1347,6 +1347,46 @@ img {
 	font-size: 14px;
 }
 
+.project-christian {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
+	gap: clamp(28px, 7vw, 110px);
+	padding: clamp(72px, 9vw, 120px) clamp(24px, 7vw, 130px);
+	background: #e8e4ef;
+}
+
+.project-christian > .eyebrow {
+	padding-top: 12px;
+}
+
+.project-christian > div {
+	max-width: 790px;
+}
+
+.project-christian h2 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: clamp(36px, 4vw, 52px);
+	font-weight: 400;
+	line-height: 1.08;
+}
+
+.project-christian p:not(.eyebrow) {
+	margin: 20px 0 0;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+.project-christian a {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+	gap: 8px;
+	margin-top: 20px;
+	text-decoration-color: var(--peach);
+	text-underline-offset: 5px;
+}
+
 .project-reflection {
 	padding: clamp(64px, 8vw, 100px) 24px;
 	background: #ece4eb;
@@ -1697,7 +1737,8 @@ img {
 	.work-page__continuation,
 	.project-visual,
 	.project-watch,
-	.project-production {
+	.project-production,
+	.project-christian {
 		grid-template-columns: 1fr;
 		gap: 24px;
 	}
