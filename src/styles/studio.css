@@ -105,6 +105,7 @@ img {
 
 .about-page .site-header,
 .film-page .site-header,
+.work-page .site-header,
 .not-found-page .site-header {
 	color: var(--deep);
 }
@@ -158,7 +159,8 @@ img {
 }
 
 .about-page .site-nav__watch,
-.film-page .site-nav__watch {
+.film-page .site-nav__watch,
+.work-page .site-nav__watch {
 	border-color: rgb(18 45 56 / 38%);
 }
 
@@ -373,7 +375,9 @@ img {
 
 .studio-intro,
 .philosophy,
-.current-work {
+.current-work,
+.what-we-create,
+.story-beliefs {
 	display: grid;
 	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
 	gap: clamp(28px, 7vw, 110px);
@@ -385,35 +389,182 @@ img {
 
 .studio-intro > .eyebrow,
 .philosophy > .eyebrow,
-.current-work > .eyebrow {
+.current-work > .eyebrow,
+.what-we-create > .eyebrow,
+.story-beliefs > .eyebrow {
 	padding-top: 12px;
 }
 
 .studio-intro__content,
 .philosophy__content,
-.current-work__content {
+.current-work__content,
+.what-we-create__content,
+.story-beliefs__content {
 	max-width: 790px;
 }
 
 .studio-intro h2,
 .philosophy h2,
-.current-work h2 {
+.current-work h2,
+.what-we-create h2,
+.story-beliefs h2 {
 	margin-top: 0;
 }
 
 .studio-intro h2 em,
 .philosophy h2 em,
-.current-work h2 em {
+.current-work h2 em,
+.what-we-create h2 em,
+.story-beliefs h2 em {
 	color: #b66f55;
 	font-weight: 400;
 }
 
 .studio-intro__content p,
 .philosophy__content p,
-.current-work__content p {
+.current-work__content p,
+.what-we-create__content p {
 	max-width: 670px;
 	margin: 22px 0 0;
 	color: var(--muted);
+	font-size: 14px;
+}
+
+.what-we-create {
+	background: #dce5df;
+}
+
+.story-beliefs {
+	background: var(--paper);
+}
+
+.story-beliefs__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 22px;
+	margin-top: 30px;
+}
+
+.story-beliefs__grid p {
+	margin: 0;
+	color: var(--muted);
+	font-size: 13px;
+}
+
+.story-beliefs__grid strong {
+	display: block;
+	margin-bottom: 8px;
+	color: var(--ink);
+	font-family: var(--display-font);
+	font-size: 19px;
+	font-weight: 400;
+	line-height: 1.25;
+}
+
+.story-beliefs__content > a,
+.work__all a {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+	gap: 8px;
+	margin-top: 24px;
+	text-decoration-color: var(--peach);
+	text-underline-offset: 5px;
+}
+
+.work__all {
+	margin: 24px 0 0;
+	text-align: right;
+	font-size: 12px;
+}
+
+.work__all a {
+	margin-top: 0;
+}
+
+.work-page main {
+	padding-top: 140px;
+}
+
+.work-page__intro {
+	max-width: 960px;
+	margin: 0 auto;
+	padding: 10px clamp(24px, 7vw, 120px) clamp(70px, 9vw, 120px);
+}
+
+.work-page__intro h1 {
+	margin: 15px 0 0;
+	font-family: var(--display-font);
+	font-size: clamp(48px, 6vw, 72px);
+	font-weight: 400;
+	line-height: 1.04;
+}
+
+.work-page__intro > p:last-child {
+	max-width: 760px;
+	margin: 24px 0 0;
+	color: var(--muted);
+	font-size: 17px;
+}
+
+.work-page__films {
+	width: min(1680px, 100%);
+	margin-inline: auto;
+	padding: clamp(64px, 8vw, 110px) clamp(24px, 7vw, 130px);
+	background: var(--paper);
+}
+
+.work-page__continuation {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
+	gap: clamp(28px, 7vw, 110px);
+	padding: clamp(72px, 9vw, 120px) clamp(24px, 7vw, 130px);
+	background: #dce5df;
+}
+
+.work-page__continuation > .eyebrow {
+	padding-top: 12px;
+}
+
+.work-page__continuation > div {
+	max-width: 790px;
+}
+
+.work-page__continuation h2 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: clamp(38px, 4vw, 52px);
+	font-weight: 400;
+	line-height: 1.08;
+}
+
+.work-page__continuation p {
+	max-width: 670px;
+	margin: 22px 0 24px;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+.about-principles h2 {
+	margin-bottom: 32px;
+}
+
+.about-principles__grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: clamp(22px, 3vw, 40px);
+}
+
+.about-principles__grid h3 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: 23px;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
+.about-page__section .about-principles__grid p {
+	margin-top: 14px;
 	font-size: 14px;
 }
 
@@ -955,6 +1106,71 @@ img {
 	font-size: 14px;
 }
 
+.project-reflection {
+	padding: clamp(64px, 8vw, 100px) 24px;
+	background: #dce5df;
+	text-align: center;
+}
+
+.project-reflection .eyebrow {
+	color: var(--lake);
+}
+
+.project-reflection h2 {
+	max-width: 820px;
+	margin: 18px auto 0;
+	font-family: var(--display-font);
+	font-size: clamp(32px, 4vw, 48px);
+	font-weight: 400;
+	line-height: 1.15;
+}
+
+.project-credits {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
+	gap: clamp(28px, 7vw, 110px);
+	background: var(--paper);
+}
+
+.project-credits > .eyebrow {
+	padding-top: 12px;
+}
+
+.project-credits > div {
+	max-width: 790px;
+}
+
+.project-credits h2 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: clamp(38px, 4.5vw, 54px);
+	font-weight: 400;
+	line-height: 1.04;
+}
+
+.project-credits dl {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 18px 48px;
+	margin: 25px 0 0;
+}
+
+.project-credits dl > div {
+	min-width: 150px;
+}
+
+.project-credits dt {
+	color: var(--lake);
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+}
+
+.project-credits dd {
+	margin: 4px 0 0;
+	color: var(--muted);
+}
+
 .project-watch {
 	display: grid;
 	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
@@ -1051,11 +1267,13 @@ img {
 	}
 	.about-page .site-nav summary,
 	.film-page .site-nav summary,
+	.work-page .site-nav summary,
 	.not-found-page .site-nav summary {
 		border-color: rgb(18 45 56 / 50%);
 	}
 	.about-page .site-nav summary span,
 	.film-page .site-nav summary span,
+	.work-page .site-nav summary span,
 	.not-found-page .site-nav summary span {
 		background: var(--deep);
 	}
@@ -1076,6 +1294,7 @@ img {
 	}
 	.about-page .site-nav[open] > nav,
 	.film-page .site-nav[open] > nav,
+	.work-page .site-nav[open] > nav,
 	.not-found-page .site-nav[open] > nav {
 		background: var(--deep);
 		color: var(--paper);
@@ -1134,7 +1353,9 @@ img {
 	.watch__content h2,
 	.studio-intro h2,
 	.philosophy h2,
-	.current-work h2 {
+	.current-work h2,
+	.what-we-create h2,
+	.story-beliefs h2 {
 		font-size: 48px;
 	}
 	.about-page h1,
@@ -1149,13 +1370,22 @@ img {
 	.studio-intro,
 	.philosophy,
 	.current-work,
+	.what-we-create,
+	.story-beliefs,
+	.work-page__continuation,
 	.project-visual,
 	.project-watch {
 		grid-template-columns: 1fr;
 		gap: 24px;
 	}
 	.about-page__section,
-	.project-hero {
+	.project-hero,
+	.project-credits {
+		grid-template-columns: 1fr;
+		gap: 24px;
+	}
+	.about-principles__grid,
+	.story-beliefs__grid {
 		grid-template-columns: 1fr;
 		gap: 24px;
 	}
@@ -1204,7 +1434,9 @@ img {
 	.watch__content h2,
 	.studio-intro h2,
 	.philosophy h2,
-	.current-work h2 {
+	.current-work h2,
+	.what-we-create h2,
+	.story-beliefs h2 {
 		font-size: 38px;
 	}
 	.film-feature__info h3 {
@@ -1229,6 +1461,9 @@ img {
 	}
 	.about-page main {
 		padding-top: 120px;
+	}
+	.work-page main {
+		padding-top: 112px;
 	}
 }
 

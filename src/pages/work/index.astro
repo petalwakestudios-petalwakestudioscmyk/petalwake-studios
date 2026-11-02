@@ -1,0 +1,81 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { SITE_TITLE, WORK_DESCRIPTION, YOUTUBE_CHANNEL } from '../../consts';
+import { FILMS } from '../../data/films';
+
+const featuredFilms = FILMS.filter((film) => film.featured);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Films & Animation | ${SITE_TITLE}`}
+			description={WORK_DESCRIPTION}
+		/>
+	</head>
+	<body class="work-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<header class="work-page__intro">
+				<p class="eyebrow">Petalwake Studios</p>
+				<h1>Stories in Motion</h1>
+				<p>
+					Petalwake Studios is growing. This is where our films, visual experiments, and original
+					stories will take shape. We are beginning with one story to share.
+				</p>
+			</header>
+
+			<section class="work-page__films" aria-labelledby="work-films-title">
+				<div class="section-heading">
+					<p class="eyebrow">A film by Petalwake Studios</p>
+					<h2 id="work-films-title">Featured Film</h2>
+				</div>
+				{featuredFilms.map((film) => (
+					<article class="film-feature">
+						<a class="film-feature__image" href={`/work/${film.slug}/`} aria-label={`Explore the story of ${film.title}`}>
+							<img
+								src={film.thumbnail}
+								srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+								sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
+								alt={film.thumbnailAlt}
+								width={film.imageWidth}
+								height={film.imageHeight}
+								fetchpriority="high"
+								decoding="async"
+							/>
+							<span class="film-feature__play" aria-hidden="true">↗</span>
+						</a>
+						<div class="film-feature__info">
+							<p class="eyebrow">{film.type}</p>
+							<h3>{film.title}</h3>
+							<p>{film.shortDescription}</p>
+							<div class="film-feature__links">
+								<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">Watch {film.title}</a>
+								<a href={`/work/${film.slug}/`}>Explore the Story</a>
+							</div>
+						</div>
+					</article>
+				))}
+			</section>
+
+			<section class="work-page__continuation" aria-labelledby="more-stories-title">
+				<p class="eyebrow">More stories are taking shape</p>
+				<div>
+					<h2 id="more-stories-title">Still at the beginning.</h2>
+					<p>
+						Petalwake Studios is still at the beginning. New stories, films, artwork, and glimpses
+						behind the process will be shared as they emerge.
+					</p>
+					<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						Follow on YouTube <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</section>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

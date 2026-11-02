@@ -35,7 +35,7 @@ const featuredFilm = FILMS[0];
 				</div>
 				<div class="hero__content">
 					<p class="hero__descriptor">
-						Independent animation and visual storytelling shaped by nature, discovery, and imagined worlds.
+						Original stories. Human questions. A little room for wonder.
 					</p>
 					<div class="hero__actions">
 						<a class="button button--primary" href="#work">Explore Our Work <span aria-hidden="true">↓</span></a>
@@ -52,7 +52,7 @@ const featuredFilm = FILMS[0];
 			<section class="studio-intro section-wrap" aria-labelledby="studio-intro-title">
 				<p class="eyebrow">Petalwake Studios</p>
 				<div class="studio-intro__content">
-					<h2 id="studio-intro-title">Stories That<br /><em>Awaken Wonder.</em></h2>
+					<h2 id="studio-intro-title">Stories begin<br /><em>with people.</em></h2>
 					<p class="studio-intro__lead">
 						Petalwake Studios is an independent creative studio exploring the beauty, complexity,
 						and wonder of the human experience through film, animation, and original media.
@@ -64,20 +64,33 @@ const featuredFilm = FILMS[0];
 				</div>
 			</section>
 
+			<section class="what-we-create section-wrap" aria-labelledby="create-title">
+				<p class="eyebrow">What we create</p>
+				<div class="what-we-create__content">
+					<h2 id="create-title">Original stories,<br /><em>thoughtfully told.</em></h2>
+					<p>
+						Petalwake develops original animated stories centered on character, consequence, and
+						the questions that remain with us. Our work brings together cinematic imagery,
+						animation, atmosphere, music, and quiet visual storytelling, leaving room for stories
+						to breathe and audiences to reflect.
+					</p>
+				</div>
+			</section>
+
 			<section class="work section-wrap" id="work" aria-labelledby="work-title">
 				<div class="section-heading">
-					<p class="eyebrow">One story to begin</p>
+					<p class="eyebrow">Featured work</p>
 					<h2 id="work-title">Featured Film</h2>
 				</div>
 				<article class="film-feature">
-					<a class="film-feature__image" href={`/work/${featuredFilm.slug}/`} aria-label={`Explore ${featuredFilm.title}`}>
+					<a class="film-feature__image" href={`/work/${featuredFilm.slug}/`} aria-label={`Explore the story of ${featuredFilm.title}`}>
 						<img
 							src={featuredFilm.thumbnail}
 							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
 							sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
 							alt={featuredFilm.thumbnailAlt}
-							width={featuredFilm.thumbnailWidth}
-							height={featuredFilm.thumbnailHeight}
+							width={featuredFilm.imageWidth}
+							height={featuredFilm.imageHeight}
 							loading="lazy"
 							decoding="async"
 						/>
@@ -86,15 +99,16 @@ const featuredFilm = FILMS[0];
 					<div class="film-feature__info">
 						<p class="eyebrow">Animated short film</p>
 						<h3>{featuredFilm.title}</h3>
-						<p>{featuredFilm.featuredDescription}</p>
+						<p>{featuredFilm.shortDescription}</p>
 						<div class="film-feature__links">
-							<a href={`/work/${featuredFilm.slug}/`}>Explore {featuredFilm.title}</a>
 							<a href={featuredFilm.youtubeUrl} target="_blank" rel="noopener noreferrer">
-								Watch {featuredFilm.title} on YouTube <span aria-hidden="true">↗</span>
+								Watch {featuredFilm.title}
 							</a>
+							<a href={`/work/${featuredFilm.slug}/`}>Explore the Story</a>
 						</div>
 					</div>
 				</article>
+				<p class="work__all"><a href="/work/">View All Work <span aria-hidden="true">↗</span></a></p>
 			</section>
 
 			<section class="philosophy section-wrap" aria-labelledby="philosophy-title">
@@ -102,58 +116,70 @@ const featuredFilm = FILMS[0];
 				<div class="philosophy__content">
 					<h2 id="philosophy-title">Some stories<br /><em>follow us home.</em></h2>
 					<p>
-						A story can let us enter a life beyond our own and see how much more there is to another
-						person than we could know from the outside. We are drawn to imperfect people facing
-						choices they cannot easily undo: love tested by loss, memory shadowed by regret, and
-						forgiveness when forgetting is impossible.
+						Some stories entertain us for an evening. Others follow us home. We are drawn to the
+						second kind: stories that let us enter an experience beyond our own and remind us how
+						little we can know of another person from the outside. A life is rarely as simple as
+						its first impression.
 					</p>
 					<p>
-						We do not expect a story to settle every difficult question. We hope it can hold one
-						open long enough for us to look more closely—and leave room for beauty and hope without
-						pretending that pain is not real.
+						We are interested in imperfect people facing choices they cannot easily undo; in love
+						tested by loss, memory shadowed by regret, and forgiveness when forgetting is impossible.
+						We want to make room for beauty that still matters when life hurts, and for hope that
+						does not ask us to pretend everything is fine.
 					</p>
 					<p>
-						Some of the best stories do not end when the credits appear. They become conversations:
-						with a character, another perspective, or someone beside us. If a story helps someone
-						feel less alone or see another person differently, it has done something worthwhile.
+						We do not expect a story to settle every difficult question. We hope to make work worth
+						thinking about, sharing, and carrying with us—stories that can open a conversation
+						between a character, another perspective, and the people beside us.
 					</p>
 				</div>
 			</section>
 
+			<section class="story-beliefs section-wrap" aria-labelledby="story-beliefs-title">
+				<p class="eyebrow">What we believe about stories</p>
+				<div class="story-beliefs__content">
+					<h2 id="story-beliefs-title">Honest stories<br /><em>leave room.</em></h2>
+					<div class="story-beliefs__grid">
+						<p><strong>People are worth understanding.</strong> Compassion and moral responsibility can belong in the same story.</p>
+						<p><strong>Pain deserves honesty.</strong> Not every loss can be undone or every consequence neatly resolved.</p>
+						<p><strong>Hope can be honest, too.</strong> It can begin quietly, before a difficult season has passed.</p>
+					</div>
+					<a href="/about/">About Petalwake Studios <span aria-hidden="true">↗</span></a>
+				</div>
+			</section>
+
 			<section class="current-work section-wrap" aria-labelledby="current-work-title">
-				<p class="eyebrow">A growing creative practice</p>
+				<p class="eyebrow">Work</p>
 				<div class="current-work__content">
-					<h2 id="current-work-title">One story<br /><em>at a time.</em></h2>
+					<h2 id="current-work-title">A beginning,<br /><em>not a catalogue.</em></h2>
 					<p>
-						Petalwake is being built with room to grow, guided by a lasting interest in human
-						experience and visual storytelling. For now, <em>The Last Winter</em> is one story we
-						can share. New work will find its way here when it is ready.
+						Petalwake Studios is still at the beginning. <em>The Last Winter</em> is one story we
+						can share today; other work will find its place here as it is ready.
 					</p>
-					<a href="/#work">Explore Petalwake Films <span aria-hidden="true">↗</span></a>
+					<a href="/work/">View All Work <span aria-hidden="true">↗</span></a>
 				</div>
 			</section>
 
 			<section class="about section-wrap" id="about" aria-labelledby="about-title">
 				<p class="eyebrow">About Petalwake</p>
 				<div class="about__content">
-					<h2 id="about-title">Stories begin<br /><em>with people.</em></h2>
+					<h2 id="about-title">Stories That<br /><em>Awaken Wonder.</em></h2>
 					<p>
-						We make room for complicated lives, difficult choices, and questions without easy
-						answers. The deeper meaning emerges through the people and what they do.
+						Wonder can be a quiet moment of recognition: seeing another person more fully, or
+						finding a little possibility in a season that has not yet passed.
 					</p>
 					<p><a href="/about/">About Petalwake Studios</a></p>
 				</div>
 			</section>
 
 			<section class="watch section-wrap" aria-labelledby="watch-title">
-				<p class="eyebrow">Continue the story</p>
+				<p class="eyebrow">Follow the journey</p>
 				<div class="watch__content">
-					<h2 id="watch-title">Watch and<br /><em>stay awhile.</em></h2>
-					<p>Watch The Last Winter, and find Petalwake Studios on YouTube.</p>
-					<a class="button button--primary" href={featuredFilm.youtubeUrl} target="_blank" rel="noopener noreferrer">
-						Watch {featuredFilm.title} on YouTube <span aria-hidden="true">↗</span>
+					<h2 id="watch-title">Still at the<br /><em>beginning.</em></h2>
+					<p>Follow along as new stories, films, artwork, and glimpses behind the process take shape.</p>
+					<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						Watch on YouTube <span aria-hidden="true">↗</span>
 					</a>
-					<p><a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">Visit Petalwake Studios on YouTube</a></p>
 				</div>
 			</section>
 		</main>

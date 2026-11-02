@@ -20,8 +20,8 @@ const description =
 			description={description}
 			image={film.thumbnail}
 			imageAlt={film.thumbnailAlt}
-			imageWidth={film.thumbnailWidth}
-			imageHeight={film.thumbnailHeight}
+			imageWidth={film.imageWidth}
+			imageHeight={film.imageHeight}
 			ogType="video.other"
 		/>
 	</head>
@@ -43,8 +43,8 @@ const description =
 							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
 							sizes="(max-width: 760px) calc(100vw - 48px), 55vw"
 							alt={film.thumbnailAlt}
-							width={film.thumbnailWidth}
-							height={film.thumbnailHeight}
+							width={film.imageWidth}
+							height={film.imageHeight}
 							fetchpriority="high"
 							decoding="async"
 						/>
@@ -73,7 +73,7 @@ const description =
 			<section class="project-copy project-copy--light" aria-labelledby="about-story-title">
 				<p class="eyebrow">About the story</p>
 				<h2 id="about-story-title">What can forgiveness change?</h2>
-				{film.aboutTheStory.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+				{film.aboutStory.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
 			</section>
 
 			<section class="project-themes section-wrap" aria-labelledby="themes-title">
@@ -97,6 +97,30 @@ const description =
 				</div>
 			</section>
 
+			{film.reflectionQuestion && (
+				<section class="project-reflection" aria-labelledby="reflection-title">
+					<p class="eyebrow">A question to carry with you</p>
+					<h2 id="reflection-title">{film.reflectionQuestion}</h2>
+				</section>
+			)}
+
+			{film.credits?.length && (
+				<section class="project-credits section-wrap" aria-labelledby="credits-title">
+					<p class="eyebrow">Film credits</p>
+					<div>
+						<h2 id="credits-title">Credits</h2>
+						<dl>
+							{film.credits.map((credit) => (
+								<div>
+									<dt>{credit.role}</dt>
+									<dd>{credit.name}</dd>
+								</div>
+							))}
+						</dl>
+					</div>
+				</section>
+			)}
+
 			<section class="project-watch section-wrap" aria-labelledby="watch-title">
 				<p class="eyebrow">Continue the conversation</p>
 				<div>
@@ -114,7 +138,7 @@ const description =
 			</section>
 
 			<nav class="project-back" aria-label="Project navigation">
-				<a href="/#work"><span aria-hidden="true">←</span> Back to Work</a>
+				<a href="/work/"><span aria-hidden="true">←</span> Back to Work</a>
 			</nav>
 			<noscript>
 				<p class="project-noscript">
