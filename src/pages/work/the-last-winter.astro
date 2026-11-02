@@ -131,6 +131,45 @@ const description =
 				</section>
 			)}
 
+			<section class="project-conversation" aria-labelledby="conversation-title">
+				<p class="eyebrow">Join the conversation</p>
+				<div>
+					<h2 id="conversation-title">Share a reflection</h2>
+					<p>
+						We welcome thoughtful responses to the film, whether you are reflecting on forgiveness,
+						asking a question, or simply sharing what the story left with you. Submissions are not
+						guaranteed to be published or answered individually, but they are welcome and read.
+					</p>
+					<form class="project-conversation__form" id="film-conversation-form" novalidate>
+						<label>
+							<span>Name</span>
+							<input type="text" name="name" autocomplete="name" />
+						</label>
+						<label>
+							<span>Email (optional)</span>
+							<input type="email" name="email" autocomplete="email" />
+						</label>
+						<label>
+							<span>Message type</span>
+							<select name="type">
+								<option value="Reflection">Reflection</option>
+								<option value="Private message to the studio">Private message to the studio</option>
+								<option value="Question about the film">Question about the film</option>
+							</select>
+						</label>
+						<label>
+							<span>Your reflection or question</span>
+							<textarea name="message" rows="6" required></textarea>
+						</label>
+						<div class="project-conversation__actions">
+							<button class="button button--primary" type="submit">Send response</button>
+							<a href="mailto:petalwakestudios@gmail.com?subject=The%20Last%20Winter%20reflection" target="_blank" rel="noopener noreferrer">Email directly</a>
+						</div>
+						<p class="project-conversation__status" aria-live="polite"></p>
+					</form>
+				</div>
+			</section>
+
 			<section class="project-watch section-wrap" aria-labelledby="watch-title">
 				<p class="eyebrow">Continue the conversation</p>
 				<div>
@@ -186,5 +225,30 @@ const description =
 		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
 		iframe.allowFullscreen = true;
 		player.replaceChildren(iframe);
+	});
+
+	const conversationForm = document.querySelector('#film-conversation-form');
+	const conversationStatus = document.querySelector('.project-conversation__status');
+	conversationForm?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const formData = new FormData(conversationForm);
+		const name = String(formData.get('name') ?? '').trim();
+		const email = String(formData.get('email') ?? '').trim();
+		const type = String(formData.get('type') ?? 'Reflection').trim();
+		const message = String(formData.get('message') ?? '').trim();
+
+		if (!message) {
+			conversationStatus && (conversationStatus.textContent = 'Please write a reflection or question before sending.');
+			conversationStatus && (conversationStatus.dataset.state = 'error');
+			return;
+		}
+
+		const body = encodeURIComponent(
+			`Name: ${name || 'Anonymous'}\nEmail: ${email || 'Not provided'}\nType: ${type}\n\n${message}`
+		);
+		const subject = encodeURIComponent('The Last Winter reflection');
+		window.location.href = `mailto:petalwakestudios@gmail.com?subject=${subject}&body=${body}`;
+		conversationStatus && (conversationStatus.textContent = 'Your email app is opening with your message.');
+		conversationStatus && (conversationStatus.dataset.state = 'success');
 	});
 </script>

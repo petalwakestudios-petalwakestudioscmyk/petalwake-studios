@@ -151,6 +151,13 @@ img {
 	transition: color 180ms ease;
 }
 
+.site-header__cta {
+	padding: 0 14px;
+	border: 1px solid rgb(252 251 246 / 82%);
+	border-radius: 999px;
+	font-weight: 700;
+}
+
 .site-nav a:hover {
 	color: var(--blush);
 }
@@ -948,6 +955,165 @@ img {
 	font-size: 16px;
 }
 
+.contact-card {
+	margin-top: 24px;
+	padding: clamp(22px, 5vw, 28px);
+	border: 1px solid rgb(48 43 75 / 14%);
+	border-radius: 20px;
+	background: var(--paper);
+	box-shadow: 0 12px 50px rgb(33 29 50 / 6%);
+}
+
+.contact-form {
+	display: grid;
+	gap: 18px;
+}
+
+.contact-form__row {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+}
+
+.contact-form label {
+	display: grid;
+	gap: 8px;
+	color: var(--deep);
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.contact-form input,
+.contact-form textarea,
+.contact-form select {
+	width: 100%;
+	padding: 12px 14px;
+	border: 1px solid rgb(48 43 75 / 18%);
+	border-radius: 12px;
+	background: white;
+	color: var(--ink);
+	font: inherit;
+}
+
+.contact-form input:focus-visible,
+.contact-form textarea:focus-visible,
+.contact-form select:focus-visible {
+	outline: 3px solid rgb(157 90 112 / 55%);
+	outline-offset: 2px;
+}
+
+.contact-form__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 16px;
+	margin-top: 8px;
+}
+
+.contact-form__actions a {
+	color: var(--deep);
+	font-size: 12px;
+	text-decoration-color: var(--peach);
+	text-underline-offset: 4px;
+}
+
+.contact-form__status {
+	margin: 0;
+	min-height: 20px;
+	font-size: 12px;
+}
+
+.contact-form__status[data-state="error"] {
+	color: #9a2c2c;
+}
+
+.contact-form__status[data-state="success"] {
+	color: #1d5d4c;
+}
+
+.contact-page__note {
+	max-width: 640px;
+	margin: 20px 0 0;
+	color: var(--muted);
+	font-size: 14px;
+}
+
+.gospel-page main {
+	width: min(1200px, 100%);
+	margin-inline: auto;
+	padding: clamp(150px, 18vh, 220px) clamp(24px, 7vw, 120px) 90px;
+}
+
+.gospel-intro {
+	max-width: 840px;
+	margin: 0 auto;
+}
+
+.gospel-intro h1 {
+	margin: 14px 0 0;
+	font-family: var(--display-font);
+	font-size: clamp(48px, 6vw, 72px);
+	font-weight: 400;
+	line-height: 1.04;
+}
+
+.gospel-intro__lead {
+	max-width: 760px;
+	margin: 22px 0 0;
+	color: var(--muted);
+	font-size: 18px;
+	line-height: 1.7;
+}
+
+.gospel-section,
+.gospel-callout {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.45fr) minmax(0, 1.55fr);
+	gap: clamp(28px, 7vw, 110px);
+	margin-top: 42px;
+	padding: clamp(54px, 8vw, 110px) clamp(24px, 7vw, 120px);
+	background: var(--paper);
+}
+
+.gospel-section--light,
+.gospel-callout {
+	background: #ece4eb;
+}
+
+.gospel-section > .eyebrow,
+.gospel-callout > .eyebrow {
+	padding-top: 10px;
+}
+
+.gospel-section > div,
+.gospel-callout > div {
+	max-width: 740px;
+}
+
+.gospel-section h2,
+.gospel-callout h2 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: clamp(34px, 4vw, 52px);
+	font-weight: 400;
+	line-height: 1.1;
+}
+
+.gospel-section p:not(.eyebrow),
+.gospel-callout p:not(.eyebrow) {
+	max-width: 700px;
+	margin: 20px 0 0;
+	color: var(--muted);
+	font-size: 16px;
+}
+
+.gospel-callout__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-top: 24px;
+}
+
 .not-found-page main {
 	width: min(1080px, 100%);
 	min-height: 70vh;
@@ -1314,6 +1480,95 @@ img {
 	font-size: 12px;
 }
 
+.project-conversation {
+	display: grid;
+	grid-template-columns: minmax(120px, 0.7fr) minmax(0, 1.3fr);
+	gap: clamp(28px, 7vw, 110px);
+	padding: clamp(64px, 8vw, 100px) clamp(24px, 7vw, 130px);
+	background: var(--paper);
+}
+
+.project-conversation > .eyebrow {
+	padding-top: 12px;
+}
+
+.project-conversation > div {
+	max-width: 790px;
+}
+
+.project-conversation h2 {
+	margin: 0;
+	font-family: var(--display-font);
+	font-size: clamp(36px, 4vw, 54px);
+	font-weight: 400;
+	line-height: 1.08;
+}
+
+.project-conversation p:not(.eyebrow) {
+	max-width: 700px;
+	margin: 20px 0 0;
+	color: var(--muted);
+	font-size: 15px;
+}
+
+.project-conversation__form {
+	display: grid;
+	gap: 18px;
+	margin-top: 24px;
+}
+
+.project-conversation__form label {
+	display: grid;
+	gap: 8px;
+	color: var(--deep);
+	font-size: 12px;
+	font-weight: 700;
+}
+
+.project-conversation__form input,
+.project-conversation__form select,
+.project-conversation__form textarea {
+	width: 100%;
+	padding: 12px 14px;
+	border: 1px solid rgb(48 43 75 / 18%);
+	border-radius: 12px;
+	background: white;
+	color: var(--ink);
+	font: inherit;
+}
+
+.project-conversation__form textarea {
+	resize: vertical;
+}
+
+.project-conversation__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 18px;
+}
+
+.project-conversation__actions a {
+	color: var(--deep);
+	font-size: 12px;
+	text-decoration-color: var(--peach);
+	text-underline-offset: 4px;
+}
+
+.project-conversation__status {
+	min-height: 20px;
+	margin: 0;
+	font-size: 12px;
+}
+
+.project-conversation__status[data-state="error"] {
+	color: #9a2c2c;
+}
+
+.project-conversation__status[data-state="success"] {
+	color: #1d5d4c;
+}
+
 .project-back {
 	display: flex;
 	justify-content: center;
@@ -1453,9 +1708,15 @@ img {
 	}
 	.about-page__section,
 	.project-hero,
-	.project-credits {
+	.project-credits,
+	.gospel-section,
+	.gospel-callout,
+	.project-conversation {
 		grid-template-columns: 1fr;
 		gap: 24px;
+	}
+	.contact-form__row {
+		grid-template-columns: 1fr;
 	}
 	.about-principles__grid,
 	.story-beliefs__grid {
