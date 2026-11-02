@@ -19,6 +19,7 @@ export interface Film {
 	gallery?: readonly { src: string; alt: string }[];
 	visualLanguage: string;
 	credits?: readonly { role: string; name: string }[];
+	productionNote?: string;
 	featured?: boolean;
 	year?: string;
 	type?: string;
@@ -67,6 +68,8 @@ export const FILMS = [
 		visualLanguage:
 			'The Last Winter uses cinematic, anime-influenced visual storytelling, with painterly environments and naturalistic character proportions. Restrained facial animation and controlled movement leave room for pauses; deliberate compositions use negative space as part of the telling. Blue-gray winter tones sit against restrained amber interior light, gradually giving way to spring color. Hands, snow, windows, doorways, wedding rings, and flowers recur as quiet details in the frame. The crocus does not erase the winter. It grows through what remains of it. These choices keep attention on the distance between people as well as their expressions, letting a room, a threshold, or a small gesture carry part of the scene. The visual world stays composed and quiet, giving the film’s silences and changing seasons space to register.',
 		credits: [{ role: 'Film', name: 'Petalwake Studios' }],
+		productionNote:
+			'Story conception, scene sequencing, creative direction, and scene selection and arrangement by the creator. Music generated with Suno and visual scenes generated with Google Flow; the creator assembled, edited, and mastered the film in iMovie.',
 		featured: true,
 	},
 ] as const satisfies readonly Film[];

@@ -55,7 +55,7 @@ const featuredFilms = FILMS.filter((film) => film.featured);
 							<p>{film.shortDescription}</p>
 							<div class="film-feature__links">
 								<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">Watch {film.title}</a>
-								<a href={`/work/${film.slug}/`}>Explore the Story</a>
+								<a href={`/work/${film.slug}/`}>Explore {film.title}</a>
 							</div>
 						</div>
 					</article>

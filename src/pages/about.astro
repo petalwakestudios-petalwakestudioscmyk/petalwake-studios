@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
+import { ABOUT_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
 ---
 
 <!doctype html>
@@ -22,7 +22,7 @@ import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
 				<h1>Stories matter<br /><em>because people do.</em></h1>
 				<p class="about-page__lead">
 					Petalwake Studios is an independent creative studio exploring the beauty, complexity,
-					and wonder of the human experience through film, animation, and original media.
+					and wonder of the human experience through film, animation, and original audiovisual work.
 				</p>
 				<p>
 					We create stories inspired by the things that shape us: love, loss, memory, forgiveness,
@@ -30,6 +30,26 @@ import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
 					music, and visual storytelling, we seek to tell stories that linger beyond the screen.
 				</p>
 			</header>
+
+			<section class="about-page__section about-page__section--light" aria-labelledby="approach-title">
+				<p class="eyebrow">Our approach</p>
+				<div>
+					<h2 id="approach-title">Image, sound, and meaning</h2>
+					<p>
+						A story can communicate through more than dialogue alone. A landscape, a musical
+						phrase, a lingering glance, or the silence between two people can express something
+						that words cannot fully capture. We are interested in the relationship between image,
+						sound, emotion, and meaning—and in how they can work together to create a memorable
+						experience.
+					</p>
+					<p>
+						Each project has its own needs and visual identity. Some stories may be animated;
+						others may explore different creative forms. What connects them is an interest in
+						storytelling that invites an audience to pause, reflect, and see familiar things from
+						a new perspective.
+					</p>
+				</div>
+			</section>
 
 			<section class="about-page__section" aria-labelledby="why-stories-title">
 				<p class="eyebrow">Why stories</p>
@@ -117,6 +137,29 @@ import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
 				</div>
 			</section>
 
+			<section class="about-page__section about-page__section--inspiration" aria-labelledby="inspiration-title">
+				<p class="eyebrow">Our inspiration</p>
+				<div>
+					<h2 id="inspiration-title">Beauty that points beyond itself</h2>
+					<p>
+						The natural world has a remarkable capacity to inspire wonder. For us, the beauty of
+						creation can point beyond itself, inviting contemplation of the One who made it.
+					</p>
+					<blockquote>
+						<p>
+							“The heavens declare the glory of God; and the firmament sheweth his handywork.”
+						</p>
+						<cite>Psalm 19:1 (King James Version)</cite>
+					</blockquote>
+					<p>
+						This passage is an important inspiration for Petalwake’s creative direction. It
+						informs our appreciation for beauty and the natural world, and our belief that art
+						can encourage reflection on questions larger than ourselves. It is an inspiration
+						for the studio, not a claim that every project is explicitly religious.
+					</p>
+				</div>
+			</section>
+
 			<section class="about-page__section about-page__section--closing" aria-labelledby="looking-forward-title">
 				<p class="eyebrow">Looking forward</p>
 				<div>
@@ -125,9 +168,12 @@ import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
 						Petalwake Studios is being built with a long horizon: a home for original characters,
 						imagined worlds, films, and stories that have something worth saying. We are growing
 						toward a larger creative vision one story at a time, beginning with the work in front
-						of us and leaving room for what is still to come.
+						of us and leaving room for what is still to come. We explore visual storytelling,
+						music, animation, and emerging creative tools while keeping the story and intended
+						audience experience at the center of each project.
 					</p>
 					<p><a href="/work/">Explore Petalwake Films <span aria-hidden="true">↗</span></a></p>
+					<p><a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">Visit our YouTube channel <span aria-hidden="true">↗</span></a></p>
 				</div>
 			</section>
 		</main>

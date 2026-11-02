@@ -1,0 +1,33 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { CONTACT_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Contact | ${SITE_TITLE}`}
+			description={CONTACT_DESCRIPTION}
+		/>
+	</head>
+	<body class="contact-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<p class="eyebrow">Contact</p>
+			<h1>Keep in touch.</h1>
+			<p>
+				Petalwake Studios does not currently list a direct email address. Visit the official
+				YouTube channel to follow the studio; any contact options published there are the
+				current source of truth.
+			</p>
+			<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+				Visit Petalwake Studios on YouTube <span aria-hidden="true">↗</span>
+			</a>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

@@ -5,10 +5,25 @@ Petalwake Studios is an independent creative studio exploring the beauty, comple
 ## Studio content
 
 - Update verified film entries, story copy, and YouTube URLs in `src/data/films.ts`.
+- Keep production notes in `productionNote` and include only confirmed credits, release years, and project details.
 - Add film thumbnails to `public/images/` and use their public paths in `FILMS`.
 - The original homepage identity artwork is `Petalwake Studios_ Mountain Lake Dreams.png`; optimized delivery variants are in `public/images/`.
 - The original film thumbnail is retained as `the-last-winter-thumbnail-source.jpg`; the site serves responsive WebP derivatives.
 - The Cloudflare Worker deployment is configured in `wrangler.json` and `astro.config.mjs`.
+
+## Site routes
+
+- `/` — Studio homepage.
+- `/work/` — Published films and creative work.
+- `/work/the-last-winter/` — Film page, synopsis, and production note.
+- `/about/` — Studio approach, values, and inspiration.
+- `/contact/` — Current public contact information. No direct email address is published.
+- `/films/the-last-winter/` — Permanent redirect to the current film page.
+
+The Journal is intentionally not published until genuine editorial content is ready.
+The film page uses a verified YouTube link and a click-to-load player. Video structured data is not included because verified publication metadata is not available in the repository.
+
+Before a future release, add an official direct contact address only if the owner chooses to publish one. Confirm the alternate `www` host redirects correctly in Cloudflare; the repository uses the non-`www` canonical host.
 
 ## Search and domain setup
 

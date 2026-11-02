@@ -121,6 +121,16 @@ const description =
 				</section>
 			)}
 
+			{film.productionNote && (
+				<section class="project-production" aria-labelledby="production-title">
+					<p class="eyebrow">Production note</p>
+					<div>
+						<h2 id="production-title">A considered process</h2>
+						<p>{film.productionNote}</p>
+					</div>
+				</section>
+			)}
+
 			<section class="project-watch section-wrap" aria-labelledby="watch-title">
 				<p class="eyebrow">Continue the conversation</p>
 				<div>
