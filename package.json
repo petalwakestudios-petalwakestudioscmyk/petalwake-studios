@@ -2,13 +2,13 @@
 	"name": "petalwake-studios",
 	"description": "Independent animation and visual storytelling studio.",
 	"cloudflare": {
-		"label": "Astro Framework Starter",
+		"label": "Petalwake Studios",
 		"products": [
 			"Workers"
 		],
 		"categories": [],
-		"preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/394ca3c9-d351-4036-035a-9f6dfa26dd00/public",
-		"preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/f40a6577-eed5-4f3e-cef4-b5ef0a1be100/preview",
+		"preview_icon_url": "https://petalwakestudios.com/favicon.svg",
+		"preview_image_url": "https://petalwakestudios.com/images/petalwake-social.jpg",
 		"publish": true
 	},
 	"dependencies": {
@@ -31,6 +31,8 @@
 		"build": "astro build",
 		"cf-typegen": "wrangler types",
 		"check": "astro build && tsc && wrangler deploy --dry-run",
+		"check:seo": "node scripts/check-seo.mjs",
+		"check:production": "npm run check && npm run check:seo",
 		"deploy": "wrangler deploy",
 		"dev": "astro dev",
 		"preview": "astro build && wrangler dev"

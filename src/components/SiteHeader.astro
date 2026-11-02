@@ -1,16 +1,26 @@
 ---
 import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+
+const isHomepage = Astro.url.pathname === '/';
 ---
 
 <header class="site-header">
-	<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
-		<span>PETALWAKE<br />STUDIOS</span>
-	</a>
-	<details class="site-nav">
-		<summary aria-label="Navigation menu"><span></span><span></span></summary>
-		<nav aria-label="Main navigation">
+	{isHomepage ? (
+		<h1 class="site-header__heading" id="hero-title">
+			<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
+				<span>PETALWAKE<br />STUDIOS</span>
+			</a>
+		</h1>
+	) : (
+		<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
+			<span>PETALWAKE<br />STUDIOS</span>
+		</a>
+	)}
+	<details class="site-nav" open>
+		<summary aria-label="Toggle navigation" aria-controls="site-navigation"><span></span><span></span></summary>
+		<nav id="site-navigation" aria-label="Main navigation">
 			<a href="/#work">Work</a>
-			<a href="/#about">About</a>
+			<a href="/about/">About</a>
 			<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">YouTube</a>
 			<a class="site-nav__watch" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
 				Watch <span aria-hidden="true">↗</span>
@@ -18,3 +28,24 @@ import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
 		</nav>
 	</details>
 </header>
+
+<script>
+	const navigation = document.querySelector<HTMLDetailsElement>('.site-nav');
+	const menuButton = navigation?.querySelector('summary');
+	const mobileNavigation = window.matchMedia('(max-width: 760px)');
+
+	if (navigation) {
+		navigation.open = !mobileNavigation.matches;
+
+		mobileNavigation.addEventListener('change', ({ matches }) => {
+			navigation.open = !matches;
+		});
+	}
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape' && navigation?.open && mobileNavigation.matches) {
+			navigation.open = false;
+			menuButton?.focus();
+		}
+	});
+</script>

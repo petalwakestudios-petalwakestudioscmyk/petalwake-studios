@@ -2,29 +2,99 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { ABOUT_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`About | ${SITE_TITLE}`}
-			description={SITE_DESCRIPTION}
-			image="/images/petalwake-mountain-lake-hero.webp"
+			title={`About ${SITE_TITLE} | Independent Creative Studio`}
+			description={ABOUT_DESCRIPTION}
 		/>
 	</head>
 	<body class="about-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
-		<main>
-			<p class="eyebrow">Independent animation studio</p>
-			<h1>Stories That Awaken Wonder.</h1>
-			<p>
-				Petalwake Studios is an independent animation studio creating cinematic stories
-				and imagined worlds shaped by nature, wonder, and discovery.
-			</p>
-			<p class="about-page__focus">Animation <span>·</span> Cinematic storytelling <span>·</span> Imagined worlds</p>
-			<p><a href="/#work">Explore our work <span aria-hidden="true">↗</span></a></p>
+		<main id="main-content" tabindex="-1">
+			<header class="about-page__intro">
+				<p class="eyebrow">About Petalwake</p>
+				<h1>Stories matter<br /><em>because people do.</em></h1>
+				<p class="about-page__lead">
+					Petalwake Studios is an independent creative studio exploring the beauty, complexity,
+					and wonder of the human experience through film, animation, and original media.
+				</p>
+				<p>
+					We create stories inspired by the things that shape us: love, loss, memory, forgiveness,
+					hope, and the quiet moments that give life meaning. Through cinematic imagery, atmosphere,
+					music, and visual storytelling, we seek to make work that lingers beyond the screen.
+				</p>
+			</header>
+
+			<section class="about-page__section" aria-labelledby="why-stories-title">
+				<p class="eyebrow">Why stories</p>
+				<div>
+					<h2 id="why-stories-title">A life beyond our own</h2>
+					<p>
+						A story can take us somewhere we have never been and place us inside a life we have
+						never lived. For a while, we see the world from another person’s side of the door.
+						That encounter can complicate what we assumed and make room for a more honest kind
+						of compassion.
+					</p>
+					<p>
+						We begin with people and the choices they make, not with a lesson to deliver. The
+						questions matter because the lives around them matter.
+					</p>
+				</div>
+			</section>
+
+			<section class="about-page__section about-page__section--light" aria-labelledby="wonder-title">
+				<p class="eyebrow">Stories that awaken wonder</p>
+				<div>
+					<h2 id="wonder-title">More than spectacle</h2>
+					<p>
+						Wonder can live in a landscape, but it can also appear in an ordinary kindness, a
+						difficult truth finally spoken, or the possibility of beginning again. It is the
+						surprise of finding beauty in a world that also holds suffering—and of discovering
+						that a person is more than their worst moment.
+					</p>
+					<p>
+						We want to stay attentive to the mystery and beauty of being alive, without looking
+						away from what makes life difficult.
+					</p>
+				</div>
+			</section>
+
+			<section class="about-page__section" aria-labelledby="questions-title">
+				<p class="eyebrow">A place for questions</p>
+				<div>
+					<h2 id="questions-title">Room to reflect</h2>
+					<p>
+						We are drawn to stories that look directly at grief, guilt, responsibility, and
+						forgiveness without pretending that any of them are simple. People can be wounded
+						and still answer for the harm they cause. Reconciliation may be possible, but it
+						cannot be demanded or assumed.
+					</p>
+					<p>
+						We do not ask every viewer to reach the same conclusion. Our hope is to create space
+						for reflection, conversation, connection, and, sometimes, healing.
+					</p>
+				</div>
+			</section>
+
+			<section class="about-page__section about-page__section--closing" aria-labelledby="looking-forward-title">
+				<p class="eyebrow">Looking forward</p>
+				<div>
+					<h2 id="looking-forward-title">One story at a time</h2>
+					<p>
+						Petalwake is an independent creative studio growing toward a larger vision. We are
+						building that future carefully, beginning with the work in front of us and leaving
+						room for the stories still to come. Whatever their form, we want them to begin with
+						people and stay open to wonder.
+					</p>
+					<p><a href="/#work">Explore Petalwake Films <span aria-hidden="true">↗</span></a></p>
+				</div>
+			</section>
 		</main>
 		<SiteFooter />
 	</body>

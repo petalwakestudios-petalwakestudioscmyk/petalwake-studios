@@ -1,0 +1,31 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Page Not Found | ${SITE_TITLE}`}
+			description="The page you are looking for could not be found. Return to Petalwake Studios to explore its films and stories."
+			robots="noindex, follow"
+		/>
+	</head>
+	<body class="not-found-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<p class="eyebrow">404 · Page not found</p>
+			<h1>This story hasn't found its page.</h1>
+			<p>The page may have moved. Return home or explore the films at Petalwake Studios.</p>
+			<nav aria-label="Page not found links">
+				<a href="/">Home</a>
+				<a href="/#work">Explore Petalwake Films</a>
+			</nav>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

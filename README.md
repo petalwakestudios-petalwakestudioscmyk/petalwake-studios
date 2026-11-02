@@ -1,13 +1,22 @@
 # Petalwake Studios
 
-Petalwake Studios is an independent animation studio creating cinematic stories and imagined worlds designed to awaken wonder.
+Petalwake Studios is an independent creative studio exploring the beauty, complexity, and wonder of the human experience through film, animation, and original media.
 
 ## Studio content
 
-- Update the verified film entry and YouTube URL in `src/consts.ts`.
+- Update verified film entries, story copy, and YouTube URLs in `src/data/films.ts`.
 - Add film thumbnails to `public/images/` and use their public paths in `FILMS`.
-- The original homepage identity artwork is `public/images/petalwake-mountain-lake-hero.png`; the site serves its optimized WebP derivative.
+- The original homepage identity artwork is `Petalwake Studios_ Mountain Lake Dreams.png`; optimized delivery variants are in `public/images/`.
+- The original film thumbnail is retained as `the-last-winter-thumbnail-source.jpg`; the site serves responsive WebP derivatives.
 - The Cloudflare Worker deployment is configured in `wrangler.json` and `astro.config.mjs`.
+
+## Search and domain setup
+
+- The canonical production host is `https://petalwakestudios.com` and the sitemap is published at `/sitemap-index.xml`.
+- If `www.petalwakestudios.com` is enabled in Cloudflare, configure a redirect from `https://www.petalwakestudios.com/*` to `https://petalwakestudios.com/$1`; do not serve duplicate site content on both hosts.
+- After deployment, add a Google Search Console Domain property, verify it with a Cloudflare DNS TXT record, submit `https://petalwakestudios.com/sitemap-index.xml`, and inspect the homepage and Core Web Vitals.
+- For Google HTML-tag verification, add the token Google supplies as a `google-site-verification` meta tag in `src/components/BaseHead.astro`. Do not add a placeholder token.
+- For Bing Webmaster Tools, add its verification token in the same head component only after Bing supplies it. Do not add a placeholder token.
 
 ## Commands
 
@@ -17,4 +26,6 @@ Petalwake Studios is an independent animation studio creating cinematic stories 
 | `npm run dev` | Start the local Astro server |
 | `npm run build` | Create the production build |
 | `npm run check` | Build, typecheck, and dry-run Wrangler deploy |
+| `npm run check:seo` | Validate generated HTML, sitemap, robots, metadata, and internal links |
+| `npm run check:production` | Run project checks and SEO validation |
 | `npm run deploy` | Deploy to Cloudflare |

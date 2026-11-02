@@ -1,0 +1,156 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { SITE_TITLE, YOUTUBE_CHANNEL } from '../../consts';
+import { FILMS } from '../../data/films';
+
+const film = FILMS.find(({ slug }) => slug === 'the-last-winter');
+if (!film) throw new Error('The Last Winter film entry is missing from src/data/films.ts.');
+
+const description =
+	'An elderly woman visits the dying former husband who betrayed her decades ago. The Last Winter explores memory, responsibility, and forgiveness.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`${film.title} | ${SITE_TITLE}`}
+			description={description}
+			image={film.thumbnail}
+			imageAlt={film.thumbnailAlt}
+			imageWidth={film.thumbnailWidth}
+			imageHeight={film.thumbnailHeight}
+			ogType="video.other"
+		/>
+	</head>
+	<body class="film-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<section class="project-hero" aria-labelledby="film-title">
+				<div
+					class="film-page__player"
+					id="watch-film"
+					data-youtube-player
+					data-video-id={film.youtubeVideoId}
+					data-video-title={film.title}
+				>
+					<button class="film-page__poster" type="button" aria-label={`Watch ${film.title}`}>
+						<img
+							src={film.thumbnail}
+							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+							sizes="(max-width: 760px) calc(100vw - 48px), 55vw"
+							alt={film.thumbnailAlt}
+							width={film.thumbnailWidth}
+							height={film.thumbnailHeight}
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<span class="film-page__play">Watch Film <span aria-hidden="true">▶</span></span>
+					</button>
+				</div>
+				<div class="project-hero__copy">
+					<p class="eyebrow">Animated short film</p>
+					<h1 id="film-title">{film.title}</h1>
+					<p class="project-hero__logline">{film.logline}</p>
+					<div class="project-hero__links">
+						<a href="#synopsis">Read the synopsis <span aria-hidden="true">↓</span></a>
+						<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
+							Watch on YouTube <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="project-copy" id="synopsis" aria-labelledby="synopsis-title">
+				<p class="eyebrow">The story</p>
+				<h2 id="synopsis-title">A visit after many years</h2>
+				{film.synopsis.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+			</section>
+
+			<section class="project-copy project-copy--light" aria-labelledby="about-story-title">
+				<p class="eyebrow">About the story</p>
+				<h2 id="about-story-title">What can forgiveness change?</h2>
+				{film.aboutTheStory.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+			</section>
+
+			<section class="project-themes section-wrap" aria-labelledby="themes-title">
+				<p class="eyebrow">Ideas in the film</p>
+				<h2 id="themes-title">Themes</h2>
+				<div class="project-themes__grid">
+					{film.themes.map((theme) => (
+						<article>
+							<h3>{theme.title}</h3>
+							<p>{theme.description}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="project-visual" aria-labelledby="visual-language-title">
+				<p class="eyebrow">Visual language</p>
+				<div>
+					<h2 id="visual-language-title">What remains in the frame</h2>
+					<p>{film.visualLanguage}</p>
+				</div>
+			</section>
+
+			<section class="project-watch section-wrap" aria-labelledby="watch-title">
+				<p class="eyebrow">Continue the conversation</p>
+				<div>
+					<h2 id="watch-title">Watch {film.title}</h2>
+					<p>
+						We hope the story gives you something to think about, talk about, or carry with you.
+					</p>
+					<a class="button button--primary" href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
+						Watch {film.title} on YouTube <span aria-hidden="true">↗</span>
+					</a>
+					<a class="project-watch__channel" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						Visit Petalwake Studios on YouTube
+					</a>
+				</div>
+			</section>
+
+			<nav class="project-back" aria-label="Project navigation">
+				<a href="/#work"><span aria-hidden="true">←</span> Back to Work</a>
+			</nav>
+			<noscript>
+				<p class="project-noscript">
+					<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
+						Watch {film.title} on YouTube
+					</a>
+				</p>
+			</noscript>
+		</main>
+		<SiteFooter />
+	</body>
+</html>
+
+<script>
+	const player = document.querySelector<HTMLElement>('[data-youtube-player]');
+	const playButton = player?.querySelector('button');
+
+	playButton?.addEventListener('click', () => {
+		if (!player) return;
+
+		const videoId = player.dataset.videoId;
+		const videoTitle = player.dataset.videoTitle;
+		if (!videoId || !videoTitle) {
+			console.error('The film player is missing its verified YouTube video details.');
+			return;
+		}
+
+		const iframe = document.createElement('iframe');
+		iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`;
+		iframe.title = `${videoTitle} video player`;
+		iframe.width = '1280';
+		iframe.height = '720';
+		iframe.loading = 'lazy';
+		iframe.allow = 'encrypted-media; picture-in-picture; web-share';
+		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+		iframe.allowFullscreen = true;
+		player.replaceChildren(iframe);
+	});
+</script>

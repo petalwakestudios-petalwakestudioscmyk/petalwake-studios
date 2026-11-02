@@ -2,7 +2,8 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { FILMS, SITE_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+import { FILMS } from '../data/films';
 
 const featuredFilm = FILMS[0];
 ---
@@ -13,24 +14,29 @@ const featuredFilm = FILMS[0];
 		<BaseHead
 			title={`${SITE_TITLE} | Animation & Visual Storytelling`}
 			description={SITE_DESCRIPTION}
-			image="/images/petalwake-mountain-lake-hero.webp"
 		/>
 	</head>
 	<body class="home-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
-		<main>
-			<section class="hero" aria-labelledby="hero-title">
+		<main id="main-content" tabindex="-1">
+			<section class="hero" aria-label="Petalwake Studios: Stories That Awaken Wonder">
 				<div class="hero__art">
 					<img
 						src="/images/petalwake-mountain-lake-hero.webp"
-						alt="Mountain lake at sunset, framed by alpine flowers and drifting petals."
+						srcset="/images/petalwake-mountain-lake-hero-640.webp 640w, /images/petalwake-mountain-lake-hero-960.webp 960w, /images/petalwake-mountain-lake-hero-1440.webp 1440w, /images/petalwake-mountain-lake-hero.webp 1983w"
+						sizes="100vw"
+						alt="Mountain lake at sunset, framed by alpine flowers, with the Petalwake Studios logo and Stories That Awaken Wonder tagline."
+						width="1983"
+						height="793"
 						fetchpriority="high"
 						decoding="async"
 					/>
 				</div>
 				<div class="hero__content">
-					<h1 class="sr-only" id="hero-title">Petalwake Studios</h1>
-					<p class="hero__descriptor">Independent animation<br />&amp; visual storytelling</p>
+					<p class="hero__descriptor">
+						Independent animation and visual storytelling shaped by nature, discovery, and imagined worlds.
+					</p>
 					<div class="hero__actions">
 						<a class="button button--primary" href="#work">Explore Our Work <span aria-hidden="true">↓</span></a>
 						<a class="button button--quiet" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
@@ -43,58 +49,111 @@ const featuredFilm = FILMS[0];
 				</a>
 			</section>
 
+			<section class="studio-intro section-wrap" aria-labelledby="studio-intro-title">
+				<p class="eyebrow">Petalwake Studios</p>
+				<div class="studio-intro__content">
+					<h2 id="studio-intro-title">Stories That<br /><em>Awaken Wonder.</em></h2>
+					<p class="studio-intro__lead">
+						Petalwake Studios is an independent creative studio exploring the beauty, complexity,
+						and wonder of the human experience through film, animation, and original media.
+					</p>
+					<p>
+						We create stories inspired by the things that shape us: love, loss, memory, forgiveness,
+						hope, and the quiet moments that give life meaning.
+					</p>
+				</div>
+			</section>
+
 			<section class="work section-wrap" id="work" aria-labelledby="work-title">
 				<div class="section-heading">
-					<p class="eyebrow">Featured work · {FILMS.length} {FILMS.length === 1 ? 'film' : 'films'}</p>
-					<h2 id="work-title">Stories in Motion</h2>
+					<p class="eyebrow">One story to begin</p>
+					<h2 id="work-title">Featured Film</h2>
 				</div>
 				<article class="film-feature">
-					<a class="film-feature__image" href={`/films/${featuredFilm.slug}/`} aria-label={`View ${featuredFilm.title}`}>
+					<a class="film-feature__image" href={`/work/${featuredFilm.slug}/`} aria-label={`Explore ${featuredFilm.title}`}>
 						<img
 							src={featuredFilm.thumbnail}
-							alt={`Frame from ${featuredFilm.title}, an animated film from Petalwake Studios.`}
+							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+							sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
+							alt={featuredFilm.thumbnailAlt}
+							width={featuredFilm.thumbnailWidth}
+							height={featuredFilm.thumbnailHeight}
 							loading="lazy"
 							decoding="async"
 						/>
 						<span class="film-feature__play" aria-hidden="true">↗</span>
 					</a>
 					<div class="film-feature__info">
-						<p class="eyebrow">{featuredFilm.kind} <span>·</span> {featuredFilm.year}</p>
+						<p class="eyebrow">Animated short film</p>
 						<h3>{featuredFilm.title}</h3>
-						<p>A short animated film by Petalwake Studios.</p>
+						<p>{featuredFilm.featuredDescription}</p>
 						<div class="film-feature__links">
-							<a href={`/films/${featuredFilm.slug}/`}>Explore film <span aria-hidden="true">↗</span></a>
+							<a href={`/work/${featuredFilm.slug}/`}>Explore {featuredFilm.title}</a>
 							<a href={featuredFilm.youtubeUrl} target="_blank" rel="noopener noreferrer">
-								Watch on YouTube <span aria-hidden="true">↗</span>
+								Watch {featuredFilm.title} on YouTube <span aria-hidden="true">↗</span>
 							</a>
 						</div>
 					</div>
 				</article>
 			</section>
 
-			<section class="about section-wrap" id="about" aria-labelledby="about-title">
-				<p class="eyebrow">About Petalwake</p>
-				<div class="about__content">
-					<h2 id="about-title">Stories That<br /><em>Awaken Wonder.</em></h2>
+			<section class="philosophy section-wrap" aria-labelledby="philosophy-title">
+				<p class="eyebrow">Why we tell stories</p>
+				<div class="philosophy__content">
+					<h2 id="philosophy-title">Some stories<br /><em>follow us home.</em></h2>
 					<p>
-						Petalwake Studios is an independent animation studio creating cinematic stories
-						and imagined worlds shaped by nature, wonder, and discovery.
+						A story can let us enter a life beyond our own and see how much more there is to another
+						person than we could know from the outside. We are drawn to imperfect people facing
+						choices they cannot easily undo: love tested by loss, memory shadowed by regret, and
+						forgiveness when forgetting is impossible.
+					</p>
+					<p>
+						We do not expect a story to settle every difficult question. We hope it can hold one
+						open long enough for us to look more closely—and leave room for beauty and hope without
+						pretending that pain is not real.
+					</p>
+					<p>
+						Some of the best stories do not end when the credits appear. They become conversations:
+						with a character, another perspective, or someone beside us. If a story helps someone
+						feel less alone or see another person differently, it has done something worthwhile.
 					</p>
 				</div>
 			</section>
-			<div class="focus-strip" aria-label="Creative focus">
-				<span>Animation</span>
-				<span>Cinematic storytelling</span>
-				<span>Imagined worlds</span>
-			</div>
+
+			<section class="current-work section-wrap" aria-labelledby="current-work-title">
+				<p class="eyebrow">A growing creative practice</p>
+				<div class="current-work__content">
+					<h2 id="current-work-title">One story<br /><em>at a time.</em></h2>
+					<p>
+						Petalwake is being built with room to grow, guided by a lasting interest in human
+						experience and visual storytelling. For now, <em>The Last Winter</em> is one story we
+						can share. New work will find its way here when it is ready.
+					</p>
+					<a href="/#work">Explore Petalwake Films <span aria-hidden="true">↗</span></a>
+				</div>
+			</section>
+
+			<section class="about section-wrap" id="about" aria-labelledby="about-title">
+				<p class="eyebrow">About Petalwake</p>
+				<div class="about__content">
+					<h2 id="about-title">Stories begin<br /><em>with people.</em></h2>
+					<p>
+						We make room for complicated lives, difficult choices, and questions without easy
+						answers. The deeper meaning emerges through the people and what they do.
+					</p>
+					<p><a href="/about/">About Petalwake Studios</a></p>
+				</div>
+			</section>
 
 			<section class="watch section-wrap" aria-labelledby="watch-title">
-				<p class="eyebrow">Follow the Journey</p>
+				<p class="eyebrow">Continue the story</p>
 				<div class="watch__content">
-					<h2 id="watch-title">More worlds<br /><em>await on YouTube.</em></h2>
-					<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-						Visit Petalwake on YouTube <span aria-hidden="true">↗</span>
+					<h2 id="watch-title">Watch and<br /><em>stay awhile.</em></h2>
+					<p>Watch The Last Winter, and find Petalwake Studios on YouTube.</p>
+					<a class="button button--primary" href={featuredFilm.youtubeUrl} target="_blank" rel="noopener noreferrer">
+						Watch {featuredFilm.title} on YouTube <span aria-hidden="true">↗</span>
 					</a>
+					<p><a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">Visit Petalwake Studios on YouTube</a></p>
 				</div>
 			</section>
 		</main>
