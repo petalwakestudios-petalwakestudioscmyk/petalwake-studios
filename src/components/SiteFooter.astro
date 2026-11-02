@@ -1,0 +1,14 @@
+---
+import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+	<a class="site-footer__name" href="/">{SITE_TITLE}</a>
+	<p>Stories That Awaken Wonder.</p>
+	<nav aria-label="Studio links">
+		<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">YouTube</a>
+	</nav>
+	<small>© {year} {SITE_TITLE}</small>
+</footer>

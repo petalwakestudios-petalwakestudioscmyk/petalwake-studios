@@ -1,50 +1,103 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { FILMS, SITE_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+
+const featuredFilm = FILMS[0];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={`${SITE_TITLE} | Animation & Visual Storytelling`}
+			description={SITE_DESCRIPTION}
+			image="/images/petalwake-mountain-lake-hero.webp"
+		/>
 	</head>
-	<body>
-		<Header />
+	<body class="home-page">
+		<SiteHeader />
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to <a href="https://docs.astro.build/"
-					>read the docs
-				</a> or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out <a
-					href="https://github.com/Charca/astro-blog-template"
-					>astro-blog-template
-				</a> by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+			<section class="hero" aria-labelledby="hero-title">
+				<div class="hero__art">
+					<img
+						src="/images/petalwake-mountain-lake-hero.webp"
+						alt="Mountain lake at sunset, framed by alpine flowers and drifting petals."
+						fetchpriority="high"
+						decoding="async"
+					/>
+				</div>
+				<div class="hero__content">
+					<h1 class="sr-only" id="hero-title">Petalwake Studios</h1>
+					<p class="hero__descriptor">Independent animation<br />&amp; visual storytelling</p>
+					<div class="hero__actions">
+						<a class="button button--primary" href="#work">Explore Our Work <span aria-hidden="true">↓</span></a>
+						<a class="button button--quiet" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+							Watch on YouTube <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+				<a class="scroll-note" href="#work" aria-label="Scroll to featured work">
+					<span aria-hidden="true"></span> Discover the films
+				</a>
+			</section>
+
+			<section class="work section-wrap" id="work" aria-labelledby="work-title">
+				<div class="section-heading">
+					<p class="eyebrow">Featured work · {FILMS.length} {FILMS.length === 1 ? 'film' : 'films'}</p>
+					<h2 id="work-title">Stories in Motion</h2>
+				</div>
+				<article class="film-feature">
+					<a class="film-feature__image" href={`/films/${featuredFilm.slug}/`} aria-label={`View ${featuredFilm.title}`}>
+						<img
+							src={featuredFilm.thumbnail}
+							alt={`Frame from ${featuredFilm.title}, an animated film from Petalwake Studios.`}
+							loading="lazy"
+							decoding="async"
+						/>
+						<span class="film-feature__play" aria-hidden="true">↗</span>
+					</a>
+					<div class="film-feature__info">
+						<p class="eyebrow">{featuredFilm.kind} <span>·</span> {featuredFilm.year}</p>
+						<h3>{featuredFilm.title}</h3>
+						<p>A short animated film by Petalwake Studios.</p>
+						<div class="film-feature__links">
+							<a href={`/films/${featuredFilm.slug}/`}>Explore film <span aria-hidden="true">↗</span></a>
+							<a href={featuredFilm.youtubeUrl} target="_blank" rel="noopener noreferrer">
+								Watch on YouTube <span aria-hidden="true">↗</span>
+							</a>
+						</div>
+					</div>
+				</article>
+			</section>
+
+			<section class="about section-wrap" id="about" aria-labelledby="about-title">
+				<p class="eyebrow">About Petalwake</p>
+				<div class="about__content">
+					<h2 id="about-title">Stories That<br /><em>Awaken Wonder.</em></h2>
+					<p>
+						Petalwake Studios is an independent animation studio creating cinematic stories
+						and imagined worlds shaped by nature, wonder, and discovery.
+					</p>
+				</div>
+			</section>
+			<div class="focus-strip" aria-label="Creative focus">
+				<span>Animation</span>
+				<span>Cinematic storytelling</span>
+				<span>Imagined worlds</span>
+			</div>
+
+			<section class="watch section-wrap" aria-labelledby="watch-title">
+				<p class="eyebrow">Follow the Journey</p>
+				<div class="watch__content">
+					<h2 id="watch-title">More worlds<br /><em>await on YouTube.</em></h2>
+					<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						Visit Petalwake on YouTube <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</section>
 		</main>
-		<Footer />
+		<SiteFooter />
 	</body>
 </html>

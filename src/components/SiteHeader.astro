@@ -1,0 +1,20 @@
+---
+import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+---
+
+<header class="site-header">
+	<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
+		<span>PETALWAKE<br />STUDIOS</span>
+	</a>
+	<details class="site-nav">
+		<summary aria-label="Navigation menu"><span></span><span></span></summary>
+		<nav aria-label="Main navigation">
+			<a href="/#work">Work</a>
+			<a href="/#about">About</a>
+			<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">YouTube</a>
+			<a class="site-nav__watch" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+				Watch <span aria-hidden="true">↗</span>
+			</a>
+		</nav>
+	</details>
+</header>
