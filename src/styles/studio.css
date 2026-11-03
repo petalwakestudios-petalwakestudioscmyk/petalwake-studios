@@ -3246,12 +3246,57 @@ a {
 	padding-bottom: clamp(42px, 8vh, 92px);
 }
 
+.hero__title {
+	display: grid;
+	width: max-content;
+	max-width: 100%;
+	margin: 0 0 22px -0.07em;
+	color: var(--paper);
+	font-family: var(--display-font);
+	font-size: clamp(48px, 10.4vw, 126px);
+	font-weight: 400;
+	letter-spacing: 0.015em;
+	line-height: 0.86;
+	text-shadow: 0 5px 38px rgb(18 15 31 / 34%);
+	text-wrap: balance;
+}
+
+.hero__title span + span {
+	margin-top: 0.08em;
+}
+
 .hero__content .eyebrow {
 	max-width: max-content;
 	padding: 7px 10px;
 	border: 1px solid rgb(252 248 242 / 24%);
 	background: rgb(27 25 48 / 25%);
 	backdrop-filter: blur(7px);
+}
+
+.hero__content > [data-hero-enter] {
+	opacity: 0;
+	transform: translate3d(0, 14px, 0);
+	animation: hero-type-arrive 850ms var(--ease-petal) both;
+}
+
+.hero__content > .hero__title[data-hero-enter] {
+	animation-delay: 120ms;
+}
+
+.hero__content > .eyebrow[data-hero-enter] {
+	animation-delay: 420ms;
+}
+
+.hero__content > .hero__descriptor[data-hero-enter] {
+	animation-delay: 580ms;
+}
+
+.hero__actions > [data-hero-enter]:first-child {
+	animation-delay: 820ms;
+}
+
+.hero__actions > [data-hero-enter]:last-child {
+	animation-delay: 960ms;
 }
 
 .creative-values {
@@ -3329,6 +3374,17 @@ a {
 	}
 }
 
+@keyframes hero-type-arrive {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 14px, 0);
+	}
+	to {
+		opacity: 1;
+		transform: translate3d(0, 0, 0);
+	}
+}
+
 @keyframes artwork-depth {
 	from {
 		transform: translate3d(0, 14px, 0);
@@ -3385,6 +3441,11 @@ a {
 		padding-bottom: 42px;
 	}
 
+	.hero__title {
+		margin-bottom: 18px;
+		font-size: clamp(48px, 10.4vw, 78px);
+	}
+
 	.about-page__intro::before {
 		top: -18px;
 		right: -12%;
@@ -3396,6 +3457,10 @@ a {
 	.hero__art img {
 		object-position: 76% center;
 	}
+
+	.hero__title {
+		font-size: clamp(42px, 13vw, 48px);
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3405,6 +3470,13 @@ a {
 	.about-page__intro::before {
 		animation: none !important;
 		will-change: auto;
+	}
+
+	.hero__content > [data-hero-enter],
+	.hero__actions > [data-hero-enter] {
+		animation: none !important;
+		opacity: 1;
+		transform: none;
 	}
 }
 

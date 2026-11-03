@@ -20,7 +20,7 @@ const featuredFilm = FILMS[0];
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
 		<main id="main-content" tabindex="-1">
-			<section class="hero" aria-label="Petalwake Studios: Stories That Awaken Wonder">
+			<section class="hero" aria-labelledby="hero-title">
 				<div class="hero__art">
 					<img
 						src="/images/petalwake-hero-1536.webp"
@@ -34,14 +34,20 @@ const featuredFilm = FILMS[0];
 					/>
 				</div>
 				<div class="hero__atmosphere" aria-hidden="true"></div>
-				<div class="hero__content" data-reveal>
-					<p class="eyebrow">Independent Christian creative studio</p>
-					<p class="hero__descriptor">
+				<div class="hero__content">
+					<h1 class="hero__title" id="hero-title" data-hero-enter>
+						<span>PETALWAKE</span>
+						<span>STUDIOS</span>
+					</h1>
+					<p class="eyebrow" data-hero-enter>Independent Christian creative studio</p>
+					<p class="hero__descriptor" data-hero-enter>
 						Original films and audiovisual stories shaped by wonder, human dignity, and hope in Christ.
 					</p>
 					<div class="hero__actions">
-						<a class="button button--primary" href="#work">Discover the films <span aria-hidden="true">↓</span></a>
-						<a class="button button--quiet" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						<a class="button button--primary" href="#work" data-hero-enter>
+							Discover the Films <span aria-hidden="true">↓</span>
+						</a>
+						<a class="button button--quiet" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer" data-hero-enter>
 							Visit YouTube <span aria-hidden="true">↗</span>
 						</a>
 					</div>

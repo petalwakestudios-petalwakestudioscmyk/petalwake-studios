@@ -1,21 +1,11 @@
 ---
 import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
-
-const isHomepage = Astro.url.pathname === '/';
 ---
 
 <header class="site-header">
-	{isHomepage ? (
-		<h1 class="site-header__heading" id="hero-title">
-			<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
-				<span>PETALWAKE<br />STUDIOS</span>
-			</a>
-		</h1>
-	) : (
-		<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
-			<span>PETALWAKE<br />STUDIOS</span>
-		</a>
-	)}
+	<a class="site-header__wordmark" href="/" aria-label={`${SITE_TITLE} home`}>
+		<span>PETALWAKE<br />STUDIOS</span>
+	</a>
 	<details class="site-nav" open>
 		<summary aria-label="Toggle navigation" aria-controls="site-navigation">
 			<span class="site-nav__icon" aria-hidden="true"><span></span><span></span></span>
