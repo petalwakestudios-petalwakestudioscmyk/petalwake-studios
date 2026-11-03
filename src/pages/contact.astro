@@ -37,7 +37,9 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 				<form
 					id="contact-form"
 					class="contact-form"
+					novalidate
 					data-required-message="Please add your name, email, and message before sending."
+					data-email-invalid-message="Enter a valid email address."
 					data-subject-prefix="Petalwake Studios inquiry"
 					data-prepared-message="Check your email app for the prepared message. Nothing has been submitted to this site."
 					data-name-label="Name"
@@ -101,6 +103,7 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 		const message = String(formData.get('message') ?? '').trim();
 		const {
 			requiredMessage,
+			emailInvalidMessage,
 			subjectPrefix,
 			preparedMessage,
 			nameLabel,
@@ -119,6 +122,25 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 				status.textContent = requiredMessage;
 				status.dataset.state = 'error';
 			}
+			const missingField = !name ? 'name' : !email ? 'email' : 'message';
+			const field = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${missingField}"]`);
+			field?.setAttribute('aria-invalid', 'true');
+			field?.focus();
+			return;
+		}
+
+		const emailField = form.querySelector<HTMLInputElement>('input[name="email"]');
+		if (!emailField?.validity.valid) {
+			if (!emailInvalidMessage) {
+				console.error('The localized contact form is missing its invalid-email message.');
+				return;
+			}
+			if (status) {
+				status.textContent = emailInvalidMessage;
+				status.dataset.state = 'error';
+			}
+			emailField?.setAttribute('aria-invalid', 'true');
+			emailField?.focus();
 			return;
 		}
 
@@ -135,6 +157,17 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 		if (status && preparedMessage) {
 			status.textContent = preparedMessage;
 			status.dataset.state = 'success';
+		}
+	});
+
+	form?.addEventListener('input', (event) => {
+		const target = event.target;
+		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+			target.removeAttribute('aria-invalid');
+			if (status?.dataset.state === 'error') {
+				status.textContent = '';
+				delete status.dataset.state;
+			}
 		}
 	});
 </script>

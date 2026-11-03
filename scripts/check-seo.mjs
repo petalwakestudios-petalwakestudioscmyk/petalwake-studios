@@ -259,6 +259,8 @@ for (const relativePath of htmlPaths) {
 		['Open Graph title', /<meta\b(?=[^>]*\bproperty=["']og:title["'])[^>]*>/gi],
 		['Open Graph description', /<meta\b(?=[^>]*\bproperty=["']og:description["'])[^>]*>/gi],
 		['Open Graph URL', /<meta\b(?=[^>]*\bproperty=["']og:url["'])[^>]*>/gi],
+		['Open Graph locale', /<meta\b(?=[^>]*\bproperty=["']og:locale["'])[^>]*>/gi],
+		['Open Graph alternate locale', /<meta\b(?=[^>]*\bproperty=["']og:locale:alternate["'])[^>]*>/gi],
 		['Open Graph image', /<meta\b(?=[^>]*\bproperty=["']og:image["'])[^>]*>/gi],
 		['Twitter card', /<meta\b(?=[^>]*\bname=["']twitter:card["'])[^>]*>/gi],
 	]) {
@@ -270,6 +272,13 @@ for (const relativePath of htmlPaths) {
 	if (ogUrl !== page.canonical) error(relativePath, 'Open Graph URL does not match the canonical URL');
 	const ogTitle = tags(html, /<meta\b(?=[^>]*\bproperty=["']og:title["'])[^>]*>/gi)[0]?.content;
 	const ogDescription = tags(html, /<meta\b(?=[^>]*\bproperty=["']og:description["'])[^>]*>/gi)[0]?.content;
+	const ogLocale = tags(html, /<meta\b(?=[^>]*\bproperty=["']og:locale["'])[^>]*>/gi)[0]?.content;
+	const ogAlternateLocale = tags(html, /<meta\b(?=[^>]*\bproperty=["']og:locale:alternate["'])[^>]*>/gi)[0]?.content;
+	const expectedLocale = relativePath.startsWith('ja/') ? 'ja_JP' : 'en_US';
+	if (ogLocale !== expectedLocale) error(relativePath, `Open Graph locale must be ${expectedLocale}`);
+	if (ogAlternateLocale !== (expectedLocale === 'ja_JP' ? 'en_US' : 'ja_JP')) {
+		error(relativePath, 'Open Graph alternate locale must identify the other supported language');
+	}
 	if (ogTitle !== page.title) error(relativePath, 'Open Graph title does not match the page title');
 	if (ogDescription !== page.description) error(relativePath, 'Open Graph description does not match the meta description');
 	const ogImage = tags(html, /<meta\b(?=[^>]*\bproperty=["']og:image["'])[^>]*>/gi)[0]?.content;

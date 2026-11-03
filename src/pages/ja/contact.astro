@@ -35,7 +35,9 @@ import { ja } from '../../i18n/ja';
 				<form
 					id="contact-form"
 					class="contact-form"
+					novalidate
 					data-required-message={ja.contact.requiredMessage}
+					data-email-invalid-message={ja.contact.invalidEmailMessage}
 					data-subject-prefix={ja.contact.subjectPrefix}
 					data-prepared-message={ja.contact.preparedMessage}
 					data-name-label={ja.contact.name}
@@ -94,6 +96,7 @@ import { ja } from '../../i18n/ja';
 		const message = String(formData.get('message') ?? '').trim();
 		const {
 			requiredMessage,
+			emailInvalidMessage,
 			subjectPrefix,
 			preparedMessage,
 			nameLabel,
@@ -112,6 +115,25 @@ import { ja } from '../../i18n/ja';
 				status.textContent = requiredMessage;
 				status.dataset.state = 'error';
 			}
+			const missingField = !name ? 'name' : !email ? 'email' : 'message';
+			const field = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${missingField}"]`);
+			field?.setAttribute('aria-invalid', 'true');
+			field?.focus();
+			return;
+		}
+
+		const emailField = form.querySelector<HTMLInputElement>('input[name="email"]');
+		if (!emailField?.validity.valid) {
+			if (!emailInvalidMessage) {
+				console.error('The localized contact form is missing its invalid-email message.');
+				return;
+			}
+			if (status) {
+				status.textContent = emailInvalidMessage;
+				status.dataset.state = 'error';
+			}
+			emailField?.setAttribute('aria-invalid', 'true');
+			emailField?.focus();
 			return;
 		}
 
@@ -128,6 +150,17 @@ import { ja } from '../../i18n/ja';
 		if (status && preparedMessage) {
 			status.textContent = preparedMessage;
 			status.dataset.state = 'success';
+		}
+	});
+
+	form?.addEventListener('input', (event) => {
+		const target = event.target;
+		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+			target.removeAttribute('aria-invalid');
+			if (status?.dataset.state === 'error') {
+				status.textContent = '';
+				delete status.dataset.state;
+			}
 		}
 	});
 </script>

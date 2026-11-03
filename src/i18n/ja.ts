@@ -169,6 +169,7 @@ export const ja = {
 		message: 'メッセージ',
 		prepareEmail: 'メールを準備する',
 		requiredMessage: 'お名前、メールアドレス、メッセージをご入力ください。',
+		invalidEmailMessage: '有効なメールアドレスをご入力ください。',
 		preparedMessage:
 			'メールアプリに作成中のメッセージが表示されます。このサイトに内容は送信されていません。',
 		subjectPrefix: 'Petalwake Studiosへのお問い合わせ',
