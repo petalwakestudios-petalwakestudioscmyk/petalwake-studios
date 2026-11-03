@@ -1,13 +1,13 @@
 # Petalwake Studios
 
-Petalwake Studios is an independent Christian creative studio making original films, animation, music, and audiovisual work shaped by wonder, human dignity, and hope in Christ.
+Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, music, illustration, and experimental image-making. Stories that awaken wonder.
 
 ## Studio content
 
 - Update verified film entries, story copy, and YouTube URLs in `src/data/films.ts`.
 - Keep production stages in `productionSteps` and include only confirmed credits, release years, and project details.
 - Add film thumbnails to `public/images/` and use their public paths in `FILMS`.
-- The homepage hero source is the root-level `Hero.png`; responsive WebP delivery variants are generated in `public/images/petalwake-hero-*.webp`.
+- The homepage uses the unbranded mountain-lake artwork and responsive WebP delivery variants in `public/images/petalwake-hero-*.webp`. Root-level concept boards and branded mockups are reference assets, not production backgrounds.
 - The original film thumbnail is retained as `the-last-winter-thumbnail-source.jpg`; the site serves responsive WebP derivatives.
 - The Cloudflare Worker deployment is configured in `wrangler.json` and `astro.config.mjs`.
 

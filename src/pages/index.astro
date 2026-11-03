@@ -2,17 +2,18 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { SITE_DESCRIPTION, SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { FILMS } from '../data/films';
 
-const featuredFilm = FILMS[0];
+const featuredFilm = FILMS.find((film) => film.featured);
+if (!featuredFilm) throw new Error('The featured film is missing from src/data/films.ts.');
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`${SITE_TITLE} | Animation & Visual Storytelling`}
+			title={`${SITE_TITLE} | Stories That Awaken Wonder`}
 			description={SITE_DESCRIPTION}
 		/>
 	</head>
@@ -26,7 +27,7 @@ const featuredFilm = FILMS[0];
 						src="/images/petalwake-hero-1536.webp"
 						srcset="/images/petalwake-hero-640.webp 640w, /images/petalwake-hero-960.webp 960w, /images/petalwake-hero-1536.webp 1536w"
 						sizes="100vw"
-						alt="Mountain lake at sunset, framed by flowering branches and drifting petals."
+						alt="A mountain lake at sunset, framed by flowering branches and drifting petals."
 						width="1536"
 						height="1024"
 						fetchpriority="high"
@@ -35,68 +36,25 @@ const featuredFilm = FILMS[0];
 				</div>
 				<div class="hero__atmosphere" aria-hidden="true"></div>
 				<div class="hero__content">
+					<p class="eyebrow hero__overline" data-hero-enter>A multidisciplinary creative studio</p>
 					<h1 class="hero__title" id="hero-title" data-hero-enter>
-						<span>PETALWAKE</span>
-						<span>STUDIOS</span>
+						<span>Petalwake</span>
+						<span>Studios</span>
 					</h1>
-					<p class="eyebrow" data-hero-enter>Independent Christian creative studio</p>
-					<p class="hero__descriptor" data-hero-enter>
-						Original films and audiovisual stories shaped by wonder, human dignity, and hope in Christ.
-					</p>
-					<div class="hero__actions">
-						<a class="button button--primary" href="#work" data-hero-enter>
-							Discover the Films <span aria-hidden="true">↓</span>
-						</a>
-						<a class="button button--quiet" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer" data-hero-enter>
-							Visit YouTube <span aria-hidden="true">↗</span>
-						</a>
-					</div>
+					<p class="hero__descriptor" data-hero-enter>Stories That Awaken Wonder.</p>
+					<a class="button button--primary" href="/work/" data-hero-enter>
+						Explore the Films <span aria-hidden="true">↗</span>
+					</a>
 				</div>
+				<a class="hero__scroll" href="#featured-work" aria-label="Scroll to featured work">
+					<span aria-hidden="true"></span>
+					Featured work
+				</a>
 			</section>
 
-			<section class="studio-intro section-wrap" aria-labelledby="studio-intro-title" data-reveal>
-				<p class="eyebrow">Petalwake Studios</p>
-				<div class="studio-intro__content">
-					<h2 id="studio-intro-title">Stories begin<br /><em>with people.</em></h2>
-					<p class="studio-intro__lead">
-						We are an independent Christian creative studio making original films, animation, music,
-						and audiovisual work.
-					</p>
-					<p>
-						Our work grows from the conviction that every person bears God's image, that beauty
-						belongs to the Creator, and that lasting hope is found in Jesus Christ.
-					</p>
-					<a class="text-link" href="/about/">Meet the studio <span aria-hidden="true">↗</span></a>
-				</div>
-			</section>
-
-			<section class="creative-values section-wrap" aria-labelledby="creative-values-title" data-reveal>
-				<div class="creative-values__intro">
-					<p class="eyebrow">A way of seeing</p>
-					<h2 id="creative-values-title">Wonder, humanity,<br /><em>and hope.</em></h2>
-				</div>
-				<div class="creative-values__grid">
-					<article>
-						<span>01</span>
-						<h3>Wonder</h3>
-						<p>Creation's beauty invites us to look beyond ourselves to its Maker, the source of all that is good.</p>
-					</article>
-					<article>
-						<span>02</span>
-						<h3>Humanity</h3>
-						<p>Image-bearers are worthy of care, and our choices carry real weight for one another.</p>
-					</article>
-					<article>
-						<span>03</span>
-						<h3>Hope</h3>
-						<p>Jesus Christ meets a world marked by sin and suffering with forgiveness, redemption, and life.</p>
-					</article>
-				</div>
-			</section>
-
-			<section class="work section-wrap" id="work" aria-labelledby="work-title" data-reveal>
+			<section class="work section-wrap" id="featured-work" aria-labelledby="work-title" data-reveal>
 				<div class="section-heading">
-					<p class="eyebrow">Featured work</p>
+					<p class="eyebrow">01 / Featured work</p>
 					<h2 id="work-title">A story in winter.</h2>
 				</div>
 				<article class="film-feature">
@@ -114,7 +72,7 @@ const featuredFilm = FILMS[0];
 						<span class="film-feature__play" aria-hidden="true">↗</span>
 					</a>
 					<div class="film-feature__info">
-						<p class="eyebrow">Animated short film</p>
+						<p class="eyebrow">{featuredFilm.type}</p>
 						<h3>{featuredFilm.title}</h3>
 						<p class="film-feature__logline">{featuredFilm.shortDescription}</p>
 						<div class="film-feature__links">
@@ -125,21 +83,55 @@ const featuredFilm = FILMS[0];
 						</div>
 					</div>
 				</article>
-				<p class="work__all"><a href="/work/">Explore the film collection <span aria-hidden="true">↗</span></a></p>
+				<p class="work__all"><a href="/work/">Explore all films <span aria-hidden="true">↗</span></a></p>
+			</section>
+
+			<section class="creative-portfolio section-wrap" aria-labelledby="creative-portfolio-title" data-reveal>
+				<div class="creative-portfolio__heading">
+					<p class="eyebrow">02 / An open creative practice</p>
+					<h2 id="creative-portfolio-title">Many forms.<br /><em>One sense of wonder.</em></h2>
+					<p>
+						Stories can unfold through moving image, music, illustration, or experiments in sound
+						and light. Petalwake makes room for each idea to find its own form.
+					</p>
+				</div>
+				<div class="creative-portfolio__forms" aria-label="Creative directions">
+					<div><span>01</span><h3>Film & animation</h3></div>
+					<div><span>02</span><h3>Music & sound</h3></div>
+					<div><span>03</span><h3>Illustrated stories</h3></div>
+					<div><span>04</span><h3>Experimental image-making</h3></div>
+				</div>
+				<p class="creative-portfolio__note">The portfolio grows as new work is ready to share.</p>
+			</section>
+
+			<section class="studio-intro section-wrap" aria-labelledby="studio-intro-title" data-reveal>
+				<p class="eyebrow">03 / The studio</p>
+				<div class="studio-intro__content">
+					<h2 id="studio-intro-title">A home for stories<br /><em>still unfolding.</em></h2>
+					<p class="studio-intro__lead">
+						Petalwake Studios is a multidisciplinary creative studio guided by storytelling,
+						imagination, visual art, and meaningful creative experiences.
+					</p>
+					<p>
+						From intimate human stories to folklore, mythology, and history, we follow ideas toward
+						the forms that let them resonate. There is room here for what has been made—and for
+						what is yet to come.
+					</p>
+					<a class="text-link" href="/about/">Meet the studio <span aria-hidden="true">↗</span></a>
+				</div>
 			</section>
 
 			<section class="home-purpose section-wrap" aria-labelledby="home-purpose-title" data-reveal>
-				<p class="eyebrow">The ground beneath the stories</p>
+				<p class="eyebrow">Faith & meaning</p>
 				<div>
-					<h2 id="home-purpose-title">Made by the Creator.<br /><em>Hope found in Christ.</em></h2>
+					<h2 id="home-purpose-title">A foundation of<br /><em>lasting hope.</em></h2>
 					<p>
-						God is the source of beauty, truth, and goodness. The gospel of Jesus Christ is the
-						foundation of our hope in a world marked by sin and suffering.
+						The Christian faith is part of Petalwake's foundation and its understanding of beauty,
+						human dignity, and hope. The Gospel page shares that message in full.
 					</p>
 					<div class="home-purpose__links">
-						<a href="/gospel/">Read the gospel <span aria-hidden="true">↗</span></a>
+						<a href="/gospel/">Read the Gospel <span aria-hidden="true">↗</span></a>
 						<a href="/contact/">Get in touch <span aria-hidden="true">↗</span></a>
-						<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">Follow on YouTube <span aria-hidden="true">↗</span></a>
 					</div>
 				</div>
 			</section>
