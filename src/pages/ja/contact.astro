@@ -1,0 +1,133 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../../consts';
+import { common } from '../../i18n/common';
+import { ja } from '../../i18n/ja';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead language="ja" title={ja.metadata.contactTitle} description={ja.metadata.contactDescription} />
+	</head>
+	<body class="contact-page" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1" data-reveal>
+			<p class="eyebrow">{ja.contact.eyebrow}</p>
+			<h1>{ja.contact.title}</h1>
+			<p>
+				{ja.contact.intro}
+				<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>へ直接メールをお送りください。
+			</p>
+			<div class="contact-card">
+				<p class="contact-form__note">
+					{ja.contact.formNote}
+					<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>。
+				</p>
+				<noscript>
+					<p class="contact-form__note">
+						{ja.contact.noscript} <a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>。
+					</p>
+				</noscript>
+				<form
+					id="contact-form"
+					class="contact-form"
+					data-required-message={ja.contact.requiredMessage}
+					data-subject-prefix={ja.contact.subjectPrefix}
+					data-prepared-message={ja.contact.preparedMessage}
+					data-name-label={ja.contact.name}
+					data-email-label={ja.contact.email}
+					data-topic-label={ja.contact.topic}
+					data-message-label={ja.contact.message}
+					data-email-address={STUDIO_EMAIL}
+				>
+					<div class="contact-form__row">
+						<label>
+							<span>{ja.contact.name}</span>
+							<input type="text" name="name" autocomplete="name" required />
+						</label>
+						<label>
+							<span>{ja.contact.email}</span>
+							<input type="email" name="email" autocomplete="email" required />
+						</label>
+					</div>
+					<label>
+						<span>{ja.contact.topic}</span>
+						<select name="topic">
+							{ja.contact.topics.map((topic) => <option value={topic}>{topic}</option>)}
+						</select>
+					</label>
+					<label>
+						<span>{ja.contact.message}</span>
+						<textarea name="message" rows="6" required></textarea>
+					</label>
+					<div class="contact-form__actions">
+						<button class="button button--primary" type="submit">{ja.contact.prepareEmail}</button>
+						<a href={`mailto:${STUDIO_EMAIL}`}>{ja.contact.directEmail}</a>
+					</div>
+					<p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
+				</form>
+			</div>
+			<p class="contact-page__note">
+				{ja.contact.followCopy}
+				<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">{ja.contact.followYouTube}</a>
+				{ja.contact.followSuffix}
+			</p>
+		</main>
+		<SiteFooter />
+	</body>
+</html>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('#contact-form');
+	const status = document.querySelector<HTMLElement>('#contact-form-status');
+
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		const formData = new FormData(form);
+		const name = String(formData.get('name') ?? '').trim();
+		const email = String(formData.get('email') ?? '').trim();
+		const topic = String(formData.get('topic') ?? '').trim();
+		const message = String(formData.get('message') ?? '').trim();
+		const {
+			requiredMessage,
+			subjectPrefix,
+			preparedMessage,
+			nameLabel,
+			emailLabel,
+			topicLabel,
+			messageLabel,
+			emailAddress,
+		} = form.dataset;
+
+		if (!name || !email || !message) {
+			if (!requiredMessage) {
+				console.error('The localized contact form is missing its required-field message.');
+				return;
+			}
+			if (status) {
+				status.textContent = requiredMessage;
+				status.dataset.state = 'error';
+			}
+			return;
+		}
+
+		if (!subjectPrefix || !nameLabel || !emailLabel || !topicLabel || !messageLabel || !emailAddress) {
+			console.error('The localized contact form is missing email labels.');
+			return;
+		}
+
+		const subject = encodeURIComponent(`${subjectPrefix}: ${topic}`);
+		const body = encodeURIComponent(
+			`${nameLabel}: ${name}\n${emailLabel}: ${email}\n${topicLabel}: ${topic}\n\n${messageLabel}:\n${message}`,
+		);
+		window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+		if (status && preparedMessage) {
+			status.textContent = preparedMessage;
+			status.dataset.state = 'success';
+		}
+	});
+</script>

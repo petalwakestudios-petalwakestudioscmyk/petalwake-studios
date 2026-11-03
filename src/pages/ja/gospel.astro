@@ -1,0 +1,92 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { STUDIO_EMAIL } from '../../consts';
+import { common } from '../../i18n/common';
+import { ja } from '../../i18n/ja';
+import { localizedPath } from '../../i18n/routing';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead language="ja" title={ja.metadata.gospelTitle} description={ja.metadata.gospelDescription} />
+	</head>
+	<body class="gospel-page" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<header class="gospel-intro" data-reveal>
+				<p class="eyebrow">{ja.gospel.eyebrow}</p>
+				<h1>{ja.gospel.title}</h1>
+				<p class="gospel-intro__lead">{ja.gospel.lead}</p>
+			</header>
+
+			<section class="gospel-section" aria-labelledby="gospel-creation-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.creationEyebrow}</p>
+				<div>
+					<h2 id="gospel-creation-title">{ja.gospel.creationHeading}</h2>
+					<p>{ja.gospel.creationCopy}</p>
+				</div>
+			</section>
+
+			<section class="gospel-section gospel-section--light" aria-labelledby="gospel-sin-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.sinEyebrow}</p>
+				<div>
+					<h2 id="gospel-sin-title">{ja.gospel.sinHeading}</h2>
+					<p>{ja.gospel.sinCopy}</p>
+				</div>
+			</section>
+
+			<section class="gospel-section" aria-labelledby="gospel-christ-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.christEyebrow}</p>
+				<div>
+					<h2 id="gospel-christ-title">{ja.gospel.christHeading}</h2>
+					<p>{ja.gospel.christCopy}</p>
+				</div>
+			</section>
+
+			<section class="gospel-section gospel-section--light" aria-labelledby="gospel-grace-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.graceEyebrow}</p>
+				<div>
+					<h2 id="gospel-grace-title">{ja.gospel.graceHeading}</h2>
+					<p>{ja.gospel.graceCopy}</p>
+				</div>
+			</section>
+
+			<section class="gospel-section gospel-section--invitation" aria-labelledby="gospel-response-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.responseEyebrow}</p>
+				<div>
+					<h2 id="gospel-response-title">{ja.gospel.responseHeading}</h2>
+					<p>{ja.gospel.responseCopy}</p>
+					<div class="gospel-next-steps">
+						<h3>{ja.gospel.nextStepsHeading}</h3>
+						<p>{ja.gospel.nextStepsCopy}</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="gospel-callout" aria-labelledby="gospel-questions-title" data-reveal>
+				<p class="eyebrow">{ja.gospel.questionsEyebrow}</p>
+				<div>
+					<h2 id="gospel-questions-title">{ja.gospel.questionsHeading}</h2>
+					<p>
+						{ja.gospel.questionsCopy}
+						<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>
+						{ja.gospel.questionsTail}
+						<a href={localizedPath('/contact/', 'ja')}>{ja.gospel.questionsContact}</a>
+						{ja.gospel.questionsFinal}
+					</p>
+					<div class="gospel-callout__actions">
+						<a class="button button--primary" href={localizedPath('/contact/', 'ja')}>{ja.gospel.askQuestion}</a>
+						<a class="button button--quiet" href={`mailto:${STUDIO_EMAIL}?subject=%E7%A6%8F%E9%9F%B3%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6%E3%81%AE%E8%B3%AA%E5%95%8F`}>
+							{ja.gospel.emailPetalwake} <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

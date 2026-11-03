@@ -34,7 +34,18 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 						JavaScript is unavailable, so please email <a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a> directly.
 					</p>
 				</noscript>
-				<form id="contact-form" class="contact-form">
+				<form
+					id="contact-form"
+					class="contact-form"
+					data-required-message="Please add your name, email, and message before sending."
+					data-subject-prefix="Petalwake Studios inquiry"
+					data-prepared-message="Check your email app for the prepared message. Nothing has been submitted to this site."
+					data-name-label="Name"
+					data-email-label="Email"
+					data-topic-label="Topic"
+					data-message-label="Message"
+					data-email-address={STUDIO_EMAIL}
+				>
 					<div class="contact-form__row">
 						<label>
 							<span>Name</span>
@@ -78,8 +89,8 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 </html>
 
 <script>
-	const form = document.querySelector('#contact-form');
-	const status = document.querySelector('#contact-form-status');
+	const form = document.querySelector<HTMLFormElement>('#contact-form');
+	const status = document.querySelector<HTMLElement>('#contact-form-status');
 
 	form?.addEventListener('submit', (event) => {
 		event.preventDefault();
@@ -88,18 +99,42 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 		const email = String(formData.get('email') ?? '').trim();
 		const topic = String(formData.get('topic') ?? 'General inquiry').trim();
 		const message = String(formData.get('message') ?? '').trim();
+		const {
+			requiredMessage,
+			subjectPrefix,
+			preparedMessage,
+			nameLabel,
+			emailLabel,
+			topicLabel,
+			messageLabel,
+			emailAddress,
+		} = form.dataset;
 
 		if (!name || !email || !message) {
-			status && (status.textContent = 'Please add your name, email, and message before sending.');
-			status && (status.dataset.state = 'error');
+			if (!requiredMessage) {
+				console.error('The localized contact form is missing its required-field message.');
+				return;
+			}
+			if (status) {
+				status.textContent = requiredMessage;
+				status.dataset.state = 'error';
+			}
 			return;
 		}
 
-		const subject = encodeURIComponent(`Petalwake Studios inquiry: ${topic}`);
+		if (!subjectPrefix || !nameLabel || !emailLabel || !topicLabel || !messageLabel || !emailAddress) {
+			console.error('The localized contact form is missing email labels.');
+			return;
+		}
+
+		const subject = encodeURIComponent(`${subjectPrefix}: ${topic}`);
 		const body = encodeURIComponent(
-			`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${message}`
+			`${nameLabel}: ${name}\n${emailLabel}: ${email}\n${topicLabel}: ${topic}\n\n${messageLabel}:\n${message}`,
 		);
-		window.location.href = `mailto:petalwakestudios@gmail.com?subject=${subject}&body=${body}`;
-		status && (status.textContent = 'Check your email app for the prepared message. Nothing has been submitted to this site.');
+		window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
+		if (status && preparedMessage) {
+			status.textContent = preparedMessage;
+			status.dataset.state = 'success';
+		}
 	});
 </script>

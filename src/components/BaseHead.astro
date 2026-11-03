@@ -1,5 +1,7 @@
 ---
 import '../styles/studio.css';
+import type { Locale } from '../i18n/routing';
+import { pairedEnglishRoutes, localizedPath } from '../i18n/routing';
 
 interface Props {
 	title: string;
@@ -10,24 +12,35 @@ interface Props {
 	imageHeight?: number;
 	ogType?: 'website' | 'video.other';
 	robots?: string;
+	language?: Locale;
+	includeHreflang?: boolean;
 	jsonLd?: Record<string, unknown>;
 }
 
 const {
 	title,
 	description,
+	language = 'en',
 	image = '/images/petalwake-social.jpg',
-	imageAlt = 'Petalwake Studios over a mountain lake at sunrise.',
+	imageAlt = language === 'ja'
+		? '山あいの湖を背景にしたPetalwake Studiosのビジュアル。'
+		: 'Petalwake Studios over a mountain lake at sunrise.',
 	imageWidth = 1200,
 	imageHeight = 630,
 	ogType = 'website',
 	robots = 'index, follow',
+	includeHreflang = true,
 	jsonLd,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.site);
-const isHomepage = Astro.url.pathname === '/';
+const isHomepage = Astro.url.pathname === '/' || Astro.url.pathname === '/ja/';
+const englishPath = localizedPath(Astro.url.pathname, 'en');
+const japanesePath = localizedPath(Astro.url.pathname, 'ja');
+const hasLanguagePair = includeHreflang && pairedEnglishRoutes.includes(englishPath);
+const englishURL = new URL(englishPath, Astro.site);
+const japaneseURL = new URL(japanesePath, Astro.site);
 const organizationId = new URL('/#organization', Astro.site).href;
 const organization = {
 	'@context': 'https://schema.org',
@@ -36,8 +49,9 @@ const organization = {
 	name: 'Petalwake Studios',
 	url: Astro.site.href,
 	logo: new URL('/favicon.svg', Astro.site).href,
-	description:
-		'Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, music, illustration, and experimental image-making.',
+	description: language === 'ja'
+		? 'Petalwake Studiosは、映画、アニメーション、音楽、イラスト、映像表現を通して物語を探求するクリエイティブスタジオです。'
+		: 'Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, music, illustration, and experimental image-making.',
 	sameAs: ['https://www.youtube.com/@PetalwakeStudios'],
 };
 ---
@@ -59,6 +73,13 @@ const organization = {
 	/>
 )}
 <link rel="canonical" href={canonicalURL.href} />
+{hasLanguagePair && (
+	<>
+		<link rel="alternate" hreflang="en" href={englishURL.href} />
+		<link rel="alternate" hreflang="ja" href={japaneseURL.href} />
+		<link rel="alternate" hreflang="x-default" href={englishURL.href} />
+	</>
+)}
 <meta name="theme-color" content="#25213d" />
 <title>{title}</title>
 <meta name="description" content={description} />

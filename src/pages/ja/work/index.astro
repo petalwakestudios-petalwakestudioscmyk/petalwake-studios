@@ -1,0 +1,76 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import { YOUTUBE_CHANNEL } from '../../../consts';
+import { common } from '../../../i18n/common';
+import { ja } from '../../../i18n/ja';
+import { localizedPath } from '../../../i18n/routing';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead language="ja" title={ja.metadata.workTitle} description={ja.metadata.workDescription} />
+	</head>
+	<body class="work-page" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<header class="work-page__intro" data-reveal>
+				<p class="eyebrow">{ja.work.eyebrow}</p>
+				<h1>{ja.work.title}</h1>
+				<p>{ja.work.intro}</p>
+			</header>
+
+			<section class="work-page__films" aria-labelledby="work-films-title" data-reveal>
+				<div class="section-heading">
+					<p class="eyebrow">{ja.work.featuredEyebrow}</p>
+					<h2 id="work-films-title">{ja.work.featuredHeading}</h2>
+				</div>
+				<article class="film-feature">
+					<a
+						class="film-feature__image"
+						href={localizedPath('/work/the-last-winter/', 'ja')}
+						aria-label={ja.work.featuredAria}
+					>
+						<img
+							src="/images/the-last-winter-thumbnail.webp"
+							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+							sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
+							alt={ja.film.heroAlt}
+							width="1280"
+							height="720"
+							fetchpriority="high"
+							decoding="async"
+						/>
+						<span class="film-feature__play" aria-hidden="true">↗</span>
+					</a>
+					<div class="film-feature__info">
+						<p class="eyebrow">{ja.film.type}</p>
+						<h3>The Last Winter</h3>
+						<p>{ja.film.shortDescription}</p>
+						<div class="film-feature__links">
+							<a href="https://www.youtube.com/watch?v=jdS6HNKDxRI" target="_blank" rel="noopener noreferrer">
+								{ja.work.watch} <span aria-hidden="true">↗</span>
+							</a>
+							<a href={localizedPath('/work/the-last-winter/', 'ja')}>{ja.work.explore} <span aria-hidden="true">↗</span></a>
+						</div>
+					</div>
+				</article>
+			</section>
+
+			<section class="work-page__continuation" aria-labelledby="more-stories-title" data-reveal>
+				<p class="eyebrow">{ja.work.continuationEyebrow}</p>
+				<div>
+					<h2 id="more-stories-title">{ja.work.continuationHeading}</h2>
+					<p>{ja.work.continuationCopy}</p>
+					<a class="button button--primary" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						{ja.work.follow} <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</section>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

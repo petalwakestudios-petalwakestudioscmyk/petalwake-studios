@@ -1,0 +1,209 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import ProductionNotes from '../../../components/ProductionNotes.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import { STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../../../consts';
+import { common } from '../../../i18n/common';
+import { ja } from '../../../i18n/ja';
+import { localizedPath } from '../../../i18n/routing';
+
+const t = ja.film;
+const filmUrl = 'https://www.youtube.com/watch?v=jdS6HNKDxRI';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead
+			language="ja"
+			title={ja.metadata.filmTitle}
+			description={ja.metadata.filmDescription}
+			image="/images/the-last-winter-thumbnail.webp"
+			imageAlt={ja.metadata.filmImageAlt}
+			imageWidth={1280}
+			imageHeight={720}
+			ogType="video.other"
+		/>
+	</head>
+	<body class="film-page" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1">
+			<section class="project-hero" aria-labelledby="film-title" data-reveal>
+				<div class="project-hero__art">
+					<img
+						src="/images/the-last-winter-thumbnail.webp"
+						srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+						sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
+						alt={t.heroAlt}
+						width="1280"
+						height="720"
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<span class="project-hero__art-caption">{t.heroCaption}</span>
+				</div>
+				<div class="project-hero__copy">
+					<p class="eyebrow">{t.type}</p>
+					<h1 id="film-title">The Last Winter</h1>
+					<p class="project-hero__logline">{t.logline}</p>
+					<div class="project-hero__links">
+						<a class="button button--primary" href="#watch-film">{t.watch} <span aria-hidden="true">↓</span></a>
+						<a href={filmUrl} target="_blank" rel="noopener noreferrer">
+							{t.openYouTube} <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="project-copy" id="synopsis" aria-labelledby="synopsis-title" data-reveal>
+				<p class="eyebrow">{t.storyEyebrow}</p>
+				<h2 id="synopsis-title">{t.synopsisTitle}</h2>
+				{t.synopsis.map((paragraph) => <p>{paragraph}</p>)}
+			</section>
+
+			<section class="project-watch-film" aria-labelledby="watch-film-title" data-reveal>
+				<div class="project-watch-film__heading">
+					<p class="eyebrow">{t.completeFilmEyebrow}</p>
+					<h2 id="watch-film-title">{t.watchHeading}</h2>
+				</div>
+				<div
+					class="film-page__player"
+					id="watch-film"
+					data-youtube-player
+					data-video-id="jdS6HNKDxRI"
+					data-video-title={t.videoTitle}
+				>
+					<button class="film-page__poster" type="button" aria-label={t.playAria}>
+						<img
+							src="/images/the-last-winter-thumbnail.webp"
+							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+							sizes="(max-width: 760px) calc(100vw - 48px), 72vw"
+							alt=""
+							width="1280"
+							height="720"
+							loading="lazy"
+							decoding="async"
+						/>
+						<span class="film-page__play">{t.playFilm} <span aria-hidden="true">▶</span></span>
+					</button>
+				</div>
+				<p class="project-watch-film__fallback">
+					{t.preferYouTube} <a href={filmUrl} target="_blank" rel="noopener noreferrer">{t.watchThere} <span aria-hidden="true">↗</span></a>
+				</p>
+			</section>
+
+			<section class="project-copy project-copy--light" aria-labelledby="about-story-title" data-reveal>
+				<p class="eyebrow">{t.themesEyebrow}</p>
+				<h2 id="about-story-title">{t.themesTitle}</h2>
+				{t.aboutStory.map((paragraph) => <p>{paragraph}</p>)}
+			</section>
+
+			<section class="project-themes section-wrap" aria-labelledby="themes-title" data-reveal>
+				<p class="eyebrow">{t.themesHeading}</p>
+				<h2 id="themes-title">{t.themesSectionTitle}</h2>
+				<div class="project-themes__grid">
+					{t.themes.map((theme) => (
+						<article>
+							<h3>{theme.title}</h3>
+							<p>{theme.description}</p>
+						</article>
+					))}
+				</div>
+			</section>
+
+			<section class="project-visual" aria-labelledby="visual-language-title" data-reveal>
+				<p class="eyebrow">{t.visualEyebrow}</p>
+				<div>
+					<h2 id="visual-language-title">{t.visualHeading}</h2>
+					<p>{t.visualLanguage}</p>
+				</div>
+			</section>
+
+			<section class="project-production" aria-labelledby="production-title" data-reveal>
+				<p class="eyebrow">{t.productionEyebrow}</p>
+				<div>
+					<h2 id="production-title">{t.productionHeading}</h2>
+					<p>{t.productionIntro}</p>
+					<ProductionNotes steps={t.productionSteps} />
+				</div>
+			</section>
+
+			<section class="project-christian" aria-labelledby="christian-perspective-title" data-reveal>
+				<p class="eyebrow">{t.faithEyebrow}</p>
+				<div>
+					<h2 id="christian-perspective-title">{t.faithHeading}</h2>
+					<p set:html={t.faithOne} />
+					<blockquote>
+						<p>{t.scriptureQuote}</p>
+						<cite>{t.scriptureCitation}</cite>
+					</blockquote>
+					<p>{t.faithTwo}</p>
+					<a href={localizedPath('/gospel/', 'ja')}>{t.exploreGospel} <span aria-hidden="true">↗</span></a>
+				</div>
+			</section>
+
+			<section class="project-reflection" aria-labelledby="reflection-title" data-reveal>
+				<p class="eyebrow">{t.reflectionEyebrow}</p>
+				<h2 id="reflection-title">{t.reflectionQuestion}</h2>
+				<details class="project-reflection__more">
+					<summary>{t.moreQuestions}</summary>
+					<ul>{t.questions.map((question) => <li>{question}</li>)}</ul>
+				</details>
+			</section>
+
+			<section class="project-watch section-wrap" aria-labelledby="watch-title" data-reveal>
+				<p class="eyebrow">{t.furtherEyebrow}</p>
+				<div>
+					<h2 id="watch-title">{t.furtherHeading}</h2>
+					<p>{t.furtherCopy}</p>
+					<a class="button button--primary" href={localizedPath('/gospel/', 'ja')}>{ja.about.readGospel} <span aria-hidden="true">↗</span></a>
+					<a class="project-watch__channel" href={`mailto:${STUDIO_EMAIL}?subject=The%20Last%20Winter%20への感想`}>
+						{t.privateReflection} <span aria-hidden="true">↗</span>
+					</a>
+					<a class="project-watch__channel" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
+						{t.visitYouTube} <span aria-hidden="true">↗</span>
+					</a>
+				</div>
+			</section>
+
+			<nav class="project-back" aria-label={t.projectNav}>
+				<a href={localizedPath('/work/', 'ja')}><span aria-hidden="true">←</span> {t.backToWork}</a>
+			</nav>
+			<noscript>
+				<p class="project-noscript">
+					<a href={filmUrl} target="_blank" rel="noopener noreferrer">{t.noscriptWatch}</a>
+				</p>
+			</noscript>
+		</main>
+		<SiteFooter />
+	</body>
+</html>
+
+<script>
+	const player = document.querySelector<HTMLElement>('[data-youtube-player]');
+	const playButton = player?.querySelector('button');
+
+	playButton?.addEventListener('click', () => {
+		if (!player) return;
+
+		const videoId = player.dataset.videoId;
+		const videoTitle = player.dataset.videoTitle;
+		if (!videoId || !videoTitle) {
+			console.error('The film player is missing its verified YouTube video details.');
+			return;
+		}
+
+		const iframe = document.createElement('iframe');
+		iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}`;
+		iframe.title = videoTitle;
+		iframe.width = '1280';
+		iframe.height = '720';
+		iframe.loading = 'lazy';
+		iframe.allow = 'encrypted-media; picture-in-picture; web-share';
+		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+		iframe.allowFullscreen = true;
+		player.replaceChildren(iframe);
+	});
+</script>

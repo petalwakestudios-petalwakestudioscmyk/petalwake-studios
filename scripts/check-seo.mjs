@@ -5,6 +5,26 @@ const outputDirectory = path.resolve('dist');
 const siteOrigin = 'https://petalwakestudios.com';
 const youtubeChannel = 'https://www.youtube.com/@PetalwakeStudios';
 const errors = [];
+const localizedRoutePairs = {
+	'index.html': { en: '/', ja: '/ja/' },
+	'ja/index.html': { en: '/', ja: '/ja/' },
+	'about/index.html': { en: '/about/', ja: '/ja/about/' },
+	'ja/about/index.html': { en: '/about/', ja: '/ja/about/' },
+	'contact/index.html': { en: '/contact/', ja: '/ja/contact/' },
+	'ja/contact/index.html': { en: '/contact/', ja: '/ja/contact/' },
+	'gospel/index.html': { en: '/gospel/', ja: '/ja/gospel/' },
+	'ja/gospel/index.html': { en: '/gospel/', ja: '/ja/gospel/' },
+	'work/index.html': { en: '/work/', ja: '/ja/work/' },
+	'ja/work/index.html': { en: '/work/', ja: '/ja/work/' },
+	'work/the-last-winter/index.html': {
+		en: '/work/the-last-winter/',
+		ja: '/ja/work/the-last-winter/',
+	},
+	'ja/work/the-last-winter/index.html': {
+		en: '/work/the-last-winter/',
+		ja: '/ja/work/the-last-winter/',
+	},
+};
 
 async function listFiles(directory, prefix = '') {
 	const entries = await readdir(directory, { withFileTypes: true });
@@ -93,6 +113,7 @@ if (htmlPaths.length === 0) {
 const pages = [];
 for (const relativePath of htmlPaths) {
 	const html = await readFile(path.join(outputDirectory, relativePath), 'utf8');
+	const htmlElement = tags(html, /<html\b[^>]*>/gi)[0];
 	const titleTags = [...html.matchAll(/<title(?:\s[^>]*)?>([\s\S]*?)<\/title>/gi)];
 	const descriptionTags = tags(
 		html,
@@ -103,16 +124,111 @@ for (const relativePath of htmlPaths) {
 		/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/gi,
 	);
 	const robotTags = tags(html, /<meta\b(?=[^>]*\bname=["']robots["'])[^>]*>/gi);
+	const alternateTags = tags(html, /<link\b(?=[^>]*\brel=["']alternate["'])[^>]*>/gi);
+	const languageChoiceLinks = tags(
+		html,
+		/<a\b(?=[^>]*\bdata-language-choice=["'](?:en|ja)["'])[^>]*>/gi,
+	);
 	const noindex = robotTags.some((tag) => /noindex/i.test(tag.content ?? ''));
 	const page = {
 		relativePath,
 		html,
+		language: htmlElement?.lang ?? '',
 		title: titleTags.length === 1 ? textContent(titleTags[0][1]) : '',
 		description: descriptionTags[0]?.content ?? '',
 		canonical: canonicalTags[0]?.href ?? '',
 		noindex,
 	};
 	pages.push(page);
+
+	const expectedLanguage = relativePath.startsWith('ja/') ? 'ja' : 'en';
+	if (page.language !== expectedLanguage) {
+		error(relativePath, `HTML language must be ${expectedLanguage}; found ${page.language || 'none'}`);
+	}
+	const languageChoices = new Map(languageChoiceLinks.map((link) => [link['data-language-choice'], link.href]));
+	const expectedChoices = localizedRoutePairs[relativePath] ?? { en: '/', ja: '/ja/' };
+	for (const locale of ['en', 'ja']) {
+		if (languageChoices.get(locale) !== expectedChoices[locale]) {
+			error(relativePath, `language selector ${locale} link must point to ${expectedChoices[locale]}`);
+		}
+	}
+	if (languageChoiceLinks.length !== 2) {
+		error(relativePath, `expected exactly two language choices; found ${languageChoiceLinks.length}`);
+	}
+	if (!html.includes('petalwake-language')) {
+		error(relativePath, 'language preference persistence script is missing');
+	}
+
+	const pairedRoutes = localizedRoutePairs[relativePath];
+	if (pairedRoutes) {
+		const alternateByLanguage = new Map(alternateTags.map((tag) => [tag.hreflang, tag.href]));
+		for (const [locale, pathname] of [
+			['en', pairedRoutes.en],
+			['ja', pairedRoutes.ja],
+			['x-default', pairedRoutes.en],
+		]) {
+			const expectedUrl = new URL(pathname, siteOrigin).href;
+			if (alternateByLanguage.get(locale) !== expectedUrl) {
+				error(relativePath, `hreflang ${locale} must point to ${expectedUrl}`);
+			}
+		}
+		if (alternateTags.length !== 3) {
+			error(relativePath, `expected exactly three hreflang links; found ${alternateTags.length}`);
+		}
+	} else if (alternateTags.length > 0) {
+		error(relativePath, 'page without a localized counterpart must not advertise hreflang links');
+	}
+
+	if (relativePath.startsWith('ja/')) {
+		const visibleText = textContent(
+			html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '').replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ''),
+		);
+		if (!/[\u3040-\u30ff\u3400-\u9fff]/.test(visibleText)) {
+			error(relativePath, 'Japanese page does not contain Japanese text');
+		}
+		for (const untranslated of [
+			'Skip to content',
+			'Main navigation',
+			'Stories That Awaken Wonder.',
+			'Home',
+			'Films',
+			'About',
+			'Contact',
+			'Watch on YouTube',
+			'The Gospel',
+			'Explore the Films',
+			'Featured work',
+			'Featured Film',
+			'Watch the film',
+			'Enter the story',
+			'Explore all films',
+			'The story',
+			'The complete short film',
+			'Play film',
+			'Prefer YouTube?',
+			'Themes and interpretation',
+			'Visual language',
+			'Behind the film',
+			'Faith and reflection',
+			'Further exploration',
+			'Carry the conversation further.',
+			'Films & visual stories',
+			'Visit Petalwake Studios on YouTube',
+			'About Petalwake',
+			'Stories matter',
+			'Start a conversation.',
+			'Prepare email',
+			'Write directly',
+			'Name',
+			'Email',
+			'Topic',
+			'Message',
+		]) {
+			if (visibleText.includes(untranslated)) {
+				error(relativePath, `Japanese page contains untranslated interface text: ${untranslated}`);
+			}
+		}
+	}
 
 	if (titleTags.length !== 1) error(relativePath, `expected exactly one title; found ${titleTags.length}`);
 	if (descriptionTags.length !== 1) {
@@ -336,6 +452,10 @@ for (const sitemapFile of sitemapFiles) {
 const canonicalUrls = new Set(indexablePages.map((page) => page.canonical));
 for (const page of indexablePages) {
 	if (!sitemapUrls.has(page.canonical)) error(page.relativePath, `canonical is missing from the sitemap: ${page.canonical}`);
+}
+for (const pathname of Object.values(localizedRoutePairs).map((pair) => pair.ja)) {
+	const localizedUrl = new URL(pathname, siteOrigin).href;
+	if (!sitemapUrls.has(localizedUrl)) error('sitemap', `Japanese URL is missing: ${localizedUrl}`);
 }
 for (const sitemapUrl of sitemapUrls) {
 	if (!canonicalUrls.has(sitemapUrl)) error('sitemap', `URL has no matching indexable page: ${sitemapUrl}`);
