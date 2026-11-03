@@ -7,6 +7,14 @@ import { FILMS } from '../data/films';
 
 const featuredFilm = FILMS.find((film) => film.featured);
 if (!featuredFilm) throw new Error('The featured film is missing from src/data/films.ts.');
+
+const chapterHighlights = [
+	{ title: 'Cinema', description: 'Atmospheric storytelling through light, landscape, and movement.', image: '/assets/chapters/cinema.svg' },
+	{ title: 'The Written Word', description: 'Illustrated tales shaped by myth, memory, and wonder.', image: '/assets/chapters/written-word.svg' },
+	{ title: 'Soundscapes', description: 'Music, ambience, and emotional texture that deepen the world.', image: '/assets/chapters/soundscapes.svg' },
+	{ title: 'The Sacred Pages', description: 'Faith, hope, and story anchored in covenant and grace.', image: '/assets/chapters/sacred-pages.svg' },
+	{ title: 'The Workshop', description: 'Original ideas taking form through craft, experiment, and revision.', image: '/assets/chapters/workshop.svg' },
+];
 ---
 
 <!doctype html>
@@ -33,6 +41,9 @@ if (!featuredFilm) throw new Error('The featured film is missing from src/data/f
 						fetchpriority="high"
 						decoding="async"
 					/>
+				</div>
+				<div class="hero__book" aria-hidden="true">
+					<img src="/assets/book/open-book.svg" alt="" width="960" height="540" />
 				</div>
 				<div class="hero__atmosphere" aria-hidden="true"></div>
 				<div class="hero__content">
@@ -84,6 +95,25 @@ if (!featuredFilm) throw new Error('The featured film is missing from src/data/f
 					</div>
 				</article>
 				<p class="work__all"><a href="/work/">Explore all films <span aria-hidden="true">↗</span></a></p>
+			</section>
+
+			<section class="storybook-journey section-wrap" aria-labelledby="storybook-journey-title" data-reveal>
+				<div class="section-heading storybook-journey__heading">
+					<p class="eyebrow">03 / Chaptered worlds</p>
+					<h2 id="storybook-journey-title">A studio of five living chapters.</h2>
+				</div>
+				<div class="storybook-journey__grid" aria-label="Creative chapter highlights">
+					{chapterHighlights.map((chapter) => (
+						<article class="chapter-card">
+							<img src={chapter.image} alt="" width="220" height="220" loading="lazy" decoding="async" />
+							<div>
+								<p class="eyebrow">{chapter.title}</p>
+								<h3>{chapter.title}</h3>
+								<p>{chapter.description}</p>
+							</div>
+						</article>
+					))}
+				</div>
 			</section>
 
 			<section class="creative-portfolio section-wrap" aria-labelledby="creative-portfolio-title" data-reveal>

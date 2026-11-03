@@ -1,0 +1,35 @@
+<svg width="1200" height="680" viewBox="0 0 1200 680" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bookPageLeft" x1="180" y1="140" x2="468" y2="540" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F7E9D0"/>
+      <stop offset="1" stop-color="#E6D0AA"/>
+    </linearGradient>
+    <linearGradient id="bookPageRight" x1="732" y1="140" x2="1020" y2="540" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F9EFE5"/>
+      <stop offset="1" stop-color="#E6D0AA"/>
+    </linearGradient>
+    <linearGradient id="goldBook" x1="344" y1="70" x2="880" y2="610" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F9D889"/>
+      <stop offset="0.5" stop-color="#D8AF56"/>
+      <stop offset="1" stop-color="#AB7B2D"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="600" cy="535" rx="430" ry="56" fill="#382E42" opacity="0.32"/>
+  <g opacity="0.55">
+    <path d="M174 128C230 108 286 100 352 108L480 130L320 292L170 240L174 128Z" fill="#6B5572" opacity="0.45"/>
+    <path d="M1026 128C970 108 914 100 848 108L720 130L880 292L1030 240L1026 128Z" fill="#6B5572" opacity="0.45"/>
+  </g>
+  <path d="M598 78C659 91 742 127 814 194C914 286 964 345 1104 400V554C1010 522 928 489 842 442C727 385 640 327 598 274V78Z" fill="url(#bookPageRight)"/>
+  <path d="M602 78C541 91 458 127 386 194C286 286 236 345 96 400V554C190 522 272 489 358 442C473 385 560 327 602 274V78Z" fill="url(#bookPageLeft)"/>
+  <path d="M600 95C654 105 715 140 773 198C854 278 913 344 1008 403V522C935 497 864 477 803 437C715 385 641 325 600 271V95Z" stroke="url(#goldBook)" stroke-width="12"/>
+  <path d="M600 95C546 105 485 140 427 198C346 278 287 344 192 403V522C265 497 336 477 397 437C485 385 559 325 600 271V95Z" stroke="url(#goldBook)" stroke-width="12"/>
+  <path d="M600 125V452" stroke="url(#goldBook)" stroke-width="12" stroke-linecap="round"/>
+  <path d="M600 126L676 174C712 196 741 219 771 253V420C736 388 700 359 665 333L600 288V126Z" fill="#E9C996" fill-opacity="0.25"/>
+  <path d="M600 126L524 174C488 196 459 219 429 253V420C464 388 500 359 535 333L600 288V126Z" fill="#E9C996" fill-opacity="0.25"/>
+  <path d="M256 197C300 171 344 167 396 180C324 228 295 287 283 366C241 347 215 322 188 290C199 253 220 228 256 197Z" fill="#D8B0B4" fill-opacity="0.7"/>
+  <path d="M944 197C900 171 856 167 804 180C876 228 905 287 917 366C959 347 985 322 1012 290C1001 253 980 228 944 197Z" fill="#D8B0B4" fill-opacity="0.7"/>
+  <path d="M450 206C480 185 521 170 600 170C679 170 720 185 750 206L710 404C679 421 650 432 600 432C550 432 521 421 490 404L450 206Z" fill="#EED38B" fill-opacity="0.18"/>
+  <path d="M377 267C424 255 470 252 516 267C491 316 471 359 455 410C420 393 394 370 377 267Z" fill="#F3D4D0" fill-opacity="0.55"/>
+  <path d="M823 267C776 255 730 252 684 267C709 316 729 359 745 410C780 393 806 370 823 267Z" fill="#F3D4D0" fill-opacity="0.55"/>
+  <path d="M560 123C578 157 589 192 600 251C611 192 622 157 640 123C626 109 615 102 600 98C585 102 574 109 560 123Z" fill="url(#goldBook)"/>
+</svg>
