@@ -36,7 +36,7 @@ const organization = {
 	url: Astro.site.href,
 	logo: new URL('/favicon.svg', Astro.site).href,
 	description:
-		'Petalwake Studios is an independent creative studio exploring the beauty, complexity, and wonder of the human experience through film, animation, and original media.',
+		'Petalwake Studios is an independent Christian creative studio making original films, animation, music, and audiovisual work shaped by wonder, human dignity, and hope in Christ.',
 	sameAs: ['https://www.youtube.com/@PetalwakeStudios'],
 };
 ---
@@ -68,3 +68,24 @@ const organization = {
 <meta name="twitter:image:alt" content={imageAlt} />
 <script type="application/ld+json" set:html={JSON.stringify(organization)} />
 {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+<script>
+	const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	if ('IntersectionObserver' in window && !motionPreference.matches) {
+		const revealObserver = new IntersectionObserver(
+			(entries, observer) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				}
+			},
+			{ rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+		);
+
+		document.documentElement.classList.add('has-reveal');
+		document.querySelectorAll('[data-reveal]').forEach((element) => revealObserver.observe(element));
+	}
+</script>

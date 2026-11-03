@@ -1,11 +1,11 @@
 # Petalwake Studios
 
-Petalwake Studios is an independent creative studio exploring the beauty, complexity, and wonder of the human experience through film, animation, and original media.
+Petalwake Studios is an independent Christian creative studio making original films, animation, music, and audiovisual work shaped by wonder, human dignity, and hope in Christ.
 
 ## Studio content
 
 - Update verified film entries, story copy, and YouTube URLs in `src/data/films.ts`.
-- Keep production notes in `productionNote` and include only confirmed credits, release years, and project details.
+- Keep production stages in `productionSteps` and include only confirmed credits, release years, and project details.
 - Add film thumbnails to `public/images/` and use their public paths in `FILMS`.
 - The original homepage identity artwork is `Petalwake Studios_ Mountain Lake Dreams.png`; optimized delivery variants are in `public/images/`.
 - The original film thumbnail is retained as `the-last-winter-thumbnail-source.jpg`; the site serves responsive WebP derivatives.
@@ -17,13 +17,13 @@ Petalwake Studios is an independent creative studio exploring the beauty, comple
 - `/work/` — Published films and creative work.
 - `/work/the-last-winter/` — Film page, synopsis, and production note.
 - `/about/` — Studio approach, values, and inspiration.
-- `/contact/` — Current public contact information. No direct email address is published.
+- `/contact/` — Public contact information and an email-app handoff form.
 - `/films/the-last-winter/` — Permanent redirect to the current film page.
 
 The Journal is intentionally not published until genuine editorial content is ready.
 The film page uses a verified YouTube link and a click-to-load player. Video structured data is not included because verified publication metadata is not available in the repository.
 
-Before a future release, add an official direct contact address only if the owner chooses to publish one. Confirm the alternate `www` host redirects correctly in Cloudflare; the repository uses the non-`www` canonical host.
+The contact form has no delivery backend: it prepares a message in the visitor's email app, and the published address is `petalwakestudios@gmail.com`. Reflection messages also use a private email handoff; the site does not store or publish submissions. Confirm the alternate `www` host redirects correctly in Cloudflare; the repository uses the non-`www` canonical host.
 
 ## Search and domain setup
 

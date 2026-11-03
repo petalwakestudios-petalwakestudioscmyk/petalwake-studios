@@ -1,14 +1,14 @@
 export const SITE_TITLE = "Petalwake Studios";
 export const STUDIO_EMAIL = "petalwakestudios@gmail.com";
 export const SITE_DESCRIPTION =
-	"Petalwake Studios is an independent creative studio exploring the human experience through film, animation, and original audiovisual work, with room for wonder, reflection, and hope.";
+	"Petalwake Studios is an independent Christian creative studio making original films, animation, music, and audiovisual work shaped by wonder, human dignity, and hope in Christ.";
 export const ABOUT_DESCRIPTION =
-	"Learn about Petalwake Studios' creative approach to film, wonder, human experience, hope, and spiritual inspiration.";
+	"Learn how Christian faith shapes Petalwake Studios' understanding of creation, human dignity, responsibility, beauty, grace, and creative work.";
 export const WORK_DESCRIPTION =
-	"Explore films and original creative work from Petalwake Studios, beginning with the animated short The Last Winter.";
+	"Explore the films of Petalwake Studios, beginning with The Last Winter, an animated short about memory, responsibility, and forgiveness.";
 export const GOSPEL_DESCRIPTION =
-	"Explore the Christian gospel message and how Petalwake Studios invites people to consider Jesus through its creative work.";
+	"Read the Christian gospel: humanity's sin, the death and bodily resurrection of Jesus Christ, salvation by grace through faith, and a life of following Jesus.";
 export const CONTACT_DESCRIPTION =
-	"Contact Petalwake Studios by email or follow the studio's creative work on YouTube.";
+	"Contact Petalwake Studios about films, the creative process, Christianity, collaboration, or general feedback.";
 
 export const YOUTUBE_CHANNEL = "https://www.youtube.com/@PetalwakeStudios";

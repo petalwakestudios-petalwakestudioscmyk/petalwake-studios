@@ -1,12 +1,14 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
+import ProductionNotes from '../../components/ProductionNotes.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { SITE_TITLE, YOUTUBE_CHANNEL } from '../../consts';
+import { SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../../consts';
 import { FILMS } from '../../data/films';
 
 const film = FILMS.find(({ slug }) => slug === 'the-last-winter');
 if (!film) throw new Error('The Last Winter film entry is missing from src/data/films.ts.');
+if (!film.productionSteps) throw new Error('The Last Winter production steps are missing from src/data/films.ts.');
 
 const description =
 	'An elderly woman visits the dying former husband who betrayed her decades ago. The Last Winter explores memory, responsibility, and forgiveness.';
@@ -29,7 +31,44 @@ const description =
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
 		<main id="main-content" tabindex="-1">
-			<section class="project-hero" aria-labelledby="film-title">
+			<section class="project-hero" aria-labelledby="film-title" data-reveal>
+				<div class="project-hero__art">
+					<img
+						src={film.heroImage}
+						srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
+						sizes="(max-width: 760px) calc(100vw - 48px), 60vw"
+						alt={film.heroImageAlt}
+						width={film.imageWidth}
+						height={film.imageHeight}
+						fetchpriority="high"
+						decoding="async"
+					/>
+					<span class="project-hero__art-caption">An animated short film by Petalwake Studios</span>
+				</div>
+				<div class="project-hero__copy">
+					<p class="eyebrow">Animated short film</p>
+					<h1 id="film-title">{film.title}</h1>
+					<p class="project-hero__logline">{film.logline}</p>
+					<div class="project-hero__links">
+						<a class="button button--primary" href="#watch-film">Watch the film <span aria-hidden="true">↓</span></a>
+						<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
+							Open on YouTube <span aria-hidden="true">↗</span>
+						</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="project-copy" id="synopsis" aria-labelledby="synopsis-title" data-reveal>
+				<p class="eyebrow">The story</p>
+				<h2 id="synopsis-title">A visit after many years</h2>
+				{film.synopsis.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+			</section>
+
+			<section class="project-watch-film" aria-labelledby="watch-film-title" data-reveal>
+				<div class="project-watch-film__heading">
+					<p class="eyebrow">The complete short film</p>
+					<h2 id="watch-film-title">Watch <em>{film.title}</em></h2>
+				</div>
 				<div
 					class="film-page__player"
 					id="watch-film"
@@ -37,48 +76,34 @@ const description =
 					data-video-id={film.youtubeVideoId}
 					data-video-title={film.title}
 				>
-					<button class="film-page__poster" type="button" aria-label={`Watch ${film.title}`}>
+					<button class="film-page__poster" type="button" aria-label={`Play ${film.title}`}>
 						<img
 							src={film.thumbnail}
 							srcset="/images/the-last-winter-thumbnail-640.webp 640w, /images/the-last-winter-thumbnail.webp 1280w"
-							sizes="(max-width: 760px) calc(100vw - 48px), 55vw"
-							alt={film.thumbnailAlt}
+							sizes="(max-width: 760px) calc(100vw - 48px), 72vw"
+							alt=""
 							width={film.imageWidth}
 							height={film.imageHeight}
-							fetchpriority="high"
+							loading="lazy"
 							decoding="async"
 						/>
-						<span class="film-page__play">Watch Film <span aria-hidden="true">▶</span></span>
+						<span class="film-page__play">Play film <span aria-hidden="true">▶</span></span>
 					</button>
 				</div>
-				<div class="project-hero__copy">
-					<p class="eyebrow">Animated short film</p>
-					<h1 id="film-title">{film.title}</h1>
-					<p class="project-hero__logline">{film.logline}</p>
-					<div class="project-hero__links">
-						<a href="#synopsis">Read the synopsis <span aria-hidden="true">↓</span></a>
-						<a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
-							Watch on YouTube <span aria-hidden="true">↗</span>
-						</a>
-					</div>
-				</div>
+				<p class="project-watch-film__fallback">
+					Prefer YouTube? <a href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">Watch the film there <span aria-hidden="true">↗</span></a>
+				</p>
 			</section>
 
-			<section class="project-copy" id="synopsis" aria-labelledby="synopsis-title">
-				<p class="eyebrow">The story</p>
-				<h2 id="synopsis-title">A visit after many years</h2>
-				{film.synopsis.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
-			</section>
-
-			<section class="project-copy project-copy--light" aria-labelledby="about-story-title">
-				<p class="eyebrow">About the story</p>
+			<section class="project-copy project-copy--light" aria-labelledby="about-story-title" data-reveal>
+				<p class="eyebrow">Themes and interpretation</p>
 				<h2 id="about-story-title">What can forgiveness change?</h2>
 				{film.aboutStory.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
 			</section>
 
-			<section class="project-themes section-wrap" aria-labelledby="themes-title">
-				<p class="eyebrow">Ideas in the film</p>
-				<h2 id="themes-title">Themes</h2>
+			<section class="project-themes section-wrap" aria-labelledby="themes-title" data-reveal>
+				<p class="eyebrow">Threads in the story</p>
+				<h2 id="themes-title">What remains.</h2>
 				<div class="project-themes__grid">
 					{film.themes.map((theme) => (
 						<article>
@@ -89,7 +114,7 @@ const description =
 				</div>
 			</section>
 
-			<section class="project-visual" aria-labelledby="visual-language-title">
+			<section class="project-visual" aria-labelledby="visual-language-title" data-reveal>
 				<p class="eyebrow">Visual language</p>
 				<div>
 					<h2 id="visual-language-title">What remains in the frame</h2>
@@ -97,113 +122,70 @@ const description =
 				</div>
 			</section>
 
-			<section class="project-christian" aria-labelledby="christian-perspective-title">
-				<p class="eyebrow">A Christian perspective</p>
+			<section class="project-production" aria-labelledby="production-title" data-reveal>
+				<p class="eyebrow">Behind the film</p>
 				<div>
-					<h2 id="christian-perspective-title">Forgiveness, responsibility, and grace</h2>
+					<h2 id="production-title">Made through a considered process.</h2>
 					<p>
-						The film does not present a direct biblical allegory, and it does not reduce complex
-						questions to a single moral lesson. Still, its themes resonate deeply with Christian
-						teaching: the reality of sin, the weight of human brokenness, the seriousness of our
-						actions, and the possibility of grace when forgiveness is costly. The story asks what
-						it means to be honest about harm while still leaving room for mercy.
+						The creator conceived the story and narrative sequence, then used generative tools
+						for the visuals and music. Scene selection, arrangement, editing, and final mastering
+						shaped the finished film.
 					</p>
-					<p>
-						Christian faith does not pretend the past can simply be erased. It teaches that God
-						is holy, that human beings are fallen, and that redemption comes through Jesus Christ,
-						not through our own moral performance. The film speaks to that tension in a subtle, human
-						way: what does forgiveness look like when the damage is real and the future cannot be
-						undone?
-					</p>
-					<a href="/gospel/">Explore the gospel <span aria-hidden="true">↗</span></a>
+					<ProductionNotes steps={film.productionSteps} />
 				</div>
 			</section>
 
-			{film.reflectionQuestion && (
-				<section class="project-reflection" aria-labelledby="reflection-title">
-					<p class="eyebrow">A question to carry with you</p>
-					<h2 id="reflection-title">{film.reflectionQuestion}</h2>
-				</section>
-			)}
-
-			{film.credits?.length && (
-				<section class="project-credits section-wrap" aria-labelledby="credits-title">
-					<p class="eyebrow">Film credits</p>
-					<div>
-						<h2 id="credits-title">Credits</h2>
-						<dl>
-							{film.credits.map((credit) => (
-								<div>
-									<dt>{credit.role}</dt>
-									<dd>{credit.name}</dd>
-								</div>
-							))}
-						</dl>
-					</div>
-				</section>
-			)}
-
-			{film.productionNote && (
-				<section class="project-production" aria-labelledby="production-title">
-					<p class="eyebrow">Production note</p>
-					<div>
-						<h2 id="production-title">A considered process</h2>
-						<p>{film.productionNote}</p>
-					</div>
-				</section>
-			)}
-
-			<section class="project-conversation" aria-labelledby="conversation-title">
-				<p class="eyebrow">Join the conversation</p>
+			<section class="project-christian" aria-labelledby="christian-perspective-title" data-reveal>
+				<p class="eyebrow">Faith and reflection</p>
 				<div>
-					<h2 id="conversation-title">Share a reflection</h2>
+					<h2 id="christian-perspective-title">Forgiveness, responsibility, and grace.</h2>
 					<p>
-						We welcome thoughtful responses to the film, whether you are reflecting on forgiveness,
-						asking a question, or simply sharing what the story left with you. Submissions are not
-						guaranteed to be published or answered individually, but they are welcome and read.
+						<em>The Last Winter</em> is a human story, not a direct biblical allegory. Its
+						questions about harm, responsibility, and forgiveness resonate with Christian
+						teaching. Scripture calls Christians to forgive one another as God in Christ forgave
+						us (Ephesians 4:32; Colossians 3:13).
 					</p>
-					<form class="project-conversation__form" id="film-conversation-form" novalidate>
-						<label>
-							<span>Name</span>
-							<input type="text" name="name" autocomplete="name" />
-						</label>
-						<label>
-							<span>Email (optional)</span>
-							<input type="email" name="email" autocomplete="email" />
-						</label>
-						<label>
-							<span>Message type</span>
-							<select name="type">
-								<option value="Reflection">Reflection</option>
-								<option value="Private message to the studio">Private message to the studio</option>
-								<option value="Question about the film">Question about the film</option>
-							</select>
-						</label>
-						<label>
-							<span>Your reflection or question</span>
-							<textarea name="message" rows="6" required></textarea>
-						</label>
-						<div class="project-conversation__actions">
-							<button class="button button--primary" type="submit">Send response</button>
-							<a href="mailto:petalwakestudios@gmail.com?subject=The%20Last%20Winter%20reflection" target="_blank" rel="noopener noreferrer">Email directly</a>
-						</div>
-						<p class="project-conversation__status" aria-live="polite"></p>
-					</form>
+					<blockquote>
+						<p>“God commendeth his love toward us, in that, while we were yet sinners, Christ died for us.”</p>
+						<cite>Romans 5:8 (King James Version)</cite>
+					</blockquote>
+					<p>
+						God's forgiveness is a gift of grace received through repentance and faith in Christ;
+						we do not earn it by forgiving other people. Human forgiveness does not erase harm or
+						require anyone to remain in an unsafe relationship, restore trust, or reconcile without
+						truth and safety. Psalm 103:10-12 speaks of the mercy God shows those who fear Him.
+					</p>
+					<a href="/gospel/">Explore the gospel of Jesus Christ <span aria-hidden="true">↗</span></a>
 				</div>
 			</section>
 
-			<section class="project-watch section-wrap" aria-labelledby="watch-title">
-				<p class="eyebrow">Continue the conversation</p>
+			<section class="project-reflection" aria-labelledby="reflection-title" data-reveal>
+				<p class="eyebrow">A question to carry with you</p>
+				<h2 id="reflection-title">{film.reflectionQuestion}</h2>
+				<details class="project-reflection__more">
+					<summary>Explore a few more questions</summary>
+					<ul>
+						<li>How can compassion and accountability exist together?</li>
+						<li>What is the difference between forgiveness, restored trust, and reconciliation?</li>
+						<li>What might hope look like when the consequences of the past remain?</li>
+					</ul>
+				</details>
+			</section>
+
+			<section class="project-watch section-wrap" aria-labelledby="watch-title" data-reveal>
+				<p class="eyebrow">Further exploration</p>
 				<div>
-					<h2 id="watch-title">Watch {film.title}</h2>
+					<h2 id="watch-title">Carry the conversation further.</h2>
 					<p>
-						We hope the story gives you something to think about, talk about, or carry with you.
+						For a private conversation about the film or its questions, email the studio. To
+						explore the Christian hope behind our work, read the gospel.
 					</p>
-					<a class="button button--primary" href={film.youtubeUrl} target="_blank" rel="noopener noreferrer">
-						Watch {film.title} on YouTube <span aria-hidden="true">↗</span>
+					<a class="button button--primary" href="/gospel/">Read the gospel <span aria-hidden="true">↗</span></a>
+					<a class="project-watch__channel" href={`mailto:${STUDIO_EMAIL}?subject=The%20Last%20Winter%20reflection`}>
+						Email a private reflection <span aria-hidden="true">↗</span>
 					</a>
 					<a class="project-watch__channel" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
-						Visit Petalwake Studios on YouTube
+						Visit Petalwake Studios on YouTube <span aria-hidden="true">↗</span>
 					</a>
 				</div>
 			</section>
@@ -247,30 +229,5 @@ const description =
 		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
 		iframe.allowFullscreen = true;
 		player.replaceChildren(iframe);
-	});
-
-	const conversationForm = document.querySelector('#film-conversation-form');
-	const conversationStatus = document.querySelector('.project-conversation__status');
-	conversationForm?.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const formData = new FormData(conversationForm);
-		const name = String(formData.get('name') ?? '').trim();
-		const email = String(formData.get('email') ?? '').trim();
-		const type = String(formData.get('type') ?? 'Reflection').trim();
-		const message = String(formData.get('message') ?? '').trim();
-
-		if (!message) {
-			conversationStatus && (conversationStatus.textContent = 'Please write a reflection or question before sending.');
-			conversationStatus && (conversationStatus.dataset.state = 'error');
-			return;
-		}
-
-		const body = encodeURIComponent(
-			`Name: ${name || 'Anonymous'}\nEmail: ${email || 'Not provided'}\nType: ${type}\n\n${message}`
-		);
-		const subject = encodeURIComponent('The Last Winter reflection');
-		window.location.href = `mailto:petalwakestudios@gmail.com?subject=${subject}&body=${body}`;
-		conversationStatus && (conversationStatus.textContent = 'Your email app is opening with your message.');
-		conversationStatus && (conversationStatus.dataset.state = 'success');
 	});
 </script>

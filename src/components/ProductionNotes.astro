@@ -1,0 +1,26 @@
+---
+interface Step {
+	title: string;
+	description: string;
+}
+
+interface Props {
+	steps: readonly Step[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="production-timeline">
+	{steps.map((step, index) => (
+		<li>
+			<details>
+				<summary>
+					<span class="production-timeline__number">{String(index + 1).padStart(2, '0')}</span>
+					<span>{step.title}</span>
+				</summary>
+				<p>{step.description}</p>
+			</details>
+		</li>
+	))}
+</ol>

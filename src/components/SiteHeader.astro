@@ -17,13 +17,17 @@ const isHomepage = Astro.url.pathname === '/';
 		</a>
 	)}
 	<details class="site-nav" open>
-		<summary aria-label="Toggle navigation" aria-controls="site-navigation"><span></span><span></span></summary>
+		<summary aria-label="Toggle navigation" aria-controls="site-navigation">
+			<span class="site-nav__icon" aria-hidden="true"><span></span><span></span></span>
+			<span class="site-nav__label">Menu</span>
+			<span class="site-nav__label site-nav__label--close">Close</span>
+		</summary>
 		<nav id="site-navigation" aria-label="Main navigation">
-			<a href="/">Home</a>
-			<a href="/work/">Films</a>
-			<a href="/about/">About</a>
-			<a href="/gospel/">The Gospel</a>
-			<a href="/contact/">Contact</a>
+			<a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a>
+			<a href="/work/" aria-current={Astro.url.pathname.startsWith('/work/') ? 'page' : undefined}>Films</a>
+			<a href="/about/" aria-current={Astro.url.pathname === '/about/' ? 'page' : undefined}>About</a>
+			<a href="/gospel/" aria-current={Astro.url.pathname === '/gospel/' ? 'page' : undefined}>The Gospel</a>
+			<a href="/contact/" aria-current={Astro.url.pathname === '/contact/' ? 'page' : undefined}>Contact</a>
 			<a class="site-header__cta" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
 		</nav>
 	</details>
@@ -39,12 +43,26 @@ const isHomepage = Astro.url.pathname === '/';
 
 		mobileNavigation.addEventListener('change', ({ matches }) => {
 			navigation.open = !matches;
+			document.body.classList.remove('menu-open');
+		});
+
+		navigation.addEventListener('toggle', () => {
+			document.body.classList.toggle('menu-open', navigation.open && mobileNavigation.matches);
+		});
+
+		navigation.addEventListener('click', (event) => {
+			const target = event.target;
+			if (target instanceof Element && target.closest('a') && mobileNavigation.matches) {
+				navigation.open = false;
+				document.body.classList.remove('menu-open');
+			}
 		});
 	}
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key === 'Escape' && navigation?.open && mobileNavigation.matches) {
 			navigation.open = false;
+			document.body.classList.remove('menu-open');
 			menuButton?.focus();
 		}
 	});

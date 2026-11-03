@@ -20,7 +20,7 @@ const featuredFilms = FILMS.filter((film) => film.featured);
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
 		<main id="main-content" tabindex="-1">
-			<header class="work-page__intro">
+			<header class="work-page__intro" data-reveal>
 				<p class="eyebrow">Petalwake Studios</p>
 				<h1>Films & visual stories</h1>
 				<p>
@@ -30,7 +30,7 @@ const featuredFilms = FILMS.filter((film) => film.featured);
 				</p>
 			</header>
 
-			<section class="work-page__films" aria-labelledby="work-films-title">
+			<section class="work-page__films" aria-labelledby="work-films-title" data-reveal>
 				<div class="section-heading">
 					<p class="eyebrow">A film by Petalwake Studios</p>
 					<h2 id="work-films-title">Featured Film</h2>
@@ -63,7 +63,7 @@ const featuredFilms = FILMS.filter((film) => film.featured);
 				))}
 			</section>
 
-			<section class="work-page__continuation" aria-labelledby="more-stories-title">
+			<section class="work-page__continuation" aria-labelledby="more-stories-title" data-reveal>
 				<p class="eyebrow">More stories are taking shape</p>
 				<div>
 					<h2 id="more-stories-title">Still at the beginning.</h2>

@@ -16,16 +16,25 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 	<body class="contact-page">
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<SiteHeader />
-		<main id="main-content" tabindex="-1">
+		<main id="main-content" tabindex="-1" data-reveal>
 			<p class="eyebrow">Contact</p>
-			<h1>Keep in touch.</h1>
+			<h1>Start a conversation.</h1>
 			<p>
-				Petalwake Studios welcomes questions about films, the creative process, Christianity,
-				and the gospel. If you would rather write directly, email us at
+				Questions about films, the creative process, Christianity, collaboration, or a thought
+				you would like to share are welcome. Write directly to
 				<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>.
 			</p>
 			<div class="contact-card">
-				<form id="contact-form" class="contact-form" novalidate>
+				<p class="contact-form__note">
+					This form prepares an email in your email app; it does not send or store messages on
+					this site. If your email app does not open, write to {STUDIO_EMAIL}.
+				</p>
+				<noscript>
+					<p class="contact-form__note">
+						JavaScript is unavailable, so please email <a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a> directly.
+					</p>
+				</noscript>
+				<form id="contact-form" class="contact-form">
 					<div class="contact-form__row">
 						<label>
 							<span>Name</span>
@@ -53,14 +62,14 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 						<textarea name="message" rows="6" required></textarea>
 					</label>
 					<div class="contact-form__actions">
-						<button class="button button--primary" type="submit">Send message</button>
-						<a href={`mailto:${STUDIO_EMAIL}`} target="_blank" rel="noopener noreferrer">Use email app</a>
+						<button class="button button--primary" type="submit">Prepare email</button>
+						<a href={`mailto:${STUDIO_EMAIL}`}>Write directly</a>
 					</div>
 					<p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
 				</form>
 			</div>
 			<p class="contact-page__note">
-				For public updates and new releases, follow Petalwake Studios on
+				For new releases and studio updates, follow Petalwake Studios on
 				<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">YouTube</a>.
 			</p>
 		</main>
@@ -91,7 +100,6 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 			`Name: ${name}\nEmail: ${email}\nTopic: ${topic}\n\n${message}`
 		);
 		window.location.href = `mailto:petalwakestudios@gmail.com?subject=${subject}&body=${body}`;
-		status && (status.textContent = 'Your email app is opening with your message.');
-		status && (status.dataset.state = 'success');
+		status && (status.textContent = 'Check your email app for the prepared message. Nothing has been submitted to this site.');
 	});
 </script>
