@@ -7,7 +7,7 @@ Petalwake Studios is an independent Christian creative studio making original fi
 - Update verified film entries, story copy, and YouTube URLs in `src/data/films.ts`.
 - Keep production stages in `productionSteps` and include only confirmed credits, release years, and project details.
 - Add film thumbnails to `public/images/` and use their public paths in `FILMS`.
-- The original homepage identity artwork is `Petalwake Studios_ Mountain Lake Dreams.png`; optimized delivery variants are in `public/images/`.
+- The homepage hero source is the root-level `Hero.png`; responsive WebP delivery variants are generated in `public/images/petalwake-hero-*.webp`.
 - The original film thumbnail is retained as `the-last-winter-thumbnail-source.jpg`; the site serves responsive WebP derivatives.
 - The Cloudflare Worker deployment is configured in `wrangler.json` and `astro.config.mjs`.
 
