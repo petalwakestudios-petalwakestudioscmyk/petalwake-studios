@@ -12,6 +12,8 @@ const localizedRoutePairs = {
 	'ja/about/index.html': { en: '/about/', ja: '/ja/about/' },
 	'contact/index.html': { en: '/contact/', ja: '/ja/contact/' },
 	'ja/contact/index.html': { en: '/contact/', ja: '/ja/contact/' },
+	'privacy/index.html': { en: '/privacy/', ja: '/ja/privacy/' },
+	'ja/privacy/index.html': { en: '/privacy/', ja: '/ja/privacy/' },
 	'gospel/index.html': { en: '/gospel/', ja: '/ja/gospel/' },
 	'ja/gospel/index.html': { en: '/gospel/', ja: '/ja/gospel/' },
 	'work/index.html': { en: '/work/', ja: '/ja/work/' },

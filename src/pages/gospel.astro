@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { GOSPEL_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL } from '../consts';
+import { GOSPEL_DESCRIPTION, SITE_TITLE } from '../consts';
 ---
 
 <!doctype html>
@@ -107,14 +107,14 @@ import { GOSPEL_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL } from '../consts';
 				<div>
 					<h2 id="gospel-questions-title">We would be glad to hear from you.</h2>
 					<p>
-						If you have questions about Christianity or following Jesus, contact us at
-						<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a> or use the contact page.
-						We encourage you to speak with a local church as you explore the Christian faith.
+						If you have questions about Christianity or following Jesus, use the contact page to
+						start the conversation. We encourage you to speak with a local church as you explore the
+						Christian faith.
 					</p>
 					<div class="gospel-callout__actions">
 						<a class="button button--primary" href="/contact/">Ask a question</a>
-						<a class="button button--quiet" href={`mailto:${STUDIO_EMAIL}?subject=Question%20about%20the%20gospel`}>
-							Email Petalwake <span aria-hidden="true">↗</span>
+						<a class="button button--quiet" href="/contact/">
+							Contact Petalwake <span aria-hidden="true">↗</span>
 						</a>
 					</div>
 				</div>

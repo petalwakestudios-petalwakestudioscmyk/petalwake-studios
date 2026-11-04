@@ -7,6 +7,7 @@ const englishRoutes = new Set([
 	'/about/',
 	'/contact/',
 	'/gospel/',
+	'/privacy/',
 	'/films/the-last-winter/',
 ]);
 

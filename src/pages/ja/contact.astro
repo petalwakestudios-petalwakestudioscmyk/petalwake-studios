@@ -2,9 +2,12 @@
 import BaseHead from '../../components/BaseHead.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../../consts';
+import { TURNSTILE_SITE_KEY, YOUTUBE_CHANNEL } from '../../consts';
 import { common } from '../../i18n/common';
 import { ja } from '../../i18n/ja';
+import { localizedPath } from '../../i18n/routing';
+import { CONTACT_TOPICS } from '../../lib/contact-contract';
+import { contactTopicLabels } from '../../i18n/contact-topics';
 ---
 
 <!doctype html>
@@ -20,55 +23,61 @@ import { ja } from '../../i18n/ja';
 			<h1>{ja.contact.title}</h1>
 			<p>
 				{ja.contact.intro}
-				<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>へ直接メールをお送りください。
 			</p>
 			<div class="contact-card">
 				<p class="contact-form__note">
 					{ja.contact.formNote}
-					<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>。
 				</p>
 				<noscript>
 					<p class="contact-form__note">
-						{ja.contact.noscript} <a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>。
+						{ja.contact.noscript}
 					</p>
 				</noscript>
 				<form
 					id="contact-form"
 					class="contact-form"
+					method="post"
+					action="/api/contact"
 					novalidate
-					data-required-message={ja.contact.requiredMessage}
-					data-email-invalid-message={ja.contact.invalidEmailMessage}
-					data-subject-prefix={ja.contact.subjectPrefix}
-					data-prepared-message={ja.contact.preparedMessage}
-					data-name-label={ja.contact.name}
-					data-email-label={ja.contact.email}
-					data-topic-label={ja.contact.topic}
-					data-message-label={ja.contact.message}
-					data-email-address={STUDIO_EMAIL}
+					data-turnstile-site-key={TURNSTILE_SITE_KEY}
+					data-locale="ja"
 				>
 					<div class="contact-form__row">
 						<label>
 							<span>{ja.contact.name}</span>
-							<input type="text" name="name" autocomplete="name" required />
+							<input type="text" name="name" autocomplete="name" required maxlength="120" />
 						</label>
 						<label>
 							<span>{ja.contact.email}</span>
-							<input type="email" name="email" autocomplete="email" required />
+							<input type="email" name="email" autocomplete="email" required maxlength="254" />
 						</label>
 					</div>
 					<label>
 						<span>{ja.contact.topic}</span>
-						<select name="topic">
-							{ja.contact.topics.map((topic) => <option value={topic}>{topic}</option>)}
+						<select name="topic" required>
+							<option value="">{ja.contact.selectTopic}</option>
+							{CONTACT_TOPICS.map((topic) => <option value={topic}>{contactTopicLabels.ja[topic]}</option>)}
 						</select>
 					</label>
 					<label>
 						<span>{ja.contact.message}</span>
-						<textarea name="message" rows="6" required></textarea>
+						<textarea name="message" rows="6" required maxlength="2500"></textarea>
 					</label>
+					<div class="contact-form__honeypot" aria-hidden="true">
+						<label for="contact-website">{ja.contact.honeypot}</label>
+						<input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+					</div>
+					<div class="contact-form__turnstile">
+						<div id="contact-turnstile" aria-live="polite"></div>
+						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">{ja.contact.turnstileUnavailable}</p>}
+					</div>
+					<p class="contact-form__privacy">
+						{ja.contact.privacyIntro}
+						<a href={localizedPath('/privacy/', 'ja')}>{ja.contact.privacyLink}</a>
+						{ja.contact.privacyTail}
+					</p>
 					<div class="contact-form__actions">
-						<button class="button button--primary" type="submit">{ja.contact.prepareEmail}</button>
-						<a href={`mailto:${STUDIO_EMAIL}`}>{ja.contact.directEmail}</a>
+						<button class="button button--primary" type="submit">{ja.contact.send}</button>
 					</div>
 					<p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
 				</form>
@@ -83,84 +92,4 @@ import { ja } from '../../i18n/ja';
 	</body>
 </html>
 
-<script>
-	const form = document.querySelector<HTMLFormElement>('#contact-form');
-	const status = document.querySelector<HTMLElement>('#contact-form-status');
-
-	form?.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const formData = new FormData(form);
-		const name = String(formData.get('name') ?? '').trim();
-		const email = String(formData.get('email') ?? '').trim();
-		const topic = String(formData.get('topic') ?? '').trim();
-		const message = String(formData.get('message') ?? '').trim();
-		const {
-			requiredMessage,
-			emailInvalidMessage,
-			subjectPrefix,
-			preparedMessage,
-			nameLabel,
-			emailLabel,
-			topicLabel,
-			messageLabel,
-			emailAddress,
-		} = form.dataset;
-
-		if (!name || !email || !message) {
-			if (!requiredMessage) {
-				console.error('The localized contact form is missing its required-field message.');
-				return;
-			}
-			if (status) {
-				status.textContent = requiredMessage;
-				status.dataset.state = 'error';
-			}
-			const missingField = !name ? 'name' : !email ? 'email' : 'message';
-			const field = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${missingField}"]`);
-			field?.setAttribute('aria-invalid', 'true');
-			field?.focus();
-			return;
-		}
-
-		const emailField = form.querySelector<HTMLInputElement>('input[name="email"]');
-		if (!emailField?.validity.valid) {
-			if (!emailInvalidMessage) {
-				console.error('The localized contact form is missing its invalid-email message.');
-				return;
-			}
-			if (status) {
-				status.textContent = emailInvalidMessage;
-				status.dataset.state = 'error';
-			}
-			emailField?.setAttribute('aria-invalid', 'true');
-			emailField?.focus();
-			return;
-		}
-
-		if (!subjectPrefix || !nameLabel || !emailLabel || !topicLabel || !messageLabel || !emailAddress) {
-			console.error('The localized contact form is missing email labels.');
-			return;
-		}
-
-		const subject = encodeURIComponent(`${subjectPrefix}: ${topic}`);
-		const body = encodeURIComponent(
-			`${nameLabel}: ${name}\n${emailLabel}: ${email}\n${topicLabel}: ${topic}\n\n${messageLabel}:\n${message}`,
-		);
-		window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-		if (status && preparedMessage) {
-			status.textContent = preparedMessage;
-			status.dataset.state = 'success';
-		}
-	});
-
-	form?.addEventListener('input', (event) => {
-		const target = event.target;
-		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
-			target.removeAttribute('aria-invalid');
-			if (status?.dataset.state === 'error') {
-				status.textContent = '';
-				delete status.dataset.state;
-			}
-		}
-	});
-</script>
+<script src="../../scripts/contact-form.ts"></script>

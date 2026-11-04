@@ -17,13 +17,13 @@ Petalwake Studios is a multidisciplinary creative studio exploring storytelling 
 - `/work/` — Published films and creative work.
 - `/work/the-last-winter/` — Film page, synopsis, and production note.
 - `/about/` — Studio approach, values, and inspiration.
-- `/contact/` — Public contact information and an email-app handoff form.
+- `/contact/` — Secure contact form with server-side validation, Turnstile verification, and routed email delivery.
 - `/films/the-last-winter/` — Permanent redirect to the current film page.
 
 The Journal is intentionally not published until genuine editorial content is ready.
 The film page uses a verified YouTube link and a click-to-load player. Video structured data is not included because verified publication metadata is not available in the repository.
 
-The contact form has no delivery backend: it prepares a message in the visitor's email app, and the published address is `petalwakestudios@gmail.com`. Reflection messages also use a private email handoff; the site does not store or publish submissions. Confirm the alternate `www` host redirects correctly in Cloudflare; the repository uses the non-`www` canonical host.
+Contact messages are validated by a Cloudflare Worker, checked with Turnstile, and delivered through Resend to a server-selected studio inbox. Message contents are not stored in a site database. See [PETALWAKE_FEATURE_SETUP.md](./PETALWAKE_FEATURE_SETUP.md) for provider setup, required Worker secrets, rate-limit behavior, privacy/storage details, and test instructions. The site offers system, light, and dark appearance modes; explicit appearance and language preferences are stored in localStorage. Confirm the alternate `www` host redirects correctly in Cloudflare; the repository uses the non-`www` canonical host.
 
 ## Search and domain setup
 
@@ -43,4 +43,5 @@ The contact form has no delivery backend: it prepares a message in the visitor's
 | `npm run check` | Build, typecheck, and dry-run Wrangler deploy |
 | `npm run check:seo` | Validate generated HTML, sitemap, robots, metadata, and internal links |
 | `npm run check:production` | Run project checks and SEO validation |
+| `npm test` | Run the functional contact API and routing tests |
 | `npm run deploy` | Deploy to Cloudflare |

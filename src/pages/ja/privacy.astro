@@ -1,0 +1,121 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { common } from '../../i18n/common';
+import { ja } from '../../i18n/ja';
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead
+			language="ja"
+			title={ja.metadata.privacyTitle}
+			description={ja.metadata.privacyDescription}
+		/>
+	</head>
+	<body class="privacy-page" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1" data-reveal>
+			<p class="eyebrow">プライバシー</p>
+			<h1>プライバシーポリシー</h1>
+			<p class="lead">
+				Petalwake Studiosは、丁寧で敬意のあるコミュニケーションを大切にしています。このポリシーでは、
+				ウェブサイトやお問い合わせフォームを通じて共有された情報がどのように収集・利用・保護されるかをご説明します。
+			</p>
+
+			<section>
+				<h2>1. お問い合わせフォームで収集する情報</h2>
+				<p>
+					お問い合わせフォームをご利用いただく際、氏名、メールアドレス、お問い合わせの種類、メッセージ本文を収集します。
+					また、スパム対策としてCloudflare Turnstileの検証トークンも処理します。WorkerはCloudflareが提供する接続元IPアドレスを読み取り、
+					Turnstileでの検証とお問い合わせAPIのレート制限キーに使用します。このIPアドレスは送信メールには含めません。
+				</p>
+			</section>
+
+			<section>
+				<h2>2. 収集目的</h2>
+				<p>
+					これらの情報は、お問い合わせへの返答、適切な窓口への転送、安心してご連絡いただくために使用します。
+					ご本人の明確な希望がない限り、マーケティング目的で利用することはありません。
+				</p>
+			</section>
+
+			<section>
+				<h2>3. メール配信と第三者処理</h2>
+				<p>
+					フォームのメッセージは、送信先を固定したうえで、トランザクションメールサービスのResendを通じて配信します。
+					入力されたメールアドレスは返信先として使用されます。Resendは配信のために内容を処理し、同社の規約および当方のアカウント設定に従って
+					保持する場合があります。Workerは送信内容をサイトのデータベースに保存しません。
+				</p>
+			</section>
+
+			<section>
+				<h2>4. CAPTCHAとボット対策</h2>
+				<p>
+					お問い合わせページではCloudflare Turnstileを読み込みます。送信後、Workerは一度だけ使用できる検証トークンと接続元IPアドレスを
+					Cloudflare Siteverifyに送信します。Cloudflareの成功応答に加え、応答のホスト名とお問い合わせ用アクションが一致した場合のみ受け付けます。
+					トークンには有効期限があり、再利用できません。
+				</p>
+			</section>
+
+			<section>
+				<h2>5. サイト運用とインフラ</h2>
+				<p>
+					サイトとお問い合わせAPIはCloudflare Workers上で動作します。Cloudflareのレート制限サービスは、接続元IPアドレスを短時間のカウンターキーとして
+					使用します。このカウンターはCloudflareの拠点ごとの概算であり、世界全体で共有される重複メッセージ記録ではありません。
+					ホスティングおよびサービス提供の一環として、Cloudflareが運用・セキュリティ情報を処理する場合があります。
+				</p>
+			</section>
+
+			<section>
+				<h2>6. Cookieとローカルストレージ</h2>
+				<p>
+					本サイトはファーストパーティCookieを設定せず、sessionStorageも使用しません。言語設定は
+					<code>petalwake-language</code>、表示モード設定は<code>petalwake-appearance</code>としてブラウザーのlocalStorageに保存します。
+					お問い合わせページではTurnstileを読み込み、映画プレーヤーでは再生を選択した後に限りYouTubeのプライバシー強化型埋め込みを読み込みます。
+					これらの第三者サービスは、それぞれのポリシーに従ってブラウザーや端末の情報を処理し、ストレージを利用する場合があります。
+				</p>
+			</section>
+
+			<section>
+				<h2>7. アナリティクス</h2>
+				<p>
+					本サイトでは現在、広告、アナリティクス、行動追跡用のスクリプトを使用していません。
+					追跡を目的とした同意バナーも設置していません。
+				</p>
+			</section>
+
+			<section>
+				<h2>8. 埋め込みコンテンツ</h2>
+				<p>
+					映画動画は再生ボタンを押すまで読み込まれません。再生時にはYouTubeのプライバシー強化型
+					<code>youtube-nocookie.com</code>埋め込みを使用します。YouTubeへの外部リンクを開いた場合も、YouTubeのポリシーに従って情報が処理されます。
+					第三者サービスのストレージ利用や保持について、当社は管理していません。
+				</p>
+			</section>
+
+			<section>
+				<h2>9. 保存期間と安全管理</h2>
+				<p>
+					Workerは、入力内容の検証と転送中にリクエストをメモリー上で処理します。サイトのデータベースには保存せず、
+					アプリケーションのエラーログにもメッセージ本文を記録しません。Cloudflareはレート制限カウンターを処理し、Resendは配信メールを処理します。
+					一度だけ使用できるTurnstileトークンとリクエスト制限は、短時間の重複送信防止にも役立ちます。
+					各サービスでの保持期間はサービスおよびアカウント設定に従います。当方では保存期間を定めず、第三者システムからの削除を保証しません。
+				</p>
+			</section>
+
+			<section>
+				<h2>10. ご利用者の権利とご連絡</h2>
+				<p>
+					送信した情報についてご質問やご要望がある場合は、お問い合わせフォームからご連絡ください。
+					CloudflareまたはResendが保有する情報については、各サービスの手続きが適用される場合があります。
+					このフォームを通じて第三者システムからの削除を保証することはできません。
+				</p>
+			</section>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

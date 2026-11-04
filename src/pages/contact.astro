@@ -2,7 +2,9 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../consts';
+import { CONTACT_DESCRIPTION, SITE_TITLE, TURNSTILE_SITE_KEY, YOUTUBE_CHANNEL } from '../consts';
+import { CONTACT_TOPICS } from '../lib/contact-contract';
+import { contactTopicLabels } from '../i18n/contact-topics';
 ---
 
 <!doctype html>
@@ -21,62 +23,62 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 			<h1>Start a conversation.</h1>
 			<p>
 				Questions about films, the creative process, Christianity, collaboration, or a thought
-				you would like to share are welcome. Write directly to
-				<a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a>.
+				you would like to share are welcome. Use the form below to send a message securely.
 			</p>
 			<div class="contact-card">
 				<p class="contact-form__note">
-					This form prepares an email in your email app; it does not send or store messages on
-					this site. If your email app does not open, write to {STUDIO_EMAIL}.
+					This form sends your message through a secure server-side delivery pipeline and does not
+					store your message on this site.
 				</p>
 				<noscript>
 					<p class="contact-form__note">
-						JavaScript is unavailable, so please email <a href={`mailto:${STUDIO_EMAIL}`}>{STUDIO_EMAIL}</a> directly.
+						JavaScript is required for the secure contact form. Please enable scripting and try again.
 					</p>
 				</noscript>
 				<form
 					id="contact-form"
 					class="contact-form"
+					method="post"
+					action="/api/contact"
 					novalidate
-					data-required-message="Please add your name, email, and message before sending."
-					data-email-invalid-message="Enter a valid email address."
-					data-subject-prefix="Petalwake Studios inquiry"
-					data-prepared-message="Check your email app for the prepared message. Nothing has been submitted to this site."
-					data-name-label="Name"
-					data-email-label="Email"
-					data-topic-label="Topic"
-					data-message-label="Message"
-					data-email-address={STUDIO_EMAIL}
+					data-turnstile-site-key={TURNSTILE_SITE_KEY}
+					data-locale="en"
 				>
 					<div class="contact-form__row">
 						<label>
 							<span>Name</span>
-							<input type="text" name="name" autocomplete="name" required />
+							<input type="text" name="name" autocomplete="name" required maxlength="120" />
 						</label>
 						<label>
-							<span>Email</span>
-							<input type="email" name="email" autocomplete="email" required />
+							<span>Email address</span>
+							<input type="email" name="email" autocomplete="email" required maxlength="254" />
 						</label>
 					</div>
 					<label>
-						<span>Topic</span>
-						<select name="topic">
-							<option value="General inquiry">General inquiry</option>
-							<option value="Question about a film">Question about a film</option>
-							<option value="Question about the creative process">Question about the creative process</option>
-							<option value="Question about Christianity or following Jesus">Question about Christianity or following Jesus</option>
-							<option value="Collaboration inquiry">Collaboration inquiry</option>
-							<option value="Feedback or suggestion">Feedback or suggestion</option>
-							<option value="Other">Other</option>
+						<span>Inquiry topic</span>
+						<select name="topic" required>
+							<option value="">Select a topic</option>
+							{CONTACT_TOPICS.map((topic) => <option value={topic}>{contactTopicLabels.en[topic]}</option>)}
 						</select>
 					</label>
 					<label>
 						<span>Message</span>
-						<textarea name="message" rows="6" required></textarea>
+						<textarea name="message" rows="6" required maxlength="2500"></textarea>
 					</label>
+					<div class="contact-form__honeypot" aria-hidden="true">
+						<label for="contact-website">Leave this blank</label>
+						<input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+					</div>
+					<div class="contact-form__turnstile">
+						<div id="contact-turnstile" aria-live="polite"></div>
+						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">CAPTCHA is currently unavailable. Please try again later.</p>}
+					</div>
+					<p class="contact-form__privacy">
+						By sending this form, you agree to our <a href="/privacy/">Privacy policy</a>.
+						We process submitted details and technical request information to verify and protect submissions and respond to your inquiry.
+					</p>
 					<div class="contact-form__actions">
-						<button class="button button--primary" type="submit">Prepare email</button>
-						<a href={`mailto:${STUDIO_EMAIL}`}>Write directly</a>
+						<button class="button button--primary" type="submit">Send message</button>
 					</div>
 					<p id="contact-form-status" class="contact-form__status" aria-live="polite"></p>
 				</form>
@@ -90,84 +92,4 @@ import { CONTACT_DESCRIPTION, SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '
 	</body>
 </html>
 
-<script>
-	const form = document.querySelector<HTMLFormElement>('#contact-form');
-	const status = document.querySelector<HTMLElement>('#contact-form-status');
-
-	form?.addEventListener('submit', (event) => {
-		event.preventDefault();
-		const formData = new FormData(form);
-		const name = String(formData.get('name') ?? '').trim();
-		const email = String(formData.get('email') ?? '').trim();
-		const topic = String(formData.get('topic') ?? 'General inquiry').trim();
-		const message = String(formData.get('message') ?? '').trim();
-		const {
-			requiredMessage,
-			emailInvalidMessage,
-			subjectPrefix,
-			preparedMessage,
-			nameLabel,
-			emailLabel,
-			topicLabel,
-			messageLabel,
-			emailAddress,
-		} = form.dataset;
-
-		if (!name || !email || !message) {
-			if (!requiredMessage) {
-				console.error('The localized contact form is missing its required-field message.');
-				return;
-			}
-			if (status) {
-				status.textContent = requiredMessage;
-				status.dataset.state = 'error';
-			}
-			const missingField = !name ? 'name' : !email ? 'email' : 'message';
-			const field = form.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[name="${missingField}"]`);
-			field?.setAttribute('aria-invalid', 'true');
-			field?.focus();
-			return;
-		}
-
-		const emailField = form.querySelector<HTMLInputElement>('input[name="email"]');
-		if (!emailField?.validity.valid) {
-			if (!emailInvalidMessage) {
-				console.error('The localized contact form is missing its invalid-email message.');
-				return;
-			}
-			if (status) {
-				status.textContent = emailInvalidMessage;
-				status.dataset.state = 'error';
-			}
-			emailField?.setAttribute('aria-invalid', 'true');
-			emailField?.focus();
-			return;
-		}
-
-		if (!subjectPrefix || !nameLabel || !emailLabel || !topicLabel || !messageLabel || !emailAddress) {
-			console.error('The localized contact form is missing email labels.');
-			return;
-		}
-
-		const subject = encodeURIComponent(`${subjectPrefix}: ${topic}`);
-		const body = encodeURIComponent(
-			`${nameLabel}: ${name}\n${emailLabel}: ${email}\n${topicLabel}: ${topic}\n\n${messageLabel}:\n${message}`,
-		);
-		window.location.href = `mailto:${emailAddress}?subject=${subject}&body=${body}`;
-		if (status && preparedMessage) {
-			status.textContent = preparedMessage;
-			status.dataset.state = 'success';
-		}
-	});
-
-	form?.addEventListener('input', (event) => {
-		const target = event.target;
-		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
-			target.removeAttribute('aria-invalid');
-			if (status?.dataset.state === 'error') {
-				status.textContent = '';
-				delete status.dataset.state;
-			}
-		}
-	});
-</script>
+<script src="../scripts/contact-form.ts"></script>

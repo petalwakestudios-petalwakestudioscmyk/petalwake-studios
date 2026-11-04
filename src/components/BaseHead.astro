@@ -58,6 +58,45 @@ const organization = {
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<script is:inline>
+	(() => {
+		const root = document.documentElement;
+		const media = window.matchMedia('(prefers-color-scheme: dark)');
+		const choices = ['system', 'light', 'dark'];
+		let choice = 'system';
+		try {
+			const saved = localStorage.getItem('petalwake-appearance');
+			if (choices.includes(saved)) choice = saved;
+		} catch (error) {
+			console.warn('The saved appearance preference could not be read in this browser.', error);
+		}
+
+		const apply = (preference) => {
+			choice = choices.includes(preference) ? preference : 'system';
+			const theme = choice === 'system' ? (media.matches ? 'dark' : 'light') : choice;
+			root.dataset.themeChoice = choice;
+			root.dataset.theme = theme;
+			const updateThemeColor = () => {
+				document.querySelector('meta[name="theme-color"]')?.setAttribute(
+					'content',
+					theme === 'dark' ? '#171821' : '#f0ece9',
+				);
+			};
+			if (document.querySelector('meta[name="theme-color"]')) {
+				updateThemeColor();
+			} else {
+				document.addEventListener('DOMContentLoaded', updateThemeColor, { once: true });
+			}
+			window.dispatchEvent(new CustomEvent('petalwake:themechange', { detail: { theme } }));
+		};
+
+		window.petalwakeAppearance = { setPreference: apply };
+		apply(choice);
+		media.addEventListener('change', () => {
+			if (choice === 'system') apply('system');
+		});
+	})();
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <meta name="generator" content={Astro.generator} />

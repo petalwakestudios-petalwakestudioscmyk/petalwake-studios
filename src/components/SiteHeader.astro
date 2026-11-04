@@ -48,11 +48,43 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 			<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
 			<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
 			<a class="site-header__cta" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">{labels.watchOnYouTube}</a>
+			<div class="site-nav__appearance">
+				<label for="site-appearance">{labels.appearance}</label>
+				<select id="site-appearance" data-appearance-select>
+					<option value="system">{labels.appearanceSystem}</option>
+					<option value="light">{labels.appearanceLight}</option>
+					<option value="dark">{labels.appearanceDark}</option>
+				</select>
+			</div>
 		</nav>
 	</details>
 </header>
 
 <script>
+	type AppearanceChoice = 'system' | 'light' | 'dark';
+	declare global {
+		interface Window {
+			petalwakeAppearance?: { setPreference: (preference: AppearanceChoice) => void };
+		}
+	}
+
+	const appearanceSelect = document.querySelector<HTMLSelectElement>('[data-appearance-select]');
+	const initialAppearance = document.documentElement.dataset.themeChoice;
+	if (appearanceSelect) {
+		appearanceSelect.value = initialAppearance === 'light' || initialAppearance === 'dark'
+			? initialAppearance
+			: 'system';
+		appearanceSelect.addEventListener('change', () => {
+			const preference = appearanceSelect.value as AppearanceChoice;
+			try {
+				localStorage.setItem('petalwake-appearance', preference);
+			} catch (error) {
+				console.warn('The appearance preference could not be saved in this browser.', error);
+			}
+			window.petalwakeAppearance?.setPreference(preference);
+		});
+	}
+
 	try {
 		const selectedLanguage = localStorage.getItem('petalwake-language');
 		const japaneseDestination = document.querySelector<HTMLElement>('.site-header')?.dataset.japaneseHref;
@@ -80,7 +112,7 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 
 	const navigation = document.querySelector<HTMLDetailsElement>('.site-nav');
 	const menuButton = navigation?.querySelector('summary');
-	const mobileNavigation = window.matchMedia('(max-width: 760px)');
+	const mobileNavigation = window.matchMedia('(max-width: 1200px)');
 
 	if (navigation) {
 		navigation.open = !mobileNavigation.matches;

@@ -1,0 +1,130 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { PRIVACY_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Privacy Policy | ${SITE_TITLE}`}
+			description={PRIVACY_DESCRIPTION}
+		/>
+	</head>
+	<body class="privacy-page">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<main id="main-content" tabindex="-1" data-reveal>
+			<p class="eyebrow">Privacy</p>
+			<h1>Privacy policy.</h1>
+			<p class="lead">
+				Petalwake Studios values thoughtful, respectful communication. This policy explains how we
+				collect, use, and protect information shared through our website and contact form.
+			</p>
+
+			<section>
+				<h2>1. Information collected through the contact form</h2>
+				<p>
+					When you use the contact form, we collect the information you provide: your name, email
+					address, the inquiry topic, and the message text. We also process a Cloudflare Turnstile
+					verification token to help reduce automated spam. The Worker reads the connecting IP address
+					provided by Cloudflare; it sends that address to Turnstile for verification and uses it as the
+					key for the contact endpoint's rate limit. The IP address is not included in the email.
+				</p>
+			</section>
+
+			<section>
+				<h2>2. Purpose of collection</h2>
+				<p>
+					We use this information to respond to your inquiry, route the message to the appropriate
+					studio contact, and maintain a respectful and secure communication process. We do not use
+					your information for marketing unless you explicitly ask us to stay in touch.
+				</p>
+			</section>
+
+			<section>
+				<h2>3. Email delivery and third-party processing</h2>
+				<p>
+					The form sends messages to a fixed studio destination through Resend, our transactional email
+					provider. The address you provide is used as the Reply-To address. Resend processes the
+					message to deliver it and may retain it according to its own terms and our account settings.
+					The Worker does not save submitted messages to a site database.
+				</p>
+			</section>
+
+			<section>
+				<h2>4. CAPTCHA and bot protection</h2>
+				<p>
+					We load Cloudflare Turnstile on the contact page. After submission, the Worker sends the
+					one-time verification token and connecting IP address to Cloudflare Siteverify. A message is
+					accepted only when Cloudflare reports success and the response hostname and contact action
+					match. Tokens expire after a short period and cannot be reused.
+				</p>
+			</section>
+
+			<section>
+				<h2>5. Website hosting and infrastructure</h2>
+				<p>
+					The site and contact endpoint run on Cloudflare Workers. Cloudflare's rate-limiting service
+					uses the connecting IP as a short-window counter key. These counters are approximate and
+					maintained per Cloudflare location; they are not a worldwide duplicate-message database.
+					Cloudflare may process operational and security data as part of hosting and service delivery.
+				</p>
+			</section>
+
+			<section>
+				<h2>6. Cookies and local storage</h2>
+				<p>
+					The site does not set first-party cookies or use session storage. It saves your language choice
+					under <code>petalwake-language</code> and appearance choice under
+					<code>petalwake-appearance</code> in your browser's local storage. The contact page loads
+					Turnstile, and the film player loads a YouTube privacy-enhanced embed only after you choose to
+					play it. Those third-party services may process browser or device information and use storage
+					under their own policies.
+				</p>
+			</section>
+
+			<section>
+				<h2>7. Analytics</h2>
+				<p>
+					This website does not currently include advertising, analytics, or behavioral tracking
+					scripts. The site does not use a tracking-based consent banner.
+				</p>
+			</section>
+
+			<section>
+				<h2>8. Embedded third-party content</h2>
+				<p>
+					The film video is not loaded until you activate its play button. It then uses YouTube's
+					privacy-enhanced <code>youtube-nocookie.com</code> embed. Following external YouTube links
+					also takes you to YouTube. Once loaded or visited, YouTube processes information according to
+					its own policies; we do not control its storage or retention.
+				</p>
+			</section>
+
+			<section>
+				<h2>9. Data retention and security</h2>
+				<p>
+					The Worker processes the submitted fields in memory while validating and forwarding the
+					request; it does not write message content to a site database or include it in application
+					error logs. Cloudflare handles the rate-limit counters, and Resend handles the delivered email;
+					the single-use Turnstile token and request limit also help prevent rapid duplicate submissions.
+					Their retention is governed by their services and account settings. We do not specify a
+					retention period or promise deletion from those third-party systems.
+				</p>
+			</section>
+
+			<section>
+				<h2>10. Your rights and contact</h2>
+				<p>
+					If you have a question or request about information you submitted, please use the contact
+					form. Requests involving information held by Cloudflare or Resend may also be subject to those
+					providers' processes. We cannot promise deletion from third-party systems through this form.
+				</p>
+			</section>
+		</main>
+		<SiteFooter />
+	</body>
+</html>

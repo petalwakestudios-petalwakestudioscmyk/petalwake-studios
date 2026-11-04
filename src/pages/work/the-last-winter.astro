@@ -3,7 +3,7 @@ import BaseHead from '../../components/BaseHead.astro';
 import ProductionNotes from '../../components/ProductionNotes.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
-import { SITE_TITLE, STUDIO_EMAIL, YOUTUBE_CHANNEL } from '../../consts';
+import { SITE_TITLE, YOUTUBE_CHANNEL } from '../../consts';
 import { FILMS } from '../../data/films';
 
 const film = FILMS.find(({ slug }) => slug === 'the-last-winter');
@@ -177,12 +177,12 @@ const description =
 				<div>
 					<h2 id="watch-title">Carry the conversation further.</h2>
 					<p>
-						For a private conversation about the film or its questions, email the studio. To
+						For a private conversation about the film or its questions, use the contact form. To
 						explore the Christian hope behind our work, read the gospel.
 					</p>
 					<a class="button button--primary" href="/gospel/">Read the gospel <span aria-hidden="true">↗</span></a>
-					<a class="project-watch__channel" href={`mailto:${STUDIO_EMAIL}?subject=The%20Last%20Winter%20reflection`}>
-						Email a private reflection <span aria-hidden="true">↗</span>
+					<a class="project-watch__channel" href="/contact/">
+						Use the contact form <span aria-hidden="true">↗</span>
 					</a>
 					<a class="project-watch__channel" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">
 						Visit Petalwake Studios on YouTube <span aria-hidden="true">↗</span>
