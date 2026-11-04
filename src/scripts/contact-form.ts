@@ -11,6 +11,9 @@ interface TurnstileApi {
 			appearance: 'always';
 			action: 'contact';
 			language: Locale;
+			callback: () => void;
+			'expired-callback': () => void;
+			'error-callback': () => void;
 		},
 	): string;
 	getResponse(widgetId: string): string;
@@ -27,11 +30,14 @@ declare global {
 const form = document.querySelector<HTMLFormElement>('#contact-form');
 const status = document.querySelector<HTMLElement>('#contact-form-status');
 const submitButton = form?.querySelector<HTMLButtonElement>('button[type="submit"]');
+const retryButton = form?.querySelector<HTMLButtonElement>('[data-turnstile-retry]');
 const siteKey = form?.dataset.turnstileSiteKey ?? '';
 const locale: Locale = form?.dataset.locale === 'ja' ? 'ja' : 'en';
 const messages = contactMessages[locale];
 let widgetId: string | null = null;
 let widgetScriptLoaded = false;
+let widgetScriptLoading = false;
+let isSubmitting = false;
 
 function setStatus(code: keyof typeof messages, state: 'error' | 'success' | 'info' = 'error') {
 	if (!status) return;
@@ -43,10 +49,21 @@ function setSubmitDisabled(disabled: boolean) {
 	if (submitButton) submitButton.disabled = disabled;
 }
 
+function showRetry(visible: boolean) {
+	if (retryButton) retryButton.hidden = !visible;
+}
+
+function showCaptchaFailure(
+	code: 'captcha_unavailable' | 'captcha_script_failed' | 'not_configured',
+) {
+	setStatus(code);
+	showRetry(code !== 'not_configured');
+	setSubmitDisabled(false);
+}
+
 function renderTurnstile() {
 	if (!form || !window.turnstile || !siteKey) {
-		setSubmitDisabled(true);
-		setStatus('captcha_unavailable', 'error');
+		showCaptchaFailure(siteKey ? 'captcha_unavailable' : 'not_configured');
 		return;
 	}
 	try {
@@ -56,33 +73,66 @@ function renderTurnstile() {
 			appearance: 'always',
 			action: 'contact',
 			language: locale,
+			callback: () => {
+				showRetry(false);
+				if (status?.dataset.state === 'error' || status?.dataset.state === 'info') {
+					status.textContent = '';
+					delete status.dataset.state;
+				}
+			},
+			'expired-callback': () => setStatus('captcha_invalid'),
+			'error-callback': () => showCaptchaFailure('captcha_unavailable'),
 		});
-		setSubmitDisabled(false);
+		showRetry(false);
 	} catch {
-		setSubmitDisabled(true);
-		setStatus('captcha_unavailable', 'error');
+		widgetId = null;
+		showCaptchaFailure('captcha_unavailable');
 	}
 }
 
-if (siteKey) {
-	setSubmitDisabled(true);
+function loadTurnstileScript() {
+	if (!siteKey) {
+		setStatus('not_configured');
+		showRetry(false);
+		return;
+	}
+	if (widgetScriptLoading) return;
+	if (window.turnstile) {
+		widgetScriptLoaded = true;
+		renderTurnstile();
+		return;
+	}
+
+	widgetScriptLoading = true;
 	const script = document.createElement('script');
 	script.src = `https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&language=${locale}`;
 	script.async = true;
 	script.defer = true;
 	script.onload = () => {
+		widgetScriptLoading = false;
 		widgetScriptLoaded = true;
 		renderTurnstile();
 	};
 	script.onerror = () => {
-		setSubmitDisabled(true);
-		setStatus('captcha_script_failed', 'error');
+		widgetScriptLoading = false;
+		script.remove();
+		showCaptchaFailure('captcha_script_failed');
 	};
 	document.head.appendChild(script);
-} else {
-	setSubmitDisabled(true);
-	setStatus('not_configured', 'error');
 }
+
+retryButton?.addEventListener('click', () => {
+	showRetry(false);
+	setStatus('captcha_retrying', 'info');
+	if (widgetId && window.turnstile) {
+		window.turnstile.remove(widgetId);
+		widgetId = null;
+	}
+	loadTurnstileScript();
+});
+
+if (siteKey) loadTurnstileScript();
+else setStatus('not_configured');
 
 window.addEventListener('petalwake:themechange', () => {
 	if (!widgetScriptLoaded || !window.turnstile) return;
@@ -93,7 +143,7 @@ window.addEventListener('petalwake:themechange', () => {
 
 form?.addEventListener('submit', async (event) => {
 	event.preventDefault();
-	if (!form) return;
+	if (!form || isSubmitting) return;
 
 	const formData = new FormData(form);
 	const name = String(formData.get('name') ?? '').trim();
@@ -123,15 +173,22 @@ form?.addEventListener('submit', async (event) => {
 		return;
 	}
 	if (!widgetId || !window.turnstile) {
-		setStatus('captcha_unavailable');
+		setStatus(siteKey ? 'captcha_unavailable' : 'not_configured');
 		return;
 	}
-	const token = window.turnstile.getResponse(widgetId);
+	let token: string;
+	try {
+		token = window.turnstile.getResponse(widgetId);
+	} catch {
+		showCaptchaFailure('captcha_unavailable');
+		return;
+	}
 	if (!token) {
 		setStatus('captcha_missing');
 		return;
 	}
 
+	isSubmitting = true;
 	setSubmitDisabled(true);
 	setStatus('sending', 'info');
 	formData.set('cf-turnstile-response', token);
@@ -156,6 +213,7 @@ form?.addEventListener('submit', async (event) => {
 		setStatus('delivery_failed');
 		if (widgetId) window.turnstile.reset(widgetId);
 	} finally {
+		isSubmitting = false;
 		setSubmitDisabled(false);
 	}
 });

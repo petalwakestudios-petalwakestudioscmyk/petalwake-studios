@@ -69,7 +69,10 @@ import { contactTopicLabels } from '../../i18n/contact-topics';
 					</div>
 					<div class="contact-form__turnstile">
 						<div id="contact-turnstile" aria-live="polite"></div>
-						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">{ja.contact.turnstileUnavailable}</p>}
+						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">{ja.contact.turnstileNotConfigured}</p>}
+						<button class="contact-form__retry" type="button" data-turnstile-retry hidden>
+							{ja.contact.retryTurnstile}
+						</button>
 					</div>
 					<p class="contact-form__privacy">
 						{ja.contact.privacyIntro}

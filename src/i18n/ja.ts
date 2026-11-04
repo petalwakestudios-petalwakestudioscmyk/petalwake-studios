@@ -170,6 +170,8 @@ export const ja = {
 		requiredMessage: 'お名前、メールアドレス、お問い合わせの種類、メッセージをご入力ください。',
 		invalidEmailMessage: '有効なメールアドレスをご入力ください。',
 		turnstileRequired: 'CAPTCHAの確認を完了してください。',
+		retryTurnstile: 'セキュリティ確認を再読み込み',
+		turnstileNotConfigured: 'このビルドではセキュリティ確認が設定されていません。設定が完了するまでフォームは送信できません。',
 		sending: '送信中...',
 		sendingMessage: 'メッセージを送信しています...',
 		genericError: 'メッセージを送信できませんでした。しばらくしてからもう一度お試しください。',

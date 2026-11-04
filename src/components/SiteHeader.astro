@@ -18,46 +18,66 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 	<a class="site-header__wordmark" href={homeHref} aria-label={`${SITE_TITLE} ${labels.home}`}>
 		<span>PETALWAKE<br />STUDIOS</span>
 	</a>
-	<nav class="language-switch" aria-label={labels.languageLabel}>
-		<a
-			href={englishHref}
-			lang="en"
-			aria-label={labels.englishName}
-			aria-current={locale === 'en' ? 'page' : undefined}
-			data-language-choice="en"
-		>EN</a>
-		<span aria-hidden="true">|</span>
-		<a
-			href={japaneseHref}
-			lang="ja"
-			aria-label={labels.japaneseName}
-			aria-current={locale === 'ja' ? 'page' : undefined}
-			data-language-choice="ja"
-		>日本語</a>
-	</nav>
-	<details class="site-nav" open>
-		<summary aria-label={labels.menu} aria-controls="site-navigation">
-			<span class="site-nav__icon" aria-hidden="true"><span></span><span></span></span>
-			<span class="site-nav__label">{labels.menu}</span>
-			<span class="site-nav__label site-nav__label--close">{labels.closeMenu}</span>
-		</summary>
-		<nav id="site-navigation" aria-label={labels.navLabel}>
-			<a href={homeHref} aria-current={Astro.url.pathname === homeHref ? 'page' : undefined}>{labels.home}</a>
-			<a href={workHref} aria-current={Astro.url.pathname.startsWith(workHref) ? 'page' : undefined}>{labels.films}</a>
-			<a href={aboutHref} aria-current={Astro.url.pathname === aboutHref ? 'page' : undefined}>{labels.about}</a>
-			<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
-			<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
-			<a class="site-header__cta" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">{labels.watchOnYouTube}</a>
-			<div class="site-nav__appearance">
-				<label for="site-appearance">{labels.appearance}</label>
-				<select id="site-appearance" data-appearance-select>
-					<option value="system">{labels.appearanceSystem}</option>
-					<option value="light">{labels.appearanceLight}</option>
-					<option value="dark">{labels.appearanceDark}</option>
-				</select>
+	<div class="site-header__controls">
+		<nav class="site-nav" aria-label={labels.navLabel} data-site-navigation>
+			<button
+				class="site-nav__toggle"
+				type="button"
+				aria-label={labels.menu}
+				aria-expanded="false"
+				aria-controls="site-navigation"
+				data-menu-toggle
+			>
+				<span class="site-nav__icon" aria-hidden="true"><span></span><span></span></span>
+				<span>{labels.menu}</span>
+			</button>
+			<div id="site-navigation" class="site-nav__links">
+				<a href={homeHref} aria-current={Astro.url.pathname === homeHref ? 'page' : undefined}>{labels.home}</a>
+				<a href={workHref} aria-current={Astro.url.pathname.startsWith(workHref) ? 'page' : undefined}>{labels.films}</a>
+				<a href={aboutHref} aria-current={Astro.url.pathname === aboutHref ? 'page' : undefined}>{labels.about}</a>
+				<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
+				<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
+				<a class="site-header__cta" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">{labels.watchOnYouTube}</a>
 			</div>
 		</nav>
-	</details>
+		<nav class="language-switch" aria-label={labels.languageLabel}>
+			<a
+				href={englishHref}
+				lang="en"
+				aria-label={labels.englishName}
+				aria-current={locale === 'en' ? 'page' : undefined}
+				data-language-choice="en"
+			>EN</a>
+			<span aria-hidden="true">|</span>
+			<a
+				href={japaneseHref}
+				lang="ja"
+				aria-label={labels.japaneseName}
+				aria-current={locale === 'ja' ? 'page' : undefined}
+				data-language-choice="ja"
+			>日本語</a>
+		</nav>
+		<button
+			class="appearance-toggle"
+			type="button"
+			aria-label={labels.appearance}
+			aria-pressed="false"
+			title={labels.appearance}
+			data-appearance-toggle
+			data-system-light-title={labels.appearanceSystemLight}
+			data-system-dark-title={labels.appearanceSystemDark}
+			data-light-title={labels.appearanceLightActive}
+			data-dark-title={labels.appearanceDarkActive}
+		>
+			<svg class="appearance-toggle__sun" viewBox="0 0 24 24" aria-hidden="true">
+				<circle cx="12" cy="12" r="4" />
+				<path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+			</svg>
+			<svg class="appearance-toggle__moon" viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M20.2 15.2A8.4 8.4 0 0 1 8.8 3.8 8.5 8.5 0 1 0 20.2 15.2Z" />
+			</svg>
+		</button>
+	</div>
 </header>
 
 <script>
@@ -68,22 +88,34 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 		}
 	}
 
-	const appearanceSelect = document.querySelector<HTMLSelectElement>('[data-appearance-select]');
-	const initialAppearance = document.documentElement.dataset.themeChoice;
-	if (appearanceSelect) {
-		appearanceSelect.value = initialAppearance === 'light' || initialAppearance === 'dark'
-			? initialAppearance
-			: 'system';
-		appearanceSelect.addEventListener('change', () => {
-			const preference = appearanceSelect.value as AppearanceChoice;
-			try {
-				localStorage.setItem('petalwake-appearance', preference);
-			} catch (error) {
-				console.warn('The appearance preference could not be saved in this browser.', error);
-			}
-			window.petalwakeAppearance?.setPreference(preference);
-		});
-	}
+	const appearanceToggle = document.querySelector<HTMLButtonElement>('[data-appearance-toggle]');
+	const updateAppearanceToggle = (theme: string, choice: string) => {
+		if (!appearanceToggle) return;
+		const isDark = theme === 'dark';
+		appearanceToggle.setAttribute('aria-pressed', String(isDark));
+		const title = choice === 'system'
+			? (isDark ? appearanceToggle.dataset.systemDarkTitle : appearanceToggle.dataset.systemLightTitle)
+			: (isDark ? appearanceToggle.dataset.darkTitle : appearanceToggle.dataset.lightTitle);
+		if (title) {
+			appearanceToggle.title = title;
+			appearanceToggle.setAttribute('aria-label', title);
+		}
+	};
+
+	updateAppearanceToggle(
+		document.documentElement.dataset.theme ?? 'light',
+		document.documentElement.dataset.themeChoice ?? 'system',
+	);
+	window.addEventListener('petalwake:themechange', (event) => {
+		const detail = (event as CustomEvent<{ theme?: string; choice?: string }>).detail;
+		updateAppearanceToggle(detail?.theme ?? 'light', detail?.choice ?? 'system');
+	});
+
+	appearanceToggle?.addEventListener('click', () => {
+		const nextPreference: AppearanceChoice =
+			document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+		window.petalwakeAppearance?.setPreference(nextPreference);
+	});
 
 	try {
 		const selectedLanguage = localStorage.getItem('petalwake-language');
@@ -110,35 +142,47 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 		});
 	});
 
-	const navigation = document.querySelector<HTMLDetailsElement>('.site-nav');
-	const menuButton = navigation?.querySelector('summary');
+	const navigation = document.querySelector<HTMLElement>('[data-site-navigation]');
+	const menuButton = navigation?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+	const navigationLinks = navigation?.querySelector<HTMLElement>('.site-nav__links');
 	const mobileNavigation = window.matchMedia('(max-width: 1200px)');
 
-	if (navigation) {
-		navigation.open = !mobileNavigation.matches;
+	const setNavigationOpen = (open: boolean) => {
+		if (!navigation || !menuButton || !mobileNavigation.matches) return;
+		navigation.dataset.open = String(open);
+		menuButton.setAttribute('aria-expanded', String(open));
+	};
 
-		mobileNavigation.addEventListener('change', ({ matches }) => {
-			navigation.open = !matches;
-			document.body.classList.remove('menu-open');
-		});
+	menuButton?.addEventListener('click', () => {
+		setNavigationOpen(navigation?.dataset.open !== 'true');
+	});
 
-		navigation.addEventListener('toggle', () => {
-			document.body.classList.toggle('menu-open', navigation.open && mobileNavigation.matches);
-		});
+	navigationLinks?.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
+		link.addEventListener('click', () => setNavigationOpen(false));
+	});
 
-		navigation.addEventListener('click', (event) => {
-			const target = event.target;
-			if (target instanceof Element && target.closest('a') && mobileNavigation.matches) {
-				navigation.open = false;
-				document.body.classList.remove('menu-open');
-			}
-		});
-	}
+	document.addEventListener('click', (event) => {
+		if (
+			navigation?.dataset.open === 'true'
+			&& event.target instanceof Node
+			&& !navigation.contains(event.target)
+		) {
+			setNavigationOpen(false);
+		}
+	});
+
+	mobileNavigation.addEventListener('change', ({ matches }) => {
+		if (navigation && menuButton) {
+			delete navigation.dataset.open;
+			menuButton.setAttribute('aria-expanded', 'false');
+			menuButton.hidden = !matches;
+		}
+	});
+	if (menuButton) menuButton.hidden = !mobileNavigation.matches;
 
 	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape' && navigation?.open && mobileNavigation.matches) {
-			navigation.open = false;
-			document.body.classList.remove('menu-open');
+		if (event.key === 'Escape' && navigation?.dataset.open === 'true' && mobileNavigation.matches) {
+			setNavigationOpen(false);
 			menuButton?.focus();
 		}
 	});

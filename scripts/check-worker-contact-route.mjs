@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readdir, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 
 const workerDirectory = 'dist/_worker.js';
 const routeManifest = JSON.parse(await readFile('dist/_routes.json', 'utf8'));
@@ -14,6 +14,19 @@ function matchesRoute(pattern, route) {
 		`^${pattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&').replaceAll('*', '.*')}/?$`,
 	);
 	return expression.test(route);
+}
+
+async function loadClientModuleGraph(modulePath, visited = new Set()) {
+	if (visited.has(modulePath)) return '';
+	visited.add(modulePath);
+	const source = await readFile(modulePath, 'utf8');
+	const imports = [...source.matchAll(/(?:from\s*|import\s*)["']([^"']+)["']/g)]
+		.map((match) => match[1])
+		.filter((specifier) => specifier.startsWith('.'));
+	const dependencies = await Promise.all(imports.map((specifier) =>
+		loadClientModuleGraph(join(dirname(modulePath), specifier), visited),
+	));
+	return [source, ...dependencies].join('\n');
 }
 
 assert.ok(
@@ -52,6 +65,14 @@ for (const route of ['contact', 'ja/contact']) {
 for (const route of ['contact', 'ja/contact']) {
 	const html = await readFile(join('dist', route, 'index.html'), 'utf8');
 	assert.ok(html.includes('action="/api/contact"'), `${route} form must submit to /api/contact`);
+	const siteKey = html.match(/data-turnstile-site-key="([^"]+)"/);
+	assert.ok(siteKey?.[1].trim(), `${route} must include the public Turnstile site key at build time`);
+	const clientScript = html.match(/<script type="module" src="([^"]+)"><\/script>/);
+	assert.ok(clientScript, `${route} must load its contact-form client script`);
+	const clientSource = await loadClientModuleGraph(join('dist', clientScript[1].replace(/^\//, '')));
+	for (const marker of ['challenges.cloudflare.com/turnstile/v0/api.js', 'cf-turnstile-response']) {
+		assert.ok(clientSource.includes(marker), `${route} client module is missing contact-form marker: ${marker}`);
+	}
 }
 
 console.log('Cloudflare Worker contact route validation passed.');

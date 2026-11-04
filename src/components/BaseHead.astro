@@ -87,10 +87,24 @@ const organization = {
 			} else {
 				document.addEventListener('DOMContentLoaded', updateThemeColor, { once: true });
 			}
-			window.dispatchEvent(new CustomEvent('petalwake:themechange', { detail: { theme } }));
+			window.dispatchEvent(new CustomEvent('petalwake:themechange', { detail: { theme, choice } }));
 		};
 
-		window.petalwakeAppearance = { setPreference: apply };
+		const setPreference = (preference) => {
+			const nextPreference = choices.includes(preference) ? preference : 'system';
+			try {
+				if (nextPreference === 'system') {
+					localStorage.removeItem('petalwake-appearance');
+				} else {
+					localStorage.setItem('petalwake-appearance', nextPreference);
+				}
+			} catch (error) {
+				console.warn('The appearance preference could not be saved in this browser.', error);
+			}
+			apply(nextPreference);
+		};
+
+		window.petalwakeAppearance = { setPreference };
 		apply(choice);
 		media.addEventListener('change', () => {
 			if (choice === 'system') apply('system');

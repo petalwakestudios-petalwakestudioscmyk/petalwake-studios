@@ -1,7 +1,7 @@
 import type { ContactResponseCode } from '../lib/contact-contract';
 import type { Locale } from './routing';
 
-type ContactUiMessage = ContactResponseCode | 'sending' | 'captcha_script_failed';
+type ContactUiMessage = ContactResponseCode | 'sending' | 'captcha_script_failed' | 'captcha_retrying';
 
 export const contactMessages: Record<Locale, Record<ContactUiMessage, string>> = {
 	en: {
@@ -27,6 +27,7 @@ export const contactMessages: Record<Locale, Record<ContactUiMessage, string>> =
 		delivery_failed: 'We could not send your message. Please try again later.',
 		sending: 'Sending your message...',
 		captcha_script_failed: 'The security check could not load. Check your connection and refresh the page.',
+		captcha_retrying: 'Retrying the security check...',
 	},
 	ja: {
 		sent: 'メッセージを送信しました。ありがとうございます。',
@@ -51,5 +52,6 @@ export const contactMessages: Record<Locale, Record<ContactUiMessage, string>> =
 		delivery_failed: 'メッセージを送信できませんでした。後ほどもう一度お試しください。',
 		sending: 'メッセージを送信しています...',
 		captcha_script_failed: 'セキュリティ確認を読み込めませんでした。接続を確認してページを再読み込みしてください。',
+		captcha_retrying: 'セキュリティ確認を再読み込みしています...',
 	},
 };

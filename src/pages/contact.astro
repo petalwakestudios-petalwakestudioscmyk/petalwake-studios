@@ -71,7 +71,10 @@ import { contactTopicLabels } from '../i18n/contact-topics';
 					</div>
 					<div class="contact-form__turnstile">
 						<div id="contact-turnstile" aria-live="polite"></div>
-						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">CAPTCHA is currently unavailable. Please try again later.</p>}
+						{TURNSTILE_SITE_KEY ? null : <p class="contact-form__note">The security check is not configured in this build. The form cannot be submitted until it is configured.</p>}
+						<button class="contact-form__retry" type="button" data-turnstile-retry hidden>
+							Retry security check
+						</button>
 					</div>
 					<p class="contact-form__privacy">
 						By sending this form, you agree to our <a href="/privacy/">Privacy policy</a>.
