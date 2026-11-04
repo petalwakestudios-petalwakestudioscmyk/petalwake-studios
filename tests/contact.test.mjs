@@ -137,7 +137,12 @@ test('Astro API route delegates requests and mocked verification to the contact 
 		assert.equal(response.status, 200);
 		assert.equal(await responseCode(response), 'sent');
 		assert.equal(calls.some(({ url }) => url.includes('/siteverify')), true);
-		assert.equal(calls.some(({ url }) => url.includes('api.resend.com/emails')), true);
+		const resendRequest = calls.find(({ url }) => url.includes('api.resend.com/emails'));
+		assert.ok(resendRequest);
+		assert.equal(resendRequest.init.headers.Authorization, `Bearer ${env.RESEND_API_KEY}`);
+		const emailPayload = JSON.parse(resendRequest.init.body);
+		assert.equal(emailPayload.reply_to, 'visitor@example.net');
+		assert.notEqual(emailPayload.from, emailPayload.reply_to);
 	});
 });
 
