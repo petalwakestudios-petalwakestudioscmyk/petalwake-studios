@@ -26,10 +26,12 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 				aria-label={labels.menu}
 				aria-expanded="false"
 				aria-controls="site-navigation"
+				data-close-label={labels.closeMenu}
+				data-menu-label-text={labels.menu}
 				data-menu-toggle
 			>
 				<span class="site-nav__icon" aria-hidden="true"><span></span><span></span></span>
-				<span>{labels.menu}</span>
+				<span data-menu-label>{labels.menu}</span>
 			</button>
 			<div id="site-navigation" class="site-nav__links">
 				<a href={homeHref} aria-current={Astro.url.pathname === homeHref ? 'page' : undefined}>{labels.home}</a>
@@ -145,13 +147,24 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 	const navigation = document.querySelector<HTMLElement>('[data-site-navigation]');
 	const menuButton = navigation?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 	const navigationLinks = navigation?.querySelector<HTMLElement>('.site-nav__links');
-	const mobileNavigation = window.matchMedia('(max-width: 1200px)');
 
 	const setNavigationOpen = (open: boolean) => {
-		if (!navigation || !menuButton || !mobileNavigation.matches) return;
+		if (!navigation || !menuButton) return;
 		navigation.dataset.open = String(open);
 		menuButton.setAttribute('aria-expanded', String(open));
+		menuButton.setAttribute(
+			'aria-label',
+			open ? menuButton.dataset.closeLabel ?? '' : menuButton.dataset.menuLabelText ?? '',
+		);
+		const menuLabel = menuButton.querySelector<HTMLElement>('[data-menu-label]');
+		if (menuLabel) {
+			menuLabel.textContent = open
+				? menuButton.dataset.closeLabel ?? ''
+				: menuButton.dataset.menuLabelText ?? '';
+		}
 	};
+
+	setNavigationOpen(false);
 
 	menuButton?.addEventListener('click', () => {
 		setNavigationOpen(navigation?.dataset.open !== 'true');
@@ -171,17 +184,8 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 		}
 	});
 
-	mobileNavigation.addEventListener('change', ({ matches }) => {
-		if (navigation && menuButton) {
-			delete navigation.dataset.open;
-			menuButton.setAttribute('aria-expanded', 'false');
-			menuButton.hidden = !matches;
-		}
-	});
-	if (menuButton) menuButton.hidden = !mobileNavigation.matches;
-
 	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape' && navigation?.dataset.open === 'true' && mobileNavigation.matches) {
+		if (event.key === 'Escape' && navigation?.dataset.open === 'true') {
 			setNavigationOpen(false);
 			menuButton?.focus();
 		}

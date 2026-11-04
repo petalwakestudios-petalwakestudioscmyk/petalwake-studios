@@ -8,6 +8,8 @@ import { handleContactPost } from '../src/server/contact-handler.ts';
 import { createContactPost } from '../src/pages/api/contact.ts';
 import { contactMessages } from '../src/i18n/contact-messages.ts';
 
+const wranglerConfig = JSON.parse(await readFile(new URL('../wrangler.json', import.meta.url), 'utf8'));
+
 const expectedRoutes = {
 	general: 'hello@petalwakestudios.com',
 	ministry: 'ministry@petalwakestudios.com',
@@ -85,6 +87,16 @@ test('all six private addresses are centralized and topic routing is exact', () 
 	assert.deepEqual(Object.fromEntries(CONTACT_TOPICS.map((topic) => [topic, getContactDestination(topic)])), expectedRoutes);
 	assert.equal(getContactDestination('visitor@example.net'), undefined);
 	assert.equal(getContactDestination('toString'), undefined);
+});
+
+test('production Worker config includes the contact rate-limit binding', () => {
+	assert.equal(wranglerConfig.vars.ENVIRONMENT, 'production');
+	assert.ok(wranglerConfig.vars.RESEND_FROM_EMAIL);
+	const binding = wranglerConfig.ratelimits?.find(({ name }) => name === 'CONTACT_RATE_LIMITER');
+	assert.ok(binding);
+	assert.match(String(binding.namespace_id), /^\d+$/);
+	assert.equal(binding.simple.limit, 5);
+	assert.equal(binding.simple.period, 60);
 });
 
 test('English and Japanese labels share the same stable topic identifiers and both submit', async (t) => {
