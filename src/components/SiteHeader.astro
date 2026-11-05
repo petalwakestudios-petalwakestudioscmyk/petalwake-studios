@@ -7,6 +7,7 @@ const locale = localeFromPath(Astro.url.pathname);
 const labels = common[locale];
 const homeHref = localizedPath('/', locale);
 const workHref = localizedPath('/work/', locale);
+const featuredWorkHref = locale === 'ja' ? '/ja/#featured-work' : '/#featured-work';
 const mangaHref = localizedPath('/manga/', locale);
 const artworkHref = localizedPath('/artwork/', locale);
 const aboutHref = localizedPath('/about/', locale);
@@ -43,7 +44,7 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 				<a href={aboutHref} aria-current={Astro.url.pathname === aboutHref ? 'page' : undefined}>{labels.about}</a>
 				<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
 				<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
-				<a class="site-header__cta" href={workHref}>{labels.exploreOurWork}</a>
+				<a class="site-header__cta" href={featuredWorkHref}>{labels.featuredWork}</a>
 			</div>
 		</nav>
 		<nav class="language-switch" aria-label={labels.languageLabel}>

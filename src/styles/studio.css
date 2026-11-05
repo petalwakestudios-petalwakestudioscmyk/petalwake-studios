@@ -5430,3 +5430,98 @@ html[data-theme="dark"] .project-conversation__form select,
 html[data-theme="dark"] .project-conversation__form textarea {
 	color-scheme: dark;
 }
+
+/* Editorial cross-medium portfolio on the home page. */
+.work__medium-grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: clamp(24px, 4vw, 58px);
+	margin-top: clamp(52px, 8vw, 100px);
+}
+
+.work-medium {
+	min-width: 0;
+}
+
+.work-medium__image {
+	position: relative;
+	display: block;
+	width: 100%;
+	aspect-ratio: 4 / 5;
+	overflow: hidden;
+	background: var(--surface-soft);
+}
+
+.work-medium__image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+	transition: transform 700ms var(--ease-petal), filter 500ms var(--ease-petal);
+}
+
+.work-medium--artwork .work-medium__image img {
+	object-fit: contain;
+}
+
+.work-medium--artwork .work-medium__image:hover img,
+.work-medium--artwork .work-medium__image:focus-visible img {
+	transform: scale(1.018);
+}
+
+.work-medium .manga-card__cover {
+	aspect-ratio: 4 / 5;
+}
+
+.work-medium__details {
+	padding-top: 17px;
+}
+
+.work-medium__details > .eyebrow {
+	margin: 0;
+	color: var(--lake);
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.work-medium__details h3 {
+	margin: 9px 0 0;
+	font-family: var(--display-font);
+	font-size: clamp(26px, 3vw, 38px);
+	font-weight: 400;
+	line-height: 1.12;
+}
+
+.work-medium__link {
+	display: inline-flex;
+	min-height: 44px;
+	align-items: center;
+	gap: 8px;
+	margin-top: 11px;
+	font-size: 12px;
+	text-decoration-color: var(--peach);
+	text-underline-offset: 5px;
+}
+
+.work-medium__link span {
+	color: var(--blush);
+	transition: transform 220ms var(--ease-petal);
+}
+
+.work-medium__link:hover span,
+.work-medium__link:focus-visible span {
+	transform: translate(2px, -2px);
+}
+
+@media (max-width: 600px) {
+	.work__medium-grid {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 38px;
+		margin-top: 52px;
+	}
+
+	.work-medium__image,
+	.work-medium .manga-card__cover {
+		aspect-ratio: 4 / 5;
+	}
+}
