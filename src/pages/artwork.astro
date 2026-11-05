@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ArtworkExperience from '../components/ArtworkExperience.astro';
+import { ARTWORK } from '../data/artwork';
+import { SITE_TITLE } from '../consts';
+
+const description = 'An evolving collection of illustrated scripture reflections from Petalwake Studios, exploring light, rest, hope, and the quiet moments that draw us toward wonder through visual storytelling.';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Featured Artwork | ${SITE_TITLE}`}
+			description={description}
+			image={ARTWORK.find((item) => item.featured)?.image}
+			imageAlt={ARTWORK.find((item) => item.featured)?.alt}
+			imageWidth={1024}
+			imageHeight={1536}
+		/>
+	</head>
+	<body class="artwork-page-body">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<ArtworkExperience
+			locale="en"
+			copy={{
+				eyebrow: 'Illustration · Scripture',
+				title: 'Featured Artwork',
+				intro: description,
+				all: 'All',
+				littleLights: 'Little Lights',
+				eternalLight: 'Eternal Light',
+				collectionLabel: 'Filter by collection',
+				viewArtwork: 'View artwork',
+				close: 'Close artwork viewer',
+				previous: 'Previous artwork',
+				next: 'Next artwork',
+				position: 'Artwork',
+			}}
+		/>
+		<SiteFooter />
+	</body>
+</html>

@@ -2,6 +2,7 @@
 import '../styles/studio.css';
 import type { Locale } from '../i18n/routing';
 import { pairedEnglishRoutes, localizedPath } from '../i18n/routing';
+import { validSocialLinks } from '../data/socialLinks';
 
 interface Props {
 	title: string;
@@ -52,12 +53,12 @@ const organization = {
 	description: language === 'ja'
 		? 'Petalwake Studiosは、映画、アニメーション、音楽、イラスト、映像表現を通して物語を探求するクリエイティブスタジオです。'
 		: 'Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, music, illustration, and experimental image-making.',
-	sameAs: ['https://www.youtube.com/@PetalwakeStudios'],
+	sameAs: validSocialLinks().map((link) => link.url),
 };
 ---
 
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <script is:inline>
 	(() => {
 		const root = document.documentElement;

@@ -3,6 +3,7 @@ export type Locale = 'en' | 'ja';
 const englishRoutes = new Set([
 	'/',
 	'/work/',
+	'/artwork/',
 	'/work/the-last-winter/',
 	'/about/',
 	'/contact/',

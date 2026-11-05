@@ -1,0 +1,33 @@
+---
+import { validSocialLinks } from '../data/socialLinks';
+
+interface Props {
+	class?: string;
+	label?: string;
+}
+
+const { class: className = '', label = 'Social media' } = Astro.props;
+const links = validSocialLinks();
+---
+
+<nav class:list={['social-links', className]} aria-label={label}>
+	{links.map((link) => (
+		<a href={link.url} target="_blank" rel="noopener noreferrer" aria-label={link.accessibleLabel}>
+			<svg class="social-links__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+				{link.icon === 'instagram' ? (
+					<>
+						<rect x="3" y="3" width="18" height="18" rx="5" />
+						<circle cx="12" cy="12" r="4" />
+						<circle class="social-links__dot" cx="17.5" cy="6.5" r="1" />
+					</>
+				) : (
+					<>
+						<path d="M22 7.2a2.8 2.8 0 0 0-2-2C18.2 4.7 12 4.7 12 4.7s-6.2 0-8 .5a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1.5 12a29 29 0 0 0 .5 4.8 2.8 2.8 0 0 0 2 2c1.8.5 8 .5 8 .5s6.2 0 8-.5a2.8 2.8 0 0 0 2-2 29 29 0 0 0 .5-4.8 29 29 0 0 0-.5-4.8Z" />
+						<path d="m10 15.5 5-3.5-5-3.5v7Z" />
+					</>
+				)}
+			</svg>
+			<span>{link.name}</span>
+		</a>
+	))}
+</nav>

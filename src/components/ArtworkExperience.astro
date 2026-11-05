@@ -1,0 +1,168 @@
+---
+import { ARTWORK, type ArtworkCollection } from '../data/artwork';
+
+interface Props {
+	locale: 'en' | 'ja';
+	copy: {
+		eyebrow: string;
+		title: string;
+		intro: string;
+		all: string;
+		littleLights: string;
+		eternalLight: string;
+		collectionLabel: string;
+		viewArtwork: string;
+		close: string;
+		previous: string;
+		next: string;
+		position: string;
+	};
+}
+
+const { locale, copy } = Astro.props;
+const collectionLabel = (collection: ArtworkCollection) =>
+	locale === 'ja'
+		? (collection === 'Little Lights' ? copy.littleLights : copy.eternalLight)
+		: collection;
+---
+
+<main id="main-content" class="artwork-page" tabindex="-1">
+	<section class="artwork-page__intro" aria-labelledby="artwork-title">
+		<p class="eyebrow">{copy.eyebrow}</p>
+		<h1 id="artwork-title">{copy.title}</h1>
+		<p>{copy.intro}</p>
+	</section>
+	<section class="artwork-gallery" aria-label={copy.title}>
+		<div class="artwork-filters" aria-label={copy.collectionLabel} data-artwork-filters hidden>
+			<button type="button" aria-pressed="true" data-artwork-filter="all">{copy.all}</button>
+			<button type="button" aria-pressed="false" data-artwork-filter="Little Lights">{copy.littleLights}</button>
+			<button type="button" aria-pressed="false" data-artwork-filter="Eternal Light">{copy.eternalLight}</button>
+		</div>
+		<div class="artwork-grid" data-artwork-grid>
+			{ARTWORK.map((item) => (
+				<article class="artwork-card" data-artwork-card data-collection={item.collection}>
+					<button
+						class="artwork-card__open"
+						type="button"
+						aria-label={`${copy.viewArtwork}: ${collectionLabel(item.collection)} ${String(item.order).padStart(2, '0')}`}
+						data-artwork-open={item.id}
+					>
+						<img
+							src={item.thumbnail}
+							srcset={`${item.thumbnail} 640w, ${item.mediumThumbnail} 768w, ${item.image} 1024w`}
+							sizes="(min-width: 1400px) 380px, (min-width: 1200px) 340px, (min-width: 901px) 28vw, (min-width: 601px) 42vw, calc(100vw - 48px)"
+							alt={item.alt}
+							width="1024"
+							height="1536"
+							loading="lazy"
+							decoding="async"
+							fetchpriority="auto"
+							data-artwork-image
+							data-original-src={item.image}
+						/>
+						<span class="artwork-card__caption">
+							<span>{collectionLabel(item.collection)}</span>
+							<strong>{item.title}</strong>
+							{item.scriptureReference && <small>{item.scriptureReference}</small>}
+						</span>
+					</button>
+				</article>
+			))}
+		</div>
+	</section>
+	<dialog class="artwork-dialog" aria-label={copy.title} data-artwork-dialog data-position-label={copy.position}>
+		<div class="artwork-dialog__toolbar">
+			<p data-artwork-counter aria-live="polite"></p>
+			<button class="artwork-dialog__control" type="button" data-artwork-close aria-label={copy.close}>×</button>
+		</div>
+		<div class="artwork-dialog__body">
+			<button class="artwork-dialog__control" type="button" data-artwork-previous aria-label={copy.previous}>‹</button>
+			<figure>
+				<img src="" alt="" width="1024" height="1536" data-artwork-dialog-image />
+				<figcaption data-artwork-dialog-caption></figcaption>
+			</figure>
+			<button class="artwork-dialog__control" type="button" data-artwork-next aria-label={copy.next}>›</button>
+		</div>
+	</dialog>
+</main>
+
+<script>
+	const filters = document.querySelector<HTMLElement>('[data-artwork-filters]');
+	const cards = [...document.querySelectorAll<HTMLElement>('[data-artwork-card]')];
+	const dialog = document.querySelector<HTMLDialogElement>('[data-artwork-dialog]');
+	const dialogImage = dialog?.querySelector<HTMLImageElement>('[data-artwork-dialog-image]');
+	const dialogCaption = dialog?.querySelector<HTMLElement>('[data-artwork-dialog-caption]');
+	const counter = dialog?.querySelector<HTMLElement>('[data-artwork-counter]');
+	const closeButton = dialog?.querySelector<HTMLButtonElement>('[data-artwork-close]');
+	const visibleCards = () => cards.filter((card) => !card.hidden);
+	let activeCard: HTMLElement | null = null;
+	let activeOpener: HTMLButtonElement | null = null;
+	let bodyOverflowBeforeDialog = '';
+
+	filters?.removeAttribute('hidden');
+	filters?.querySelectorAll<HTMLButtonElement>('[data-artwork-filter]').forEach((button) => {
+		button.addEventListener('click', () => {
+			const selected = button.dataset.artworkFilter ?? 'all';
+			filters.querySelectorAll<HTMLButtonElement>('[data-artwork-filter]').forEach((filter) => {
+				filter.setAttribute('aria-pressed', String(filter === button));
+			});
+			cards.forEach((card) => {
+				card.hidden = selected !== 'all' && card.dataset.collection !== selected;
+			});
+		});
+	});
+
+	const showCard = (card: HTMLElement) => {
+		if (!dialog || !dialogImage || !dialogCaption) return;
+		activeCard = card;
+		const image = card.querySelector<HTMLImageElement>('[data-artwork-image]');
+		const title = card.querySelector<HTMLElement>('.artwork-card__caption strong');
+		const labels = card.querySelectorAll<HTMLElement>('.artwork-card__caption > span, .artwork-card__caption small');
+		dialogImage.src = image?.dataset.originalSrc || image?.currentSrc || image?.src || '';
+		dialogImage.alt = image?.alt ?? '';
+		dialogCaption.replaceChildren(...[...labels, title].filter((node): node is HTMLElement => Boolean(node)).map((node) => {
+			const span = document.createElement('span');
+			span.textContent = node.textContent;
+			return span;
+		}));
+		const visible = visibleCards();
+		if (counter) counter.textContent = `${dialog?.dataset.positionLabel ?? ''} ${visible.indexOf(card) + 1} / ${visible.length}`;
+	};
+
+	document.querySelectorAll<HTMLButtonElement>('[data-artwork-open]').forEach((opener) => {
+		opener.addEventListener('click', () => {
+			const card = opener.closest<HTMLElement>('[data-artwork-card]');
+			if (!dialog || !card) return;
+			activeOpener = opener;
+			showCard(card);
+			bodyOverflowBeforeDialog = document.body.style.overflow;
+			document.body.style.overflow = 'hidden';
+			dialog.showModal();
+			closeButton?.focus();
+		});
+	});
+
+	const moveCard = (direction: number) => {
+		const visible = visibleCards();
+		if (!activeCard || visible.length < 2) return;
+		const index = visible.indexOf(activeCard);
+		showCard(visible[(index + direction + visible.length) % visible.length]);
+	};
+	dialog?.querySelector('[data-artwork-previous]')?.addEventListener('click', () => moveCard(-1));
+	dialog?.querySelector('[data-artwork-next]')?.addEventListener('click', () => moveCard(1));
+	closeButton?.addEventListener('click', () => dialog?.close());
+	dialog?.addEventListener('click', (event) => {
+		if (event.target === dialog) dialog.close();
+	});
+	dialog?.addEventListener('keydown', (event) => {
+		if (event.key === 'ArrowLeft') moveCard(-1);
+		if (event.key === 'ArrowRight') moveCard(1);
+	});
+	dialog?.addEventListener('close', () => {
+		document.body.style.overflow = bodyOverflowBeforeDialog;
+		activeOpener?.focus();
+	});
+	document.querySelectorAll<HTMLImageElement>('[data-artwork-image]').forEach((image) => {
+		image.addEventListener('error', () => image.closest('.artwork-card')?.classList.add('artwork-card--missing'), { once: true });
+	});
+</script>

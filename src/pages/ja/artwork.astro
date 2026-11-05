@@ -1,0 +1,32 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import ArtworkExperience from '../../components/ArtworkExperience.astro';
+import { ARTWORK } from '../../data/artwork';
+import { common } from '../../i18n/common';
+import { ja } from '../../i18n/ja';
+
+const description = ja.artwork.metadataDescription;
+---
+
+<!doctype html>
+<html lang="ja">
+	<head>
+		<BaseHead
+			language="ja"
+			title={ja.artwork.metadataTitle}
+			description={description}
+			image={ARTWORK.find((item) => item.featured)?.image}
+			imageAlt={ARTWORK.find((item) => item.featured)?.alt}
+			imageWidth={1024}
+			imageHeight={1536}
+		/>
+	</head>
+	<body class="artwork-page-body" lang="ja">
+		<a class="skip-link" href="#main-content">{common.ja.skipToContent}</a>
+		<SiteHeader />
+		<ArtworkExperience locale="ja" copy={ja.artwork} />
+		<SiteFooter />
+	</body>
+</html>

@@ -2,9 +2,10 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { CONTACT_DESCRIPTION, SITE_TITLE, TURNSTILE_SITE_KEY, YOUTUBE_CHANNEL } from '../consts';
+import { CONTACT_DESCRIPTION, SITE_TITLE, TURNSTILE_SITE_KEY } from '../consts';
 import { CONTACT_TOPICS } from '../lib/contact-contract';
 import { contactTopicLabels } from '../i18n/contact-topics';
+import SocialLinks from '../components/SocialLinks.astro';
 ---
 
 <!doctype html>
@@ -87,9 +88,9 @@ import { contactTopicLabels } from '../i18n/contact-topics';
 				</form>
 			</div>
 			<p class="contact-page__note">
-				For new releases and studio updates, follow Petalwake Studios on
-				<a href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">YouTube</a>.
+				For new releases and studio updates, follow Petalwake Studios on Instagram or YouTube.
 			</p>
+			<SocialLinks class="contact-page__social" />
 		</main>
 		<SiteFooter />
 	</body>

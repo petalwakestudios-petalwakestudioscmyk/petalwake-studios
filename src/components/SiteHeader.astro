@@ -7,6 +7,7 @@ const locale = localeFromPath(Astro.url.pathname);
 const labels = common[locale];
 const homeHref = localizedPath('/', locale);
 const workHref = localizedPath('/work/', locale);
+const artworkHref = localizedPath('/artwork/', locale);
 const aboutHref = localizedPath('/about/', locale);
 const gospelHref = localizedPath('/gospel/', locale);
 const contactHref = localizedPath('/contact/', locale);
@@ -36,6 +37,7 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 			<div id="site-navigation" class="site-nav__links">
 				<a href={homeHref} aria-current={Astro.url.pathname === homeHref ? 'page' : undefined}>{labels.home}</a>
 				<a href={workHref} aria-current={Astro.url.pathname.startsWith(workHref) ? 'page' : undefined}>{labels.films}</a>
+				<a href={artworkHref} aria-current={Astro.url.pathname === artworkHref ? 'page' : undefined}>{labels.artwork}</a>
 				<a href={aboutHref} aria-current={Astro.url.pathname === aboutHref ? 'page' : undefined}>{labels.about}</a>
 				<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
 				<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
@@ -147,9 +149,21 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 	const navigation = document.querySelector<HTMLElement>('[data-site-navigation]');
 	const menuButton = navigation?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 	const navigationLinks = navigation?.querySelector<HTMLElement>('.site-nav__links');
+	const firstNavigationLink = navigationLinks?.querySelector<HTMLAnchorElement>('a');
+	let bodyOverflowBeforeMenu = '';
 
-	const setNavigationOpen = (open: boolean) => {
+	const updateMenuPosition = () => {
+		if (!navigationLinks || !menuButton) return;
+		const buttonRight = menuButton.getBoundingClientRect().right;
+		const viewportWidth = document.documentElement.clientWidth;
+		const panelWidth = Math.min(280, viewportWidth - 32);
+		const preferredLeft = Math.min(Math.max(16, buttonRight - panelWidth), viewportWidth - 16 - panelWidth);
+		navigationLinks.style.setProperty('--menu-preferred-left', `${preferredLeft}px`);
+	};
+
+	const setNavigationOpen = (open: boolean, restoreFocus = false) => {
 		if (!navigation || !menuButton) return;
+		const wasOpen = navigation.dataset.open === 'true';
 		navigation.dataset.open = String(open);
 		menuButton.setAttribute('aria-expanded', String(open));
 		menuButton.setAttribute(
@@ -162,16 +176,32 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 				? menuButton.dataset.closeLabel ?? ''
 				: menuButton.dataset.menuLabelText ?? '';
 		}
+		if (open && !wasOpen) {
+			bodyOverflowBeforeMenu = document.body.style.overflow;
+			document.body.classList.add('menu-open');
+			document.body.style.overflow = 'hidden';
+			updateMenuPosition();
+			requestAnimationFrame(() => firstNavigationLink?.focus());
+		} else if (!open && wasOpen) {
+			document.body.classList.remove('menu-open');
+			document.body.style.overflow = bodyOverflowBeforeMenu;
+			if (restoreFocus) menuButton.focus();
+		}
 	};
 
 	setNavigationOpen(false);
 
 	menuButton?.addEventListener('click', () => {
-		setNavigationOpen(navigation?.dataset.open !== 'true');
+		const closing = navigation?.dataset.open === 'true';
+		setNavigationOpen(!closing, closing);
 	});
 
 	navigationLinks?.querySelectorAll<HTMLAnchorElement>('a').forEach((link) => {
 		link.addEventListener('click', () => setNavigationOpen(false));
+	});
+
+	window.addEventListener('resize', () => {
+		if (navigation?.dataset.open === 'true') updateMenuPosition();
 	});
 
 	document.addEventListener('click', (event) => {
@@ -186,8 +216,7 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 
 	document.addEventListener('keydown', (event) => {
 		if (event.key === 'Escape' && navigation?.dataset.open === 'true') {
-			setNavigationOpen(false);
-			menuButton?.focus();
+			setNavigationOpen(false, true);
 		}
 	});
 </script>
