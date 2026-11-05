@@ -1,9 +1,11 @@
 export const SITE_TITLE = "Petalwake Studios";
 export const TURNSTILE_SITE_KEY = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
 export const SITE_DESCRIPTION =
-	"Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, music, illustration, and experimental image-making. Stories that awaken wonder.";
+	"Petalwake Studios is a multidisciplinary creative studio exploring storytelling through film, animation, manga, music, illustration, and experimental image-making. Stories that awaken wonder.";
 export const ABOUT_DESCRIPTION =
-	"Discover Petalwake Studios' creative approach to storytelling, visual art, imagination, and the Christian convictions that inform its work.";
+	"Discover Petalwake Studios' creative approach to storytelling through film, animation, manga, visual art, and the Christian convictions that inform its work.";
+export const MANGA_DESCRIPTION =
+	"Explore original manga and illustrated stories from Petalwake Studios, an independent creative studio creating film, animation, manga, and original media.";
 export const WORK_DESCRIPTION =
 	"Explore the published films and visual stories of Petalwake Studios, beginning with The Last Winter, an animated short about memory, responsibility, and forgiveness.";
 export const GOSPEL_DESCRIPTION =

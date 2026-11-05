@@ -1,0 +1,34 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import MangaExperience from '../components/MangaExperience.astro';
+import { MANGA_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const description = MANGA_DESCRIPTION;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Manga | ${SITE_TITLE}`} description={description} />
+	</head>
+	<body class="manga-page-body">
+		<a class="skip-link" href="#main-content">Skip to content</a>
+		<SiteHeader />
+		<MangaExperience
+			locale="en"
+			copy={{
+				eyebrow: 'MANGA ・ 漫画',
+				title: 'Stories Between the Frames',
+				intro: 'Original manga from Petalwake Studios, exploring quiet moments, distant worlds, faith, memory, and the beauty found between them.',
+				galleryLabel: 'Manga projects in development',
+				originalManga: 'Original Manga',
+				comingSoon: 'Coming Soon',
+				closingTitle: 'More stories are taking shape.',
+				closingBody: 'Petalwake Studios is developing original manga alongside our film, animation, and visual storytelling work.',
+			}}
+		/>
+		<SiteFooter />
+	</body>
+</html>

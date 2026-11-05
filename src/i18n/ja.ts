@@ -2,10 +2,12 @@ export const ja = {
 	metadata: {
 		homeTitle: 'Petalwake Studios | 物語が、心に驚きを呼び覚ます。',
 		homeDescription:
-			'Petalwake Studiosは、映画、アニメーション、音楽、イラスト、映像表現を通して物語を探求するクリエイティブスタジオです。',
+			'Petalwake Studiosは、映画、アニメーション、漫画、音楽、イラスト、映像表現を通して物語を探求するクリエイティブスタジオです。',
 		aboutTitle: 'スタジオについて | Petalwake Studios',
 		aboutDescription:
-			'物語、ビジュアルアート、想像力、そしてキリスト教信仰に根ざしたPetalwake Studiosの創作姿勢をご紹介します。',
+			'映画、アニメーション、漫画、ビジュアルアートを通したPetalwake Studiosの創作姿勢と、作品の根底にあるキリスト教信仰をご紹介します。',
+		mangaTitle: '漫画 | Petalwake Studios',
+		mangaDescription: 'Petalwake Studiosのオリジナル漫画とイラストストーリー。映画やアニメーションと並行して、新しい物語を制作しています。',
 		workTitle: '映像作品 | Petalwake Studios',
 		workDescription:
 			'Petalwake Studiosの映像作品をご覧ください。記憶、責任、赦しを描くアニメーション短編映画「The Last Winter」を公開しています。',
@@ -49,7 +51,7 @@ export const ja = {
 		creativeEyebrow: '02 / ひらかれた創作',
 		creativeHeading: '表現はいくつも。<br />根底にあるのは、<em>ひとつの驚き。</em>',
 		creativeCopy:
-			'映像、音楽、イラスト、音と光の実験。物語の形はひとつではありません。Petalwakeは、それぞれのアイデアにふさわしい表現を探します。',
+			'映像、漫画、音楽、イラスト、音と光の実験。物語の形はひとつではありません。Petalwakeは、それぞれのアイデアにふさわしい表現を探します。',
 		creativeFormsAria: 'Petalwake Studiosの創作分野',
 		creativeForms: ['映像・アニメーション', '音楽・サウンド', 'イラストレーション・物語', '実験的な映像表現'],
 		creativeNote: '作品は、公開の準備が整い次第ご紹介します。',
@@ -87,13 +89,23 @@ export const ja = {
 		next: '次の作品',
 		position: '作品',
 	},
+	manga: {
+		eyebrow: 'MANGA ・ 漫画',
+		title: 'コマのあいだにある物語',
+		intro: 'Petalwake Studiosのオリジナル漫画。静かなひととき、遠い世界、信仰、記憶、そしてそのあいだに見つかる美しさを描きます。',
+		galleryLabel: '制作中の漫画作品',
+		originalManga: 'オリジナル漫画',
+		comingSoon: '制作中',
+		closingTitle: '新しい物語が生まれています。',
+		closingBody: 'Petalwake Studiosは、映画、アニメーション、ビジュアルストーリーテリングと並行して、オリジナル漫画を制作しています。',
+	},
 	about: {
 		eyebrow: 'Petalwakeについて',
 		title: '物語が大切なのは、<br /><em>人が大切だから。</em>',
 		lead:
 			'Petalwake Studiosは、物語、想像力、ビジュアルアート、そして心に残る創作体験を大切にするクリエイティブスタジオです。',
 		intro:
-			'映画やアニメーションから音楽、イラストを用いた物語まで、作品の形はさまざまです。キリスト教信仰は私たちの視点を形づくる根のひとつ。このページでは、その信仰と創作姿勢をご紹介します。',
+			'映画、アニメーション、漫画から音楽やイラストを用いた物語まで、作品の形はさまざまです。キリスト教信仰は私たちの視点を形づくる根のひとつ。このページでは、その信仰と創作姿勢をご紹介します。',
 		beliefsEyebrow: '信じていること',
 		creatorHeading: 'あらゆる良いものの源である創造主。',
 		creatorOne:

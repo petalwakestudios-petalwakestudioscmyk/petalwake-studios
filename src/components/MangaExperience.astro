@@ -1,0 +1,70 @@
+---
+import { MANGA_PROJECTS } from '../data/manga';
+
+interface Props {
+	locale: 'en' | 'ja';
+	copy: {
+		eyebrow: string;
+		title: string;
+		intro: string;
+		galleryLabel: string;
+		originalManga: string;
+		comingSoon: string;
+		closingTitle: string;
+		closingBody: string;
+	};
+}
+
+const { locale, copy } = Astro.props;
+---
+
+<main id="main-content" class="manga-page" tabindex="-1">
+	<section class="manga-page__intro" aria-labelledby="manga-title">
+		<p class="eyebrow">{copy.eyebrow}</p>
+		<h1 id="manga-title">{copy.title}</h1>
+		<p>{copy.intro}</p>
+	</section>
+	<section class="manga-gallery" aria-label={copy.galleryLabel}>
+		<div class="manga-gallery__grid">
+			{MANGA_PROJECTS.map((project) => (
+				<article class="manga-card" data-manga-id={project.id}>
+					<div class="manga-card__cover" data-cover-style={project.coverStyle}>
+						{project.coverImage ? (
+							<img
+								src={project.coverImage}
+								alt={project.coverAlt?.[locale] ?? `${project.title} manga cover`}
+								width="1024"
+								height="1536"
+								loading="lazy"
+								decoding="async"
+							/>
+						) : (
+							<div class="manga-cover__scene" aria-hidden="true">
+								<span class="manga-cover__shape manga-cover__shape--one"></span>
+								<span class="manga-cover__shape manga-cover__shape--two"></span>
+								<span class="manga-cover__shape manga-cover__shape--three"></span>
+							</div>
+						)}
+						<p class="manga-cover__brand">Petalwake Studios <span>MANGA ・ 漫画</span></p>
+						<span class="manga-cover__number">{project.number}</span>
+						<p class="manga-cover__status">{copy.comingSoon}</p>
+					</div>
+					<div class="manga-card__details">
+						<p class="manga-card__category">{copy.originalManga}<span aria-hidden="true"> · </span>{copy.comingSoon}</p>
+						<h2 lang={locale === 'ja' ? 'ja' : 'en'}>{locale === 'ja' ? project.titleJa : project.title}</h2>
+						<p class="manga-card__alternate" lang={locale === 'ja' ? 'en' : 'ja'}>
+							{locale === 'ja' ? project.title : project.titleJa}
+						</p>
+						{project.description?.[locale] && <p class="manga-card__description">{project.description[locale]}</p>}
+					</div>
+					{project.href && <a class="manga-card__link" href={project.href} aria-label={`${project.title} · ${copy.originalManga}`}></a>}
+				</article>
+			))}
+		</div>
+	</section>
+	<section class="manga-page__closing" aria-labelledby="manga-closing-title">
+		<p class="eyebrow">Petalwake Studios</p>
+		<h2 id="manga-closing-title">{copy.closingTitle}</h2>
+		<p>{copy.closingBody}</p>
+	</section>
+</main>

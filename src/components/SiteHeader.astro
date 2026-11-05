@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, YOUTUBE_CHANNEL } from '../consts';
+import { SITE_TITLE } from '../consts';
 import { common } from '../i18n/common';
 import { localeFromPath, localizedPath } from '../i18n/routing';
 
@@ -7,6 +7,7 @@ const locale = localeFromPath(Astro.url.pathname);
 const labels = common[locale];
 const homeHref = localizedPath('/', locale);
 const workHref = localizedPath('/work/', locale);
+const mangaHref = localizedPath('/manga/', locale);
 const artworkHref = localizedPath('/artwork/', locale);
 const aboutHref = localizedPath('/about/', locale);
 const gospelHref = localizedPath('/gospel/', locale);
@@ -37,11 +38,12 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 			<div id="site-navigation" class="site-nav__links">
 				<a href={homeHref} aria-current={Astro.url.pathname === homeHref ? 'page' : undefined}>{labels.home}</a>
 				<a href={workHref} aria-current={Astro.url.pathname.startsWith(workHref) ? 'page' : undefined}>{labels.films}</a>
+				<a href={mangaHref} aria-current={Astro.url.pathname === mangaHref ? 'page' : undefined}>{labels.manga}</a>
 				<a href={artworkHref} aria-current={Astro.url.pathname === artworkHref ? 'page' : undefined}>{labels.artwork}</a>
 				<a href={aboutHref} aria-current={Astro.url.pathname === aboutHref ? 'page' : undefined}>{labels.about}</a>
 				<a href={gospelHref} aria-current={Astro.url.pathname === gospelHref ? 'page' : undefined}>{labels.gospel}</a>
 				<a href={contactHref} aria-current={Astro.url.pathname === contactHref ? 'page' : undefined}>{labels.contact}</a>
-				<a class="site-header__cta" href={YOUTUBE_CHANNEL} target="_blank" rel="noopener noreferrer">{labels.watchOnYouTube}</a>
+				<a class="site-header__cta" href={workHref}>{labels.exploreOurWork}</a>
 			</div>
 		</nav>
 		<nav class="language-switch" aria-label={labels.languageLabel}>
@@ -150,7 +152,6 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 	const menuButton = navigation?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
 	const navigationLinks = navigation?.querySelector<HTMLElement>('.site-nav__links');
 	const firstNavigationLink = navigationLinks?.querySelector<HTMLAnchorElement>('a');
-	let bodyOverflowBeforeMenu = '';
 
 	const updateMenuPosition = () => {
 		if (!navigationLinks || !menuButton) return;
@@ -177,14 +178,11 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 				: menuButton.dataset.menuLabelText ?? '';
 		}
 		if (open && !wasOpen) {
-			bodyOverflowBeforeMenu = document.body.style.overflow;
 			document.body.classList.add('menu-open');
-			document.body.style.overflow = 'hidden';
 			updateMenuPosition();
 			requestAnimationFrame(() => firstNavigationLink?.focus());
 		} else if (!open && wasOpen) {
 			document.body.classList.remove('menu-open');
-			document.body.style.overflow = bodyOverflowBeforeMenu;
 			if (restoreFocus) menuButton.focus();
 		}
 	};
