@@ -1,0 +1,326 @@
+---
+import { ISHI_PAGE_COUNT, ishiCopy, ishiPages, ISHI_PATH, ISHI_READER_PATH, type IshiLanguage } from '../data/ishi';
+import IshiShare from './IshiShare.astro';
+
+interface Props {
+	language: IshiLanguage;
+	initialPage: number;
+}
+
+const { language, initialPage } = Astro.props;
+const copy = ishiCopy[language];
+const imageAlt = language === 'ja'
+	? `『ISHI 石』プロローグ01「静寂」、日本語版 ${initialPage}ページ目／全${ISHI_PAGE_COUNT}ページ`
+	: `ISHI, Prologue 01: Silence, English manga page ${initialPage} of ${ISHI_PAGE_COUNT}`;
+const readerText = {
+	en: {
+		documentTitle: 'Read ISHI: Prologue 01, Silence | Petalwake Studios',
+		metaDescription: 'Ren discovers a forgotten stone that responds only to him. Read ISHI, an original manga from Petalwake Studios.',
+		coverAlt: 'ISHI: Prologue 01, Silence manga cover',
+		readerTitle: ishiCopy.en.readerTitle,
+		readerInstructions: ishiCopy.en.readerInstructions,
+		previous: ishiCopy.en.previous,
+		next: ishiCopy.en.next,
+		first: ishiCopy.en.first,
+		last: ishiCopy.en.last,
+		focusMode: ishiCopy.en.focusMode,
+		exitFocusMode: ishiCopy.en.exitFocusMode,
+		loading: ishiCopy.en.loading,
+		imageError: ishiCopy.en.imageError,
+		retry: ishiCopy.en.retry,
+		language: ishiCopy.en.language,
+		backToStory: ishiCopy.en.backToStory,
+		imageAltPrefix: 'ISHI, Prologue 01: Silence, English manga page ',
+		imageAltSuffix: ` of ${ISHI_PAGE_COUNT}`,
+	},
+	ja: {
+		documentTitle: '『ISHI 石』プロローグ01「静寂」を読む | Petalwake Studios',
+		metaDescription: '孤独さえ異常と見なされる都市で、レンは自分にだけ反応する一つの石を見つける。『ISHI 石』を日本語で読む。',
+		coverAlt: '『ISHI 石』プロローグ01「静寂」表紙',
+		readerTitle: ishiCopy.ja.readerTitle,
+		readerInstructions: ishiCopy.ja.readerInstructions,
+		previous: ishiCopy.ja.previous,
+		next: ishiCopy.ja.next,
+		first: ishiCopy.ja.first,
+		last: ishiCopy.ja.last,
+		focusMode: ishiCopy.ja.focusMode,
+		exitFocusMode: ishiCopy.ja.exitFocusMode,
+		loading: ishiCopy.ja.loading,
+		imageError: ishiCopy.ja.imageError,
+		retry: ishiCopy.ja.retry,
+		language: ishiCopy.ja.language,
+		backToStory: ishiCopy.ja.backToStory,
+		imageAltPrefix: '『ISHI 石』プロローグ01「静寂」、日本語版 ',
+		imageAltSuffix: `ページ目／全${ISHI_PAGE_COUNT}ページ`,
+	},
+};
+const labels = JSON.stringify(readerText);
+---
+
+<main id="main-content" class="ishi-reader" data-ishi-reader data-language={language} data-page={initialPage} data-reader-page-count={ISHI_PAGE_COUNT} data-reader-labels={labels} data-reader-pages={JSON.stringify(ishiPages)} lang={language} tabindex="-1">
+	<div class="ishi-reader__topbar">
+		<a class="ishi-reader__back" data-reader-back href={`${ISHI_PATH}?lang=${language}`}>← {copy.backToStory}</a>
+		<div class="ishi-reader__language" role="group" aria-label={copy.language}>
+			<span>{copy.language}</span>
+			<a href={`${ISHI_READER_PATH}?lang=en&page=${initialPage}`} data-reader-language="en" aria-current={language === 'en' ? 'true' : undefined} lang="en">English</a>
+			<a href={`${ISHI_READER_PATH}?lang=ja&page=${initialPage}`} data-reader-language="ja" aria-current={language === 'ja' ? 'true' : undefined} lang="ja">日本語</a>
+		</div>
+	</div>
+
+	<header class="ishi-reader__heading">
+		<h1 data-reader-title>{copy.readerTitle}</h1>
+		<p data-reader-instructions>{copy.readerInstructions}</p>
+	</header>
+
+	<div class="ishi-reader__toolbar" role="group" aria-label={copy.readerTitle}>
+		<div class="ishi-reader__toolbar-group">
+			<button class="ishi-reader__control" type="button" data-first aria-label={copy.first} title={copy.first} disabled={initialPage === 1}>|←</button>
+			<button class="ishi-reader__control" type="button" data-previous aria-label={copy.previous} title={copy.previous} disabled={initialPage === 1}>←</button>
+		</div>
+		<p class="ishi-reader__indicator" aria-live="polite" aria-atomic="true" data-page-indicator>{language === 'ja' ? `${initialPage}ページ目／全${ISHI_PAGE_COUNT}ページ` : `${initialPage} / ${ISHI_PAGE_COUNT}`}</p>
+		<div class="ishi-reader__toolbar-group">
+			<button class="ishi-reader__control" type="button" data-next aria-label={copy.next} title={copy.next} disabled={initialPage === ISHI_PAGE_COUNT}>→</button>
+			<button class="ishi-reader__control" type="button" data-last aria-label={copy.last} title={copy.last} disabled={initialPage === ISHI_PAGE_COUNT}>→|</button>
+		</div>
+		<button class="ishi-reader__mode" type="button" data-focus-mode aria-pressed="false">{copy.focusMode}</button>
+		<IshiShare language={language} compact />
+	</div>
+
+	<div class="ishi-reader__stage" data-reader-stage data-loading="true" aria-busy="true">
+		<div class="ishi-reader__loading" data-reader-loading role="status">{copy.loading}</div>
+		<div class="ishi-reader__error" data-reader-error role="alert" hidden>
+			<p data-reader-error-message>{copy.imageError}</p>
+			<button class="ishi-button ishi-button--secondary" type="button" data-retry>{copy.retry}</button>
+		</div>
+		<img class="ishi-reader__image" src={ishiPages[language][initialPage - 1]} alt={imageAlt} width="720" height="1080" decoding="async" fetchpriority="high" draggable="false" data-reader-image />
+	</div>
+
+</main>
+
+<script>
+	type ReaderLanguage = 'en' | 'ja';
+	const reader = document.querySelector<HTMLElement>('[data-ishi-reader]');
+	if (reader) {
+		const labels = JSON.parse(reader.dataset.readerLabels ?? '{}') as Record<ReaderLanguage, Record<string, string>>;
+		const pages = JSON.parse(reader.dataset.readerPages ?? '{}') as Record<ReaderLanguage, string[]>;
+		const pageCount = Number(reader.dataset.readerPageCount) || 13;
+		const image = reader.querySelector<HTMLImageElement>('[data-reader-image]');
+		const stage = reader.querySelector<HTMLElement>('[data-reader-stage]');
+		const indicator = reader.querySelector<HTMLElement>('[data-page-indicator]');
+		const loading = reader.querySelector<HTMLElement>('[data-reader-loading]');
+		const errorPanel = reader.querySelector<HTMLElement>('[data-reader-error]');
+		const previous = reader.querySelector<HTMLButtonElement>('[data-previous]');
+		const next = reader.querySelector<HTMLButtonElement>('[data-next]');
+		const first = reader.querySelector<HTMLButtonElement>('[data-first]');
+		const last = reader.querySelector<HTMLButtonElement>('[data-last]');
+		const focusButton = reader.querySelector<HTMLButtonElement>('[data-focus-mode]');
+		const imagePath = (currentLanguage: ReaderLanguage, currentPage: number) => pages[currentLanguage][currentPage - 1];
+		const parseUrl = () => {
+			const url = new URL(window.location.href);
+			const rawPage = url.searchParams.get('page');
+			const parsedPage = rawPage && /^\d+$/.test(rawPage) ? Number(rawPage) : 1;
+			const page = Number.isSafeInteger(parsedPage) && parsedPage >= 1 && parsedPage <= pageCount ? parsedPage : 1;
+			const language: ReaderLanguage = url.searchParams.get('lang') === 'ja' ? 'ja' : 'en';
+			return { url, page, language, invalid: rawPage !== String(page) || !['en', 'ja'].includes(url.searchParams.get('lang') ?? '') };
+		};
+		let { page, language, invalid } = parseUrl();
+		let failed = false;
+
+		const pageLabel = (value: number, currentLanguage: ReaderLanguage) => currentLanguage === 'ja'
+			? `${value}ページ目／全${pageCount}ページ`
+			: `${value} / ${pageCount}`;
+		const updateUrl = (method: 'pushState' | 'replaceState') => {
+			const url = new URL(window.location.href);
+			url.searchParams.set('lang', language);
+			url.searchParams.set('page', String(page));
+			history[method]({ language, page }, '', `${url.pathname}${url.search}${url.hash}`);
+		};
+		const updateLanguageLabels = () => {
+			const currentLabels = labels[language];
+			reader.dataset.language = language;
+			reader.lang = language;
+			document.documentElement.lang = language;
+			document.body.lang = language;
+			document.title = currentLabels.documentTitle;
+			for (const [selector, content] of [
+				['meta[name="description"]', currentLabels.metaDescription],
+				['meta[property="og:title"]', currentLabels.documentTitle],
+				['meta[property="og:description"]', currentLabels.metaDescription],
+				['meta[name="twitter:title"]', currentLabels.documentTitle],
+				['meta[name="twitter:description"]', currentLabels.metaDescription],
+			] as const) {
+				document.head.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
+			}
+			document.head.querySelector<HTMLMetaElement>('meta[property="og:locale"]')?.setAttribute('content', language === 'ja' ? 'ja_JP' : 'en_US');
+			const coverUrl = new URL(pages[language][0], window.location.origin).href;
+			document.head.querySelector<HTMLMetaElement>('meta[property="og:image"]')?.setAttribute('content', coverUrl);
+			document.head.querySelector<HTMLMetaElement>('meta[name="twitter:image"]')?.setAttribute('content', coverUrl);
+			document.head.querySelector<HTMLMetaElement>('meta[property="og:image:alt"]')?.setAttribute('content', currentLabels.coverAlt);
+			document.head.querySelector<HTMLMetaElement>('meta[name="twitter:image:alt"]')?.setAttribute('content', currentLabels.coverAlt);
+			const setText = (selector: string, key: string) => {
+				const element = reader.querySelector<HTMLElement>(selector);
+				if (element) element.textContent = currentLabels[key] ?? '';
+			};
+			setText('[data-reader-title]', 'readerTitle');
+			setText('[data-reader-instructions]', 'readerInstructions');
+			setText('[data-focus-mode]', focusButton?.getAttribute('aria-pressed') === 'true' ? 'exitFocusMode' : 'focusMode');
+			setText('[data-reader-back]', 'backToStory');
+			setText('[data-reader-loading]', 'loading');
+			setText('[data-reader-error-message]', 'imageError');
+			setText('[data-retry]', 'retry');
+			const back = reader.querySelector<HTMLAnchorElement>('[data-reader-back]');
+			if (back) back.href = `${ISHI_PATH}?lang=${language}`;
+			reader.querySelectorAll<HTMLAnchorElement>('[data-reader-language]').forEach((link) => {
+				if (link.dataset.readerLanguage === language) link.setAttribute('aria-current', 'true');
+				else link.removeAttribute('aria-current');
+			});
+			const languageLabel = reader.querySelector<HTMLElement>('.ishi-reader__language > span');
+			if (languageLabel) languageLabel.textContent = currentLabels.language;
+			for (const [selector, key] of [['[data-first]', 'first'], ['[data-previous]', 'previous'], ['[data-next]', 'next'], ['[data-last]', 'last']] as const) {
+				const control = reader.querySelector<HTMLButtonElement>(selector);
+				if (control) {
+					control.setAttribute('aria-label', currentLabels[key]);
+					control.title = currentLabels[key];
+				}
+			}
+			const share = reader.querySelector<HTMLElement>('[data-ishi-share]');
+			const shareLabel = share?.querySelector<HTMLElement>('[data-share-label]');
+			if (shareLabel) shareLabel.textContent = language === 'ja' ? 'このページをシェア' : 'Share this page';
+		};
+		const updateIndicator = () => {
+			if (indicator) indicator.textContent = pageLabel(page, language);
+			if (previous) previous.disabled = page === 1;
+			if (first) first.disabled = page === 1;
+			if (next) next.disabled = page === pageCount;
+			if (last) last.disabled = page === pageCount;
+			reader.querySelectorAll<HTMLAnchorElement>('[data-reader-language]').forEach((link) => {
+				const selectedLanguage = link.dataset.readerLanguage === 'ja' ? 'ja' : 'en';
+				link.href = `${ISHI_READER_PATH}?lang=${selectedLanguage}&page=${page}`;
+			});
+			document.querySelectorAll<HTMLAnchorElement>('[data-language-choice]').forEach((link) => {
+				const url = new URL(window.location.href);
+				url.searchParams.set('lang', link.dataset.languageChoice === 'ja' ? 'ja' : 'en');
+				url.searchParams.set('page', String(page));
+				link.href = `${url.pathname}${url.search}`;
+			});
+		};
+		const preloadNext = () => {
+			if (page < pageCount) {
+				const nextImage = new Image();
+				nextImage.src = imagePath(language, page + 1);
+			}
+		};
+		const setImage = () => {
+			if (!image || !stage || !loading || !errorPanel) return;
+			failed = false;
+			stage.dataset.loading = 'true';
+			stage.dataset.error = 'false';
+			stage.setAttribute('aria-busy', 'true');
+			loading.hidden = false;
+			errorPanel.hidden = true;
+			image.alt = `${labels[language].imageAltPrefix}${page}${labels[language].imageAltSuffix}`;
+			image.src = imagePath(language, page);
+			if (image.complete) {
+				if (image.naturalWidth > 0) {
+					stage.dataset.loading = 'false';
+					stage.setAttribute('aria-busy', 'false');
+					loading.hidden = true;
+					preloadNext();
+				} else {
+					showError();
+				}
+			}
+		};
+		const showError = () => {
+			if (!stage || !loading || !errorPanel) return;
+			failed = true;
+			stage.dataset.loading = 'false';
+			stage.dataset.error = 'true';
+			stage.setAttribute('aria-busy', 'false');
+			loading.hidden = true;
+			errorPanel.hidden = false;
+		};
+		const changeState = (nextPage: number, nextLanguage = language, method: 'pushState' | 'replaceState' = 'pushState') => {
+			const clampedPage = Math.min(pageCount, Math.max(1, nextPage));
+			if (clampedPage === page && nextLanguage === language) return;
+			page = clampedPage;
+			language = nextLanguage;
+			updateUrl(method);
+			updateLanguageLabels();
+			updateIndicator();
+			setImage();
+		};
+
+		image?.addEventListener('load', () => {
+			if (!stage || !loading) return;
+			stage.dataset.loading = 'false';
+			stage.dataset.error = 'false';
+			stage.setAttribute('aria-busy', 'false');
+			loading.hidden = true;
+			preloadNext();
+		});
+		image?.addEventListener('error', showError);
+		previous?.addEventListener('click', () => changeState(page - 1));
+		next?.addEventListener('click', () => changeState(page + 1));
+		first?.addEventListener('click', () => changeState(1));
+		last?.addEventListener('click', () => changeState(pageCount));
+		reader.querySelector<HTMLButtonElement>('[data-retry]')?.addEventListener('click', () => {
+			if (!image || !failed) return;
+			image.removeAttribute('src');
+			requestAnimationFrame(setImage);
+		});
+		focusButton?.addEventListener('click', () => {
+			const enabled = focusButton.getAttribute('aria-pressed') !== 'true';
+			focusButton.setAttribute('aria-pressed', String(enabled));
+			reader.classList.toggle('ishi-reader--focus', enabled);
+			updateLanguageLabels();
+			if (!enabled) focusButton.focus();
+		});
+		window.addEventListener('popstate', () => {
+			const state = parseUrl();
+			page = state.page;
+			language = state.language;
+			updateLanguageLabels();
+			updateIndicator();
+			setImage();
+		});
+		document.addEventListener('keydown', (event) => {
+			if (event.altKey || event.ctrlKey || event.metaKey) return;
+			const target = event.target;
+			if (target instanceof HTMLElement && target.closest('input, textarea, select, [contenteditable="true"]')) return;
+			if (event.key === 'Escape' && reader.classList.contains('ishi-reader--focus')) {
+				event.preventDefault();
+				reader.classList.remove('ishi-reader--focus');
+				focusButton?.setAttribute('aria-pressed', 'false');
+				updateLanguageLabels();
+				focusButton?.focus();
+				return;
+			}
+			if (event.key === 'ArrowRight') { event.preventDefault(); changeState(page + 1); }
+			if (event.key === 'ArrowLeft') { event.preventDefault(); changeState(page - 1); }
+			if (event.key === 'Home') { event.preventDefault(); changeState(1); }
+			if (event.key === 'End') { event.preventDefault(); changeState(pageCount); }
+		});
+		let touchStart: { x: number; y: number } | undefined;
+		image?.addEventListener('pointerdown', (event) => {
+			if (event.pointerType === 'touch') touchStart = { x: event.clientX, y: event.clientY };
+		});
+		image?.addEventListener('pointerup', (event) => {
+			if (event.pointerType !== 'touch' || !touchStart) return;
+			const deltaX = event.clientX - touchStart.x;
+			const deltaY = event.clientY - touchStart.y;
+			touchStart = undefined;
+			if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25) changeState(page + (deltaX < 0 ? 1 : -1));
+		});
+		image?.addEventListener('pointercancel', () => { touchStart = undefined; });
+
+		updateLanguageLabels();
+		updateIndicator();
+		if (invalid) updateUrl('replaceState');
+		if (image?.complete && image.naturalWidth > 0) {
+			if (stage) { stage.dataset.loading = 'false'; stage.setAttribute('aria-busy', 'false'); }
+			if (loading) loading.hidden = true;
+			preloadNext();
+		}
+	}
+</script>

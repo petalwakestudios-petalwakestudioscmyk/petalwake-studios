@@ -1,0 +1,33 @@
+---
+import { ishiCopy, ishiCover, ISHI_PATH, type IshiLanguage } from '../data/ishi';
+
+interface Props {
+	language: IshiLanguage;
+}
+
+const { language } = Astro.props;
+const copy = ishiCopy[language];
+const accessibleName = copy.readAccessible;
+---
+
+<article class="work-medium work-medium--ishi">
+	<a class="work-medium__image ishi-feature__image" href={`${ISHI_PATH}?lang=${language}`} aria-label={accessibleName}>
+		<img
+			src={ishiCover(language)}
+			alt=""
+			width="720"
+			height="1080"
+			loading="lazy"
+			decoding="async"
+		/>
+	</a>
+	<div class="work-medium__details">
+		<p class="eyebrow">{copy.originalManga}</p>
+		<h3>{copy.title} <span lang="ja">{copy.japaneseTitle}</span></h3>
+		<p class="ishi-feature__subtitle" lang={language}>{copy.subtitle}</p>
+		<p class="ishi-feature__availability" lang={language}>{copy.availability}</p>
+		<a class="work-medium__link" href={`${ISHI_PATH}?lang=${language}`} aria-label={accessibleName}>
+			{copy.readNow} <span aria-hidden="true">↗</span>
+		</a>
+	</div>
+</article>

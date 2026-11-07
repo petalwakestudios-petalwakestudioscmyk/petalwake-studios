@@ -1,0 +1,109 @@
+---
+import { ishiCopy, type IshiLanguage } from '../data/ishi';
+
+interface Props {
+	language: IshiLanguage;
+	compact?: boolean;
+}
+
+const { language, compact = false } = Astro.props;
+const copy = ishiCopy[language];
+---
+
+<div
+	class:list={['ishi-share', compact && 'ishi-share--compact']}
+	data-ishi-share
+	data-title-en={ishiCopy.en.shareTitle}
+	data-title-ja={ishiCopy.ja.shareTitle}
+	data-text-en={ishiCopy.en.shareText}
+	data-text-ja={ishiCopy.ja.shareText}
+	data-copy-label-en={ishiCopy.en.copyLink}
+	data-copy-label-ja={ishiCopy.ja.copyLink}
+	data-copy-success-en={ishiCopy.en.copySuccess}
+	data-copy-success-ja={ishiCopy.ja.copySuccess}
+	data-copy-failure-en={ishiCopy.en.copyFailure}
+	data-copy-failure-ja={ishiCopy.ja.copyFailure}
+	data-unavailable-en={ishiCopy.en.shareUnavailable}
+	data-unavailable-ja={ishiCopy.ja.shareUnavailable}
+>
+	<button class="ishi-button ishi-button--secondary" type="button" data-share-trigger aria-expanded="false" aria-controls="ishi-share-options">
+		<span data-share-label>{compact ? copy.shareReader : copy.share}</span> <span aria-hidden="true">↗</span>
+	</button>
+	<div id="ishi-share-options" class="ishi-share__menu" data-share-menu hidden role="group" aria-label={copy.shareMenu}>
+		<button type="button" data-copy-link>{copy.copyLink}</button>
+		<a href="#" data-share-facebook target="_blank" rel="noopener noreferrer">Facebook</a>
+		<a href="#" data-share-x target="_blank" rel="noopener noreferrer">X</a>
+		<a href="#" data-share-linkedin target="_blank" rel="noopener noreferrer">LinkedIn</a>
+		<a href="#" data-share-email>Email</a>
+	</div>
+	<p class="ishi-share__status" role="status" aria-live="polite" data-share-status></p>
+</div>
+
+<script>
+	document.querySelectorAll<HTMLElement>('[data-ishi-share]').forEach((share) => {
+		const trigger = share.querySelector<HTMLButtonElement>('[data-share-trigger]');
+		const menu = share.querySelector<HTMLElement>('[data-share-menu]');
+		const status = share.querySelector<HTMLElement>('[data-share-status]');
+		const copyButton = share.querySelector<HTMLButtonElement>('[data-copy-link]');
+		const language = () => document.documentElement.lang === 'ja' ? 'ja' : 'en';
+		const currentUrl = () => {
+			const url = new URL(window.location.href);
+			url.searchParams.set('lang', language());
+			return url.href;
+		};
+		const shareText = () => share.dataset[`text${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+		const shareTitle = () => share.dataset[`title${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+		const updateLinks = () => {
+			const url = currentUrl();
+			const text = shareText();
+			const encodedUrl = encodeURIComponent(url);
+			const encodedText = encodeURIComponent(text);
+			const facebook = share.querySelector<HTMLAnchorElement>('[data-share-facebook]');
+			const x = share.querySelector<HTMLAnchorElement>('[data-share-x]');
+			const linkedin = share.querySelector<HTMLAnchorElement>('[data-share-linkedin]');
+			const email = share.querySelector<HTMLAnchorElement>('[data-share-email]');
+			if (facebook) facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+			if (x) x.href = `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`;
+			if (linkedin) linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`;
+			if (email) email.href = `mailto:?subject=${encodeURIComponent(shareTitle())}&body=${encodedText}%0A%0A${encodedUrl}`;
+		};
+		const openFallback = () => {
+			if (menu) menu.hidden = false;
+			trigger?.setAttribute('aria-expanded', 'true');
+			if (status) status.textContent = share.dataset[`unavailable${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+			if (copyButton) copyButton.textContent = share.dataset[`copyLabel${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+			updateLinks();
+		};
+
+		trigger?.addEventListener('click', async () => {
+			status && (status.textContent = '');
+			if (menu && !menu.hidden) {
+				menu.hidden = true;
+				trigger?.setAttribute('aria-expanded', 'false');
+				return;
+			}
+			updateLinks();
+			if (navigator.share) {
+				try {
+					await navigator.share({ title: shareTitle(), text: shareText(), url: currentUrl() });
+				} catch (error) {
+					if (error instanceof DOMException && error.name === 'AbortError') return;
+					openFallback();
+				}
+			} else {
+				openFallback();
+			}
+		});
+
+		copyButton?.addEventListener('click', async () => {
+			if (!status) return;
+			try {
+				if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+				await navigator.clipboard.writeText(currentUrl());
+				status.textContent = share.dataset[`copySuccess${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+			} catch {
+				status.textContent = share.dataset[`copyFailure${language() === 'ja' ? 'Ja' : 'En'}`] ?? '';
+			}
+		});
+	});
+</script>

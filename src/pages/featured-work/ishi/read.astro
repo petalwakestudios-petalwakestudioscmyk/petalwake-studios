@@ -1,0 +1,46 @@
+---
+import BaseHead from '../../../components/BaseHead.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import IshiReader from '../../../components/IshiReader.astro';
+import { getIshiLanguage, getIshiPage, ishiCover, ISHI_PATH } from '../../../data/ishi';
+
+const language = getIshiLanguage(Astro.url.searchParams.get('lang'));
+const page = getIshiPage(Astro.url.searchParams.get('page'));
+const title = language === 'ja'
+	? '『ISHI 石』プロローグ01「静寂」を読む | Petalwake Studios'
+	: 'Read ISHI: Prologue 01, Silence | Petalwake Studios';
+const description = language === 'ja'
+	? '孤独さえ異常と見なされる都市で、レンは自分にだけ反応する一つの石を見つける。『ISHI 石』を日本語で読む。'
+	: 'Ren discovers a forgotten stone that responds only to him. Read ISHI, an original manga from Petalwake Studios.';
+const alternates = {
+	en: new URL(`${ISHI_PATH}?lang=en`, Astro.site).href,
+	ja: new URL(`${ISHI_PATH}?lang=ja`, Astro.site).href,
+};
+---
+
+<!doctype html>
+<html lang={language}>
+	<head>
+		<BaseHead
+			language={language}
+			title={title}
+			description={description}
+			image={ishiCover(language)}
+			imageAlt={language === 'ja' ? '『ISHI 石』プロローグ01「静寂」表紙' : 'ISHI: Prologue 01, Silence manga cover'}
+			imageWidth={720}
+			imageHeight={1080}
+			canonical={ISHI_PATH}
+			includeHreflang={false}
+		/>
+		<link rel="alternate" hreflang="en" href={alternates.en} />
+		<link rel="alternate" hreflang="ja" href={alternates.ja} />
+		<link rel="alternate" hreflang="x-default" href={alternates.en} />
+	</head>
+	<body class="ishi-reader-page" lang={language}>
+		<a class="skip-link" href="#main-content">{language === 'ja' ? '本文へ移動' : 'Skip to content'}</a>
+		<SiteHeader />
+		<IshiReader language={language} initialPage={page} />
+		<SiteFooter />
+	</body>
+</html>

@@ -1,0 +1,81 @@
+---
+import { ishiCopy, ishiCover, ISHI_PATH, ISHI_READER_PATH, type IshiLanguage } from '../data/ishi';
+import IshiShare from './IshiShare.astro';
+
+interface Props {
+	language: IshiLanguage;
+}
+
+const { language } = Astro.props;
+const copy = ishiCopy[language];
+const languageHref = (value: IshiLanguage) => `${ISHI_PATH}?lang=${value}`;
+const readerHref = `${ISHI_READER_PATH}?lang=${language}&page=1`;
+---
+
+<main id="main-content" class="ishi-project" tabindex="-1" lang={language}>
+	<div class="ishi-project__topline">
+		<a class="ishi-project__back" href={language === 'ja' ? '/ja/#featured-work' : '/#featured-work'}>← {copy.backToFeatured}</a>
+		<div class="ishi-language" role="group" aria-label={copy.language}>
+			<span>{copy.language}</span>
+			<a href={languageHref('en')} lang="en" aria-current={language === 'en' ? 'true' : undefined}>English</a>
+			<a href={languageHref('ja')} lang="ja" aria-current={language === 'ja' ? 'true' : undefined}>日本語</a>
+		</div>
+	</div>
+
+	<section class="ishi-project__hero" aria-labelledby="ishi-title">
+		<div class="ishi-project__cover">
+			<img src={ishiCover(language)} alt={language === 'ja' ? '『ISHI 石』プロローグ01「静寂」表紙' : 'ISHI: Prologue 01, Silence manga cover'} width="720" height="1080" fetchpriority="high" decoding="async" />
+		</div>
+		<div class="ishi-project__identity">
+			<p class="eyebrow">Petalwake Studios · Original Manga</p>
+			<h1 id="ishi-title">{copy.title} <span lang="ja">{copy.japaneseTitle}</span></h1>
+			<p class="ishi-project__subtitle">{copy.subtitle}</p>
+			<p class="ishi-project__format">{copy.format}</p>
+			<p class="ishi-project__availability">{copy.availability}</p>
+			<div class="ishi-project__actions">
+				<a class="ishi-button ishi-button--primary" href={readerHref}>{copy.readNow} <span aria-hidden="true">↗</span></a>
+				<IshiShare language={language} />
+			</div>
+		</div>
+	</section>
+
+	<section class="ishi-project__synopsis" aria-labelledby="ishi-synopsis-heading">
+		<p class="eyebrow">01 / {copy.synopsisHeading}</p>
+		<div>
+			<h2 id="ishi-synopsis-heading">{copy.synopsisHeading}</h2>
+			{copy.shortSynopsis.split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+		</div>
+	</section>
+
+	<section class="ishi-project__backstory" aria-labelledby="ishi-backstory-heading">
+		<div>
+			<p class="eyebrow">02 / Petalwake Studios</p>
+			<h2 id="ishi-backstory-heading">{copy.backstoryHeading}</h2>
+		</div>
+		<div class="ishi-project__backstory-copy">
+			{copy.backstory.map((paragraph) => <p>{paragraph}</p>)}
+		</div>
+	</section>
+
+	<section class="ishi-project__note" aria-labelledby="ishi-note-heading">
+		<p class="eyebrow">{copy.contentNoteHeading}</p>
+		<p id="ishi-note-heading">{copy.contentNote}</p>
+	</section>
+
+	<section class="ishi-project__preview" aria-labelledby="ishi-preview-heading">
+		<div class="ishi-project__preview-copy">
+			<p class="eyebrow">03 / ISHI</p>
+			<h2 id="ishi-preview-heading">{copy.readerPreview}</h2>
+			<p>{copy.subtitle}</p>
+			<a class="ishi-button ishi-button--primary" href={readerHref}>{copy.openReader} <span aria-hidden="true">↗</span></a>
+		</div>
+		<a class="ishi-project__preview-image" href={readerHref} aria-label={copy.readAccessible}>
+			<img src={ishiCover(language)} alt="" width="720" height="1080" loading="lazy" decoding="async" />
+		</a>
+	</section>
+
+	<footer class="ishi-project__credits">
+		<p>{copy.credits}</p>
+		<a href="/">Petalwake Studios</a>
+	</footer>
+</main>

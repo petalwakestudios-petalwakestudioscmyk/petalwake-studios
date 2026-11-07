@@ -3,7 +3,11 @@ import { SITE_TITLE } from '../consts';
 import { common } from '../i18n/common';
 import { localeFromPath, localizedPath } from '../i18n/routing';
 
-const locale = localeFromPath(Astro.url.pathname);
+const ishiRoute = Astro.url.pathname.startsWith('/featured-work/ishi');
+const requestedIshiLanguage = Astro.url.searchParams.get('lang');
+const locale = ishiRoute
+	? (requestedIshiLanguage === 'ja' ? 'ja' : 'en')
+	: localeFromPath(Astro.url.pathname);
 const labels = common[locale];
 const homeHref = localizedPath('/', locale);
 const workHref = localizedPath('/work/', locale);
@@ -13,8 +17,13 @@ const artworkHref = localizedPath('/artwork/', locale);
 const aboutHref = localizedPath('/about/', locale);
 const gospelHref = localizedPath('/gospel/', locale);
 const contactHref = localizedPath('/contact/', locale);
-const englishHref = localizedPath(Astro.url.pathname, 'en');
-const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
+const ishiLanguageHref = (language: 'en' | 'ja') => {
+	const url = new URL(Astro.url);
+	url.searchParams.set('lang', language);
+	return `${url.pathname}${url.search}`;
+};
+const englishHref = ishiRoute ? ishiLanguageHref('en') : localizedPath(Astro.url.pathname, 'en');
+const japaneseHref = ishiRoute ? ishiLanguageHref('ja') : localizedPath(Astro.url.pathname, 'ja');
 ---
 
 <header class="site-header" data-japanese-href={japaneseHref}>
@@ -129,6 +138,7 @@ const japaneseHref = localizedPath(Astro.url.pathname, 'ja');
 		const japaneseDestination = document.querySelector<HTMLElement>('.site-header')?.dataset.japaneseHref;
 		if (
 			document.documentElement.lang === 'en' &&
+			!ishiRoute &&
 			selectedLanguage === 'ja' &&
 			japaneseDestination &&
 			window.location.pathname !== japaneseDestination

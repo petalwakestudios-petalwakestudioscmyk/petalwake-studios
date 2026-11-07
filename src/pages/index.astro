@@ -6,6 +6,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { FILMS } from '../data/films';
 import { ARTWORK, FEATURED_ARTWORK } from '../data/artwork';
 import { MANGA_PROJECTS } from '../data/manga';
+import IshiFeatureCard from '../components/IshiFeatureCard.astro';
 
 const featuredFilm = FILMS.find((film) => film.featured);
 if (!featuredFilm) throw new Error('The featured film is missing from src/data/films.ts.');
@@ -107,6 +108,7 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 							<a class="work-medium__link" href="/manga/">Explore Manga <span aria-hidden="true">↗</span></a>
 						</div>
 					</article>
+					<IshiFeatureCard language="en" />
 					<article class="work-medium work-medium--artwork">
 						<a class="work-medium__image" href="/artwork/" aria-label={`Explore the ${featuredScriptureCard.collection} scripture cards`}>
 							<img src={featuredScriptureCard.thumbnail} srcset={`${featuredScriptureCard.thumbnail} 640w, ${featuredScriptureCard.mediumThumbnail} 768w, ${featuredScriptureCard.image} 1024w`} sizes="(max-width: 700px) calc(100vw - 48px), 42vw" alt={featuredScriptureCard.alt} width="1024" height="1536" loading="lazy" decoding="async" />

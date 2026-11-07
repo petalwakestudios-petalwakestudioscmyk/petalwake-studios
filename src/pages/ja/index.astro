@@ -7,6 +7,7 @@ import { ja } from '../../i18n/ja';
 import { localizedPath } from '../../i18n/routing';
 import { ARTWORK, FEATURED_ARTWORK } from '../../data/artwork';
 import { MANGA_PROJECTS } from '../../data/manga';
+import IshiFeatureCard from '../../components/IshiFeatureCard.astro';
 
 const t = ja.home;
 const featuredManga = MANGA_PROJECTS[0];
@@ -113,6 +114,7 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 							<a class="work-medium__link" href={localizedPath('/manga/', 'ja')}>漫画を見る <span aria-hidden="true">↗</span></a>
 						</div>
 					</article>
+					<IshiFeatureCard language="ja" />
 					<article class="work-medium work-medium--artwork">
 						<a class="work-medium__image" href={localizedPath('/artwork/', 'ja')} aria-label="Eternal Lightの聖書カードを見る">
 							<img src={featuredScriptureCard.thumbnail} srcset={`${featuredScriptureCard.thumbnail} 640w, ${featuredScriptureCard.mediumThumbnail} 768w, ${featuredScriptureCard.image} 1024w`} sizes="(max-width: 700px) calc(100vw - 48px), 42vw" alt={featuredScriptureCard.alt} width="1024" height="1536" loading="lazy" decoding="async" />
