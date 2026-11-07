@@ -3,15 +3,15 @@ import BaseHead from '../../../components/BaseHead.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import SiteFooter from '../../../components/SiteFooter.astro';
 import IshiProject from '../../../components/IshiProject.astro';
-import { getIshiLanguage, ishiCover, ISHI_PATH } from '../../../data/ishi';
+import { getIshiLanguage, ISHI_PATH } from '../../../data/ishi';
 
 const language = getIshiLanguage(Astro.url.searchParams.get('lang'));
 const title = language === 'ja'
 	? '『ISHI 石』プロローグ01「静寂」| Petalwake Studios'
 	: 'ISHI: Prologue 01, Silence | Petalwake Studios';
 const description = language === 'ja'
-	? '孤独さえ異常と見なされる都市で、レンは自分にだけ反応する一つの石を見つける。オリジナルマンガを日本語または英語で読む。'
-	: 'In a city where solitude has become an abnormality, Ren discovers a forgotten stone that responds only to him. Read the original manga in English or Japanese.';
+	? '孤独、つながり、そして、ただ一人に反応する石をめぐる静かなSFマンガ。英語版・日本語版を公開中。'
+	: 'Read ISHI, a quiet science-fiction manga about isolation, connection, and a forgotten stone that responds to one person alone. Available in English and Japanese.';
 const alternates = {
 	en: new URL(`${ISHI_PATH}?lang=en`, Astro.site).href,
 	ja: new URL(`${ISHI_PATH}?lang=ja`, Astro.site).href,
@@ -25,10 +25,10 @@ const alternates = {
 			language={language}
 			title={title}
 			description={description}
-			image={ishiCover(language)}
-			imageAlt={language === 'ja' ? '『ISHI 石』プロローグ01「静寂」表紙' : 'ISHI: Prologue 01, Silence manga cover'}
-			imageWidth={720}
-			imageHeight={1080}
+			image="/images/releases/ishi/ishi-bilingual-release.png"
+			imageAlt={language === 'ja' ? '『ISHI 石』プロローグ01「静寂」英語版・日本語版のリリースアート。都市の夜景と、物語を象徴する石。' : 'Bilingual ISHI: Prologue 01, Silence release artwork, showing a city at night and the stone at the heart of the story.'}
+			imageWidth={1254}
+			imageHeight={1254}
 			canonical={ISHI_PATH}
 			includeHreflang={false}
 		/>

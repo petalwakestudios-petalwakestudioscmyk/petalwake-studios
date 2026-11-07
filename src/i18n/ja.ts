@@ -1,8 +1,7 @@
 export const ja = {
 	metadata: {
-		homeTitle: 'Petalwake Studios | 物語が、心に驚きを呼び覚ます。',
-		homeDescription:
-			'Petalwake Studiosは、映画、アニメーション、漫画、音楽、イラスト、映像表現を通して物語を探求するクリエイティブスタジオです。',
+		homeTitle: '『ISHI 石』プロローグ01「静寂」| Petalwake Studios',
+		homeDescription: '孤独、つながり、そして、ただ一人に反応する石をめぐる静かなSFマンガ。英語版・日本語版を公開中。',
 		aboutTitle: 'スタジオについて | Petalwake Studios',
 		aboutDescription:
 			'映画、アニメーション、漫画、ビジュアルアートを通したPetalwake Studiosの創作姿勢と、作品の根底にあるキリスト教信仰をご紹介します。',

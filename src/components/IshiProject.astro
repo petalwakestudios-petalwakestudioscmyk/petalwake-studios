@@ -31,11 +31,17 @@ const readerHref = `${ISHI_READER_PATH}?lang=${language}&page=1`;
 			<h1 id="ishi-title">{copy.title} <span lang="ja">{copy.japaneseTitle}</span></h1>
 			<p class="ishi-project__subtitle">{copy.subtitle}</p>
 			<p class="ishi-project__format">{copy.format}</p>
+			<p class="eyebrow ishi-project__now-available">{copy.nowAvailable}</p>
 			<p class="ishi-project__availability">{copy.availability}</p>
+			<p class="ishi-project__announcement">{copy.releaseAnnouncement}</p>
 			<div class="ishi-project__actions">
 				<a class="ishi-button ishi-button--primary" href={readerHref}>{copy.readNow} <span aria-hidden="true">↗</span></a>
 				<IshiShare language={language} />
 			</div>
+			<nav class="ishi-project__editions" aria-label={copy.language}>
+				<a href={`${ISHI_READER_PATH}?lang=en&page=1`} lang="en">{copy.readEnglish}</a>
+				<a href={`${ISHI_READER_PATH}?lang=ja&page=1`} lang="ja">{copy.readJapanese}</a>
+			</nav>
 		</div>
 	</section>
 

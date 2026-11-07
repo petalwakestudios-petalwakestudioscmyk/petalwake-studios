@@ -8,6 +8,8 @@ import { localizedPath } from '../../i18n/routing';
 import { ARTWORK, FEATURED_ARTWORK } from '../../data/artwork';
 import { MANGA_PROJECTS } from '../../data/manga';
 import IshiFeatureCard from '../../components/IshiFeatureCard.astro';
+import IshiReleaseFeature from '../../components/IshiReleaseFeature.astro';
+import InstagramSpotlight from '../../components/InstagramSpotlight.astro';
 
 const t = ja.home;
 const featuredManga = MANGA_PROJECTS[0];
@@ -22,7 +24,10 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 			language="ja"
 			title={ja.metadata.homeTitle}
 			description={ja.metadata.homeDescription}
-			imageAlt="夕暮れの山あいの湖に重なる、Petalwake Studiosのロゴ。"
+			image="/images/releases/ishi/ishi-bilingual-release.png"
+			imageAlt="『ISHI 石』プロローグ01「静寂」英語版・日本語版のリリースアート。都市の夜景と、物語を象徴する石。"
+			imageWidth={1254}
+			imageHeight={1254}
 		/>
 	</head>
 	<body class="home-page" lang="ja">
@@ -59,6 +64,8 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 					{t.scrollLabel}
 				</a>
 			</section>
+
+			<IshiReleaseFeature language="ja" />
 
 			<section class="work section-wrap" id="featured-work" aria-labelledby="work-title" data-reveal>
 				<div class="section-heading">
@@ -171,6 +178,8 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 					<a class="text-link" href={localizedPath('/about/', 'ja')}>{t.meetStudio} <span aria-hidden="true">↗</span></a>
 				</div>
 			</section>
+
+			<InstagramSpotlight language="ja" />
 
 			<section class="home-purpose section-wrap" aria-labelledby="home-purpose-title" data-reveal>
 				<p class="eyebrow">{t.faithEyebrow}</p>

@@ -2,11 +2,12 @@
 import BaseHead from '../components/BaseHead.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { FILMS } from '../data/films';
 import { ARTWORK, FEATURED_ARTWORK } from '../data/artwork';
 import { MANGA_PROJECTS } from '../data/manga';
 import IshiFeatureCard from '../components/IshiFeatureCard.astro';
+import IshiReleaseFeature from '../components/IshiReleaseFeature.astro';
+import InstagramSpotlight from '../components/InstagramSpotlight.astro';
 
 const featuredFilm = FILMS.find((film) => film.featured);
 if (!featuredFilm) throw new Error('The featured film is missing from src/data/films.ts.');
@@ -19,8 +20,12 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`${SITE_TITLE} | Stories That Awaken Wonder`}
-			description={SITE_DESCRIPTION}
+			title="ISHI: Prologue 01, Silence | Petalwake Studios"
+			description="Read ISHI, a quiet science-fiction manga about isolation, connection, and a forgotten stone that responds to one person alone. Available in English and Japanese."
+			image="/images/releases/ishi/ishi-bilingual-release.png"
+			imageAlt="Bilingual ISHI: Prologue 01, Silence release artwork, showing a city at night and the stone at the heart of the story."
+			imageWidth={1254}
+			imageHeight={1254}
 		/>
 	</head>
 	<body class="home-page">
@@ -57,6 +62,8 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 					Featured work
 				</a>
 			</section>
+
+			<IshiReleaseFeature language="en" />
 
 			<section class="work section-wrap" id="featured-work" aria-labelledby="work-title" data-reveal>
 				<div class="section-heading">
@@ -175,6 +182,8 @@ if (!featuredManga || !featuredScriptureCard) throw new Error('Featured work dat
 					<a class="text-link" href="/about/">Meet the studio <span aria-hidden="true">↗</span></a>
 				</div>
 			</section>
+
+			<InstagramSpotlight language="en" />
 
 			<section class="home-purpose section-wrap" aria-labelledby="home-purpose-title" data-reveal>
 				<p class="eyebrow">Faith & meaning</p>

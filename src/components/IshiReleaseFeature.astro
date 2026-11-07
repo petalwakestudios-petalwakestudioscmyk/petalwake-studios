@@ -1,0 +1,43 @@
+---
+import { ishiCopy, ISHI_PATH, ISHI_READER_PATH, type IshiLanguage } from '../data/ishi';
+
+interface Props {
+	language: IshiLanguage;
+}
+
+const { language } = Astro.props;
+const copy = ishiCopy[language];
+const readerHref = `${ISHI_READER_PATH}?lang=${language}&page=1`;
+const storyHref = `${ISHI_PATH}?lang=${language}`;
+const imageAlt = language === 'ja'
+	? '『ISHI 石』プロローグ01「静寂」英語版・日本語版のリリースアート。都市の夜景と、物語を象徴する石。'
+	: 'Bilingual ISHI: Prologue 01, Silence release artwork, showing a city at night and the stone at the heart of the story.';
+---
+
+<section class="ishi-release section-wrap" aria-labelledby="ishi-release-title" data-reveal>
+	<div class="ishi-release__art">
+		<img
+			src="/images/releases/ishi/ishi-bilingual-release.png"
+			alt={imageAlt}
+			width="1254"
+			height="1254"
+			loading="lazy"
+			decoding="async"
+		/>
+	</div>
+	<div class="ishi-release__content" lang={language}>
+		<p class="eyebrow">{copy.releaseEyebrow}</p>
+		<h2 id="ishi-release-title">{copy.title} <span lang="ja">{copy.japaneseTitle}</span></h2>
+		<p class="ishi-release__subtitle">{copy.subtitle}</p>
+		<p class="ishi-release__description">{copy.homeDescription}</p>
+		<p class="ishi-release__availability">{copy.availability}</p>
+		<div class="ishi-release__actions">
+			<a class="ishi-button ishi-button--primary" href={readerHref}>{copy.readRelease} <span aria-hidden="true">↗</span></a>
+			<a class="ishi-release__story-link" href={storyHref}>{copy.aboutStory} <span aria-hidden="true">↗</span></a>
+		</div>
+		<nav class="ishi-release__editions" aria-label={copy.language}>
+			<a href={`${ISHI_READER_PATH}?lang=en&page=1`} lang="en">{copy.readEnglish}</a>
+			<a href={`${ISHI_READER_PATH}?lang=ja&page=1`} lang="ja">{copy.readJapanese}</a>
+		</nav>
+	</div>
+</section>
