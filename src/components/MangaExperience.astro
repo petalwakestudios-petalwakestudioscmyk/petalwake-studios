@@ -10,6 +10,7 @@ interface Props {
 		galleryLabel: string;
 		originalManga: string;
 		comingSoon: string;
+		availableNow: string;
 		closingTitle: string;
 		closingBody: string;
 	};
@@ -47,10 +48,10 @@ const { locale, copy } = Astro.props;
 						)}
 						<p class="manga-cover__brand">Petalwake Studios <span>MANGA ・ 漫画</span></p>
 						<span class="manga-cover__number">{project.number}</span>
-						<p class="manga-cover__status">{copy.comingSoon}</p>
+						<p class="manga-cover__status">{project.status === 'available' ? copy.availableNow : copy.comingSoon}</p>
 					</div>
 					<div class="manga-card__details">
-						<p class="manga-card__category">{copy.originalManga}<span aria-hidden="true"> · </span>{copy.comingSoon}</p>
+						<p class="manga-card__category">{copy.originalManga}<span aria-hidden="true"> · </span>{project.status === 'available' ? copy.availableNow : copy.comingSoon}</p>
 						<h2 lang={locale === 'ja' ? 'ja' : 'en'}>{locale === 'ja' ? project.titleJa : project.title}</h2>
 						<p class="manga-card__alternate" lang={locale === 'ja' ? 'en' : 'ja'}>
 							{locale === 'ja' ? project.title : project.titleJa}
